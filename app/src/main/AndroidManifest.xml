@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.scu.tausch" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".Misc.ParseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.scu.tausch.LaunchScreen"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.scu.tausch.Login"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.scu.tausch.Registration"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+        android:name="com.scu.tausch.HomePage"
+        android:label="@string/app_name" >
+    </activity>
+
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="TmSqI4P8SjM0GpmeROFwxYpzSBlsEtYp5aQXbhhS" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="sEUcfQaYWWBIJWdPdK4svwTL2EDkg6vins7Hhn9a" />
+
+    </application>
+
+</manifest>
