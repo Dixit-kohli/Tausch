@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.ParseCloud;
+import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.RegistrationDTO;
 import com.parse.FunctionCallback;
@@ -33,30 +34,6 @@ public class Registration extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
-
-        final HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("templateName", "The Matrix");
-        params.put("toEmail", "praneetchhabra@gmail.com");
-        params.put("toName", "PJ");
-
-
-        ParseCloud.callFunctionInBackground("sendTemplate", params, new FunctionCallback<Float>() {
-            public void done(Float ratings, ParseException e) {
-                if (e == null) {
-                    // ratings is 4.5
-                }
-            }
-        });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -106,30 +83,6 @@ public class Registration extends Activity {
 
     }
 
-    public void readyToSavaData(boolean isUsernameAvailable){
-
-        //dismiss progressdialog when callback method is called after findInBackground completes execution
-        progress.dismiss();
-
-        if(isUsernameAvailable == false){
-            editEmail.setText(null);
-            Toast.makeText(this,"Username already exists. Please try again.",Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        boolean isDataSaved = dbAccessor.saveRegistrationDataToParse(regDTO);
-        if (isDataSaved==true){
-            Toast.makeText(this,"Registration Successful",Toast.LENGTH_SHORT).show();
-        }
-
-
-        // close activity
-        finish();
-
-    }
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -145,8 +98,42 @@ public class Registration extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showErrorMessageToUser(){
-        Toast.makeText(this,"Error occured. Please try again.",Toast.LENGTH_SHORT).show();
+    public void showErrorMessageToUser(String error){
+        progress.dismiss();
+      //  Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Username already exists.",Toast.LENGTH_SHORT).show();
+    }
+
+    public void showSignupSuccessfulMessage(){
+        progress.dismiss();
+        Toast.makeText(this,"Registration Successful",Toast.LENGTH_SHORT).show();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        try {
+            //Login process with entered username and password.
+            currentUser.logIn(editEmail.getText().toString(), editPassword.getText().toString());
+            sendFeedbackMailToNewUser();
+        }catch (ParseException e){
+            showErrorMessageToUser(""+e);
+        }
+        finish();
+    }
+
+    public void sendFeedbackMailToNewUser(){
+
+        final HashMap<String, String> params = new HashMap<String, String>();
+        params.put("templateName", "The Matrix");
+        params.put("toEmail", editEmail.getText().toString());
+        params.put("toName", "Tausch User");
+
+
+        ParseCloud.callFunctionInBackground("sendEmailToUser", params, new FunctionCallback<String>() {
+            public void done(String ratings, ParseException e) {
+                if (e == null) {
+                    // ratings is 4.5
+                }
+            }
+        });
+
     }
 
 }

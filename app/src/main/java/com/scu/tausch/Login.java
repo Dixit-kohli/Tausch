@@ -1,6 +1,7 @@
 package com.scu.tausch;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.content.DialogInterface;
 
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.LoginDTO;
@@ -33,7 +36,7 @@ public class Login extends Activity {
 
         //login details until testing.delete later
         editUsername.setText("pjain3@scu.edu");
-        editPassword.setText("12345");
+        editPassword.setText("111");
 
     }
 
@@ -53,7 +56,7 @@ public class Login extends Activity {
         loginDTO.setPassword(editPassword.getText().toString());
 
         dbAccessor = DBAccessor.getInstance();
-        dbAccessor.checkUsernamePasswordValidity(loginDTO,this);
+        dbAccessor.checkUsernamePasswordValidity(loginDTO, this);
 
     }
 
@@ -65,6 +68,34 @@ public class Login extends Activity {
     }
 
     public void onForgotPasswordClicked(View view){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Reset Password?");
+        alertDialog.setMessage("Enter Username");
+
+        final EditText usernameForResetPassword = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        usernameForResetPassword.setLayoutParams(lp);
+        alertDialog.setView(usernameForResetPassword);
+       // alertDialog.setIcon(R.drawable.key);
+
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dbAccessor.getInstance().resetUserPassword(usernameForResetPassword.getText().toString(),Login.this);
+            }
+        });
+
+alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.cancel();
+    }
+});
+                alertDialog.show();
 
     }
 
@@ -83,25 +114,28 @@ public class Login extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void doLogin(boolean isUsernamePasswordValid){
-
-        if (isUsernamePasswordValid){
+    public void loginSuccessful(){
 
             Intent intent = new Intent(this, HomePage.class);
             startActivity(intent);
 
         }
-        else{
 
-            editUsername.setText(null);
-            editPassword.setText(null);
-            Toast.makeText(this,"Invalid username or password.",Toast.LENGTH_SHORT).show();
-
-        }
-
+    public void showErrorMessageToUser(String error){
+        editUsername.setText(null);
+        editPassword.setText(null);
+//        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Username or Password is incorrect.", Toast.LENGTH_SHORT).show();
     }
 
-    public void showErrorMessageToUser(){
-        Toast.makeText(this, "Error occured. Please try again.", Toast.LENGTH_SHORT).show();
+    public void showMessageToCheckEmail(){
+
+        Toast.makeText(this, "Please check you registered email.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void showErrorInResetPassword(String error){
+
+        //        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Unable to reset Password. Please try again.", Toast.LENGTH_SHORT).show();
     }
 }
