@@ -10,9 +10,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MyMaterialTheme" >
         <activity
             android:name="com.scu.tausch.LaunchScreen"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,16 +24,19 @@
         </activity>
         <activity
             android:name="com.scu.tausch.Login"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.scu.tausch.Registration"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
-        android:name="com.scu.tausch.HomePage"
-        android:label="@string/app_name" >
-    </activity>
+            android:name="com.scu.tausch.HomePage"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
 
         <meta-data
             android:name="com.parse.APPLICATION_ID"

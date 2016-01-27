@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00BFFF"
+        android:background="@color/splashScreenBackgroundColor"
         android:orientation="vertical">
 
     <EditText
@@ -39,7 +39,7 @@
         android:clickable="true"
         android:onClick="onLoginClicked"
         android:text="LOGIN"
-        android:textColor="#00BFFF" />
+        android:textColor="@color/splashScreenBackgroundColor" />
 
         <Button
             android:layout_width="260dp"

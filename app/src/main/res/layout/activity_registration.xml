@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00BFFF"
+    android:background="@color/splashScreenBackgroundColor"
     android:orientation="vertical">
 
     <TextView android:text="Tausch" android:layout_width="wrap_content"
@@ -47,6 +47,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
+        android:inputType="textEmailAddress"
         android:hint="EMAIL" />
 
     <EditText
@@ -97,6 +98,6 @@
         android:clickable="true"
         android:onClick="onSubmitClicked"
         android:text="SUBMIT"
-        android:textColor="#00BFFF" />
+        android:textColor="@color/splashScreenBackgroundColor" />
 
 </LinearLayout>

@@ -1,9 +1,6 @@
 package com.scu.tausch.DB;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.scu.tausch.DTO.LoginDTO;
@@ -14,7 +11,6 @@ import com.scu.tausch.Registration;
 import com.parse.SignUpCallback;
 import com.parse.LogInCallback;
 
-import java.util.List;
 
 /**
  * Created by Praneet on 1/16/16.
@@ -62,7 +58,7 @@ public class DBAccessor {
             }
         });
 
-      }
+    }
 
 
     public void checkUsernamePasswordValidity(LoginDTO loginDTO, final Login callbackLogin){
