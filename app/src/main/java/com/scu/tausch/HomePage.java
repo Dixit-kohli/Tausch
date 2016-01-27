@@ -2,7 +2,6 @@ package com.scu.tausch;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +10,22 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.app.AlertDialog;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.DialogInterface;
+import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Praneet on 1/17/16.
@@ -24,6 +35,19 @@ public class HomePage extends AppCompatActivity {
     private Toolbar mToolbar;
     private final int textTitleWidth = 240;
     private final int marginToReduceFromWidth = 40;
+    private ListView listViewCategories;
+
+    //Names and images for categories.
+    private String[] arrayCategoryNames = new String[]{"AUTOMOBILES","BOOKS","LAPTOPS","RENTALS"};
+    private int[] arrayCategoryImages = new int[]{R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add};
+    private CharSequence[] items = {"Menu", "My Offers", "My Messages","Settings","Help","About","Sign out"};
+    private final int MENU = 0;
+    private final int MY_OFFERS = 1;
+    private final int MY_MESSAGES = 2;
+    private final int SETTINGS = 3;
+    private final int HELP = 4;
+    private final int ABOUT = 5;
+    private final int SIGN_OUT = 6;
 
 
     @Override
@@ -32,6 +56,7 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        listViewCategories = (ListView)findViewById(R.id.list_categories);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -63,7 +88,7 @@ public class HomePage extends AppCompatActivity {
         mToolbar.addView(textTitle);
 
 
-        Button buttonLeftMenu = new Button(this);
+        final Button buttonLeftMenu = new Button(this);
         buttonLeftMenu.setBackgroundResource(R.drawable.ic_action_menu);
         buttonLeftMenu.setX(-300);
         buttonLeftMenu.setWidth(20);
@@ -74,14 +99,123 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this);
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
 
-                Toast.makeText(getApplicationContext(),"Show menu items",Toast.LENGTH_SHORT).show();
+                        if (item == MENU) {
+
+                            Toast.makeText(getBaseContext(),"menu clicked",Toast.LENGTH_SHORT).show();
+
+                        } else if (item == MY_OFFERS) {
+                            Toast.makeText(getBaseContext(),"my offers clicked",Toast.LENGTH_SHORT).show();
 
 
+                        } else if (item == MY_MESSAGES) {
+                            Toast.makeText(getBaseContext(),"my messages clicked",Toast.LENGTH_SHORT).show();
+
+
+                        }else if (item == SETTINGS) {
+                            Toast.makeText(getBaseContext(),"settings clicked",Toast.LENGTH_SHORT).show();
+
+
+                        }else if (item == HELP) {
+                            Toast.makeText(getBaseContext(),"help clicked",Toast.LENGTH_SHORT).show();
+
+
+                        }else if (item == ABOUT) {
+                            Toast.makeText(getBaseContext(),"about clicked",Toast.LENGTH_SHORT).show();
+
+
+                        }else if (item == SIGN_OUT) {
+                            Toast.makeText(getBaseContext(),"signout clicked",Toast.LENGTH_SHORT).show();
+
+
+                        }
+
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                //Following 4 commented lines - if we want to adjust Y coordinate of dialog box.
+
+//                WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+//                wmlp.gravity = Gravity.LEFT;
+//                wmlp.x = 0;   //x position
+//                wmlp.y = -180;   //y position
+
+                dialog.show();
+
+
+
+//                final String[] items = new String[]{"Topic1", "Topic2", "Topic3"};
+//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomePage.this, android.R.layout.simple_spinner_dropdown_item, items);
+//
+//                AlertDialog.Builder a = new AlertDialog.Builder(HomePage.this);
+//
+
+
+//                new AlertDialog.Builder(HomePage.this).setTitle("").setAdapter(adapter, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        buttonLeftMenu.setText(items[which]);
+//                        dialog.dismiss();
+//
+//                    }
+//                }).create().show();
 
             }
         });
 
+
+        //Show all the categories on this page.
+        List<HashMap<String,String>> categoriesNamesImages = new ArrayList<HashMap<String, String>>();
+
+        for (int i=0; i<arrayCategoryNames.length;i++){
+            HashMap<String,String> hmPairs = new HashMap<>();
+            hmPairs.put("category_name",arrayCategoryNames[i]);
+            hmPairs.put("category_image",Integer.toString(arrayCategoryImages[i]));
+            categoriesNamesImages.add(hmPairs);
+        }
+
+        //Keys used in HashMap.
+        String [] from = {"category_image","category_name"};
+
+        //Ids used in HashMap.
+        int [] to = {R.id.category_image,R.id.category_name};
+
+
+        // Instantiating an adapter to store each items
+        // R.layout.home_category_list defines the layout of each item
+        SimpleAdapter categoryListAdapter = new SimpleAdapter(getBaseContext(),categoriesNamesImages,R.layout.home_category_list,from,to);
+        listViewCategories.setAdapter(categoryListAdapter);
+
+        //Setting Y value as 168, that is height of toolbar.
+        listViewCategories.setY(168);
+
+
+        listViewCategories.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+
+                Toast.makeText(getBaseContext(), "Item clicked at"+ position, Toast.LENGTH_SHORT).show();
+
+
+
+                // Getting the Container Layout of the ListView
+//                LinearLayout linearLayoutParent = (LinearLayout) container;
+//
+//                // Getting the inner Linear Layout
+//                LinearLayout linearLayoutChild = (LinearLayout ) linearLayoutParent.getChildAt(1);
+//
+//                // Getting the Country TextView
+//                TextView tvCountry = (TextView) linearLayoutChild.getChildAt(0);
+//
+//                Toast.makeText(getBaseContext(), tvCountry.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -108,4 +242,5 @@ public class HomePage extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
