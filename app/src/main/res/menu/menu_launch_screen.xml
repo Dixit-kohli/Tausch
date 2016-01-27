@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_search_action"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_search_two"
+        android:id="@+id/action_add"
         android:title="@string/action_search"
         android:orderInCategory="100"
         android:icon="@drawable/ic_action_add"

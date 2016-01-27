@@ -99,7 +99,7 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this,R.style.ThemeDialogCustom);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
 
@@ -148,24 +148,6 @@ public class HomePage extends AppCompatActivity {
 
                 dialog.show();
 
-
-
-//                final String[] items = new String[]{"Topic1", "Topic2", "Topic3"};
-//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomePage.this, android.R.layout.simple_spinner_dropdown_item, items);
-//
-//                AlertDialog.Builder a = new AlertDialog.Builder(HomePage.this);
-//
-
-
-//                new AlertDialog.Builder(HomePage.this).setTitle("").setAdapter(adapter, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        buttonLeftMenu.setText(items[which]);
-//                        dialog.dismiss();
-//
-//                    }
-//                }).create().show();
-
             }
         });
 
@@ -203,18 +185,7 @@ public class HomePage extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Item clicked at"+ position, Toast.LENGTH_SHORT).show();
 
 
-
-                // Getting the Container Layout of the ListView
-//                LinearLayout linearLayoutParent = (LinearLayout) container;
-//
-//                // Getting the inner Linear Layout
-//                LinearLayout linearLayoutChild = (LinearLayout ) linearLayoutParent.getChildAt(1);
-//
-//                // Getting the Country TextView
-//                TextView tvCountry = (TextView) linearLayoutChild.getChildAt(0);
-//
-//                Toast.makeText(getBaseContext(), tvCountry.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
+         }
         });
 
 
@@ -235,10 +206,16 @@ public class HomePage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        //Commented following lines because settings item is deleted from menu_launch_screen.xml.
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_search) {
+
+            Toast.makeText(this,"Search button tapped",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.action_add) {
+
+            Toast.makeText(this,"Add button tapped",Toast.LENGTH_SHORT).show();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
