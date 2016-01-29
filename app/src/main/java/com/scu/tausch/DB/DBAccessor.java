@@ -5,9 +5,9 @@ import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.RegistrationDTO;
-import com.scu.tausch.Login;
+import com.scu.tausch.Activities.Login;
 import com.scu.tausch.Misc.Constants;
-import com.scu.tausch.Registration;
+import com.scu.tausch.Activities.Registration;
 import com.parse.SignUpCallback;
 import com.parse.LogInCallback;
 

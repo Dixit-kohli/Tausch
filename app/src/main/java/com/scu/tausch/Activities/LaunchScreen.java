@@ -1,4 +1,4 @@
-package com.scu.tausch;
+package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.os.Handler;
 
 import com.scu.tausch.Misc.Constants;
+import com.scu.tausch.R;
 
 
 public class LaunchScreen extends Activity {

@@ -5,18 +5,29 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_home">Home</string>
-    <string name="nav_item_friends">Friends</string>
-    <string name="nav_item_notifications">Messages</string>
+    <string name="nav_item_menu">Menu</string>
+    <string name="nav_item_offers">My Offers</string>
+    <string name="nav_item_messages">My Messages</string>
+    <string name="nav_item_settings">Settings</string>
+    <string name="nav_item_help">Help</string>
+    <string name="nav_item_about">About</string>
+    <string name="nav_item_signout">Sign out</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_home</item>
-        <item>@string/nav_item_friends</item>
-        <item>@string/nav_item_notifications</item>
+        <item>@string/nav_item_menu</item>
+        <item>@string/nav_item_offers</item>
+        <item>@string/nav_item_messages</item>
+        <item>@string/nav_item_settings</item>
+        <item>@string/nav_item_help</item>
+        <item>@string/nav_item_about</item>
+        <item>@string/nav_item_signout</item>
     </string-array>
 
     <string name="title_messages">Messages</string>
     <string name="title_friends">Friends</string>
     <string name="title_home">Home</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

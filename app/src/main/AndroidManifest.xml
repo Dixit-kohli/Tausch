@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme" >
         <activity
-            android:name="com.scu.tausch.LaunchScreen"
+            android:name=".Activities.LaunchScreen"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:label="@string/app_name" >
@@ -23,17 +23,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.scu.tausch.Login"
+            android:name=".Activities.Login"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.scu.tausch.Registration"
+            android:name=".Activities.Registration"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.scu.tausch.HomePage"
+            android:name=".Activities.HomePage"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>

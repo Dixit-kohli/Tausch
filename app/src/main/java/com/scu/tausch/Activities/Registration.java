@@ -1,4 +1,4 @@
-package com.scu.tausch;
+package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +20,7 @@ import com.scu.tausch.DTO.RegistrationDTO;
 import com.parse.FunctionCallback;
 import com.parse.ParseException;
 import com.scu.tausch.Misc.Constants;
+import com.scu.tausch.R;
 
 import java.util.HashMap;
 

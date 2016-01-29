@@ -1,4 +1,4 @@
-package com.scu.tausch;
+package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.Misc.Constants;
+import com.scu.tausch.R;
 
 /**
  * Created by Praneet on 12/21/15.

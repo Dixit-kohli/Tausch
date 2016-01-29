@@ -1,8 +1,9 @@
-package com.scu.tausch;
+package com.scu.tausch.Activities;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 import android.content.DialogInterface;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.scu.tausch.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.List;
 /**
  * Created by Praneet on 1/17/16.
  */
-public class HomePage extends AppCompatActivity {
+public class HomePage extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
     private Toolbar mToolbar;
     private final int textTitleWidth = 240;
@@ -48,6 +51,7 @@ public class HomePage extends AppCompatActivity {
     private final int HELP = 4;
     private final int ABOUT = 5;
     private final int SIGN_OUT = 6;
+    private FragmentDrawer drawerFragment;
 
 
     @Override
@@ -56,37 +60,52 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        listViewCategories = (ListView)findViewById(R.id.list_categories);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        drawerFragment = (FragmentDrawer)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+        drawerFragment.setDrawerListener(this);
+
+
+
+
+        //mToolbar = (Toolbar) findViewById(R.id.toolbar);
+      //  listViewCategories = (ListView)findViewById(R.id.list_categories);
+
+//        setSupportActionBar(mToolbar);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         //Following line is added to remove title.
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int height = displaymetrics.heightPixels;
-        int width = displaymetrics.widthPixels;
+//        DisplayMetrics displaymetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//        int height = displaymetrics.heightPixels;
+//        int width = displaymetrics.widthPixels;
 
-        TextView textTitle = new TextView(this);
+//        TextView textTitle = new TextView(this);
+//
+//        //name of application from strings xml.
+//        textTitle.setText(getResources().getString(R.string.app_name));
+//        textTitle.setTextColor(Color.WHITE);
+//        textTitle.setWidth(textTitleWidth);
+//        textTitle.setGravity(Gravity.CENTER);
+//        textTitle.setTextSize(24);
+//        textTitle.setTypeface(null,Typeface.BOLD);
 
-        //name of application from strings xml.
-        textTitle.setText(getResources().getString(R.string.app_name));
-        textTitle.setTextColor(Color.WHITE);
-        textTitle.setWidth(textTitleWidth);
-        textTitle.setGravity(Gravity.CENTER);
-        textTitle.setTextSize(24);
-        textTitle.setTypeface(null,Typeface.BOLD);
-
-        float remainingWidth = width-textTitleWidth;
-        float textTitleXPos = remainingWidth/2;
+//        float remainingWidth = width-textTitleWidth;
+//        float textTitleXPos = remainingWidth/2;
 
         //deducting some value from deduced x position to make it look centre aligned.
-        textTitle.setX(textTitleXPos - marginToReduceFromWidth);
-        mToolbar.addView(textTitle);
+//        textTitle.setX(textTitleXPos - marginToReduceFromWidth);
+//        mToolbar.addView(textTitle);
 
+
+        /*
 
         final Button buttonLeftMenu = new Button(this);
         buttonLeftMenu.setBackgroundResource(R.drawable.ic_action_menu);
@@ -150,43 +169,43 @@ public class HomePage extends AppCompatActivity {
 
             }
         });
-
+*/
 
         //Show all the categories on this page.
-        List<HashMap<String,String>> categoriesNamesImages = new ArrayList<HashMap<String, String>>();
-
-        for (int i=0; i<arrayCategoryNames.length;i++){
-            HashMap<String,String> hmPairs = new HashMap<>();
-            hmPairs.put("category_name",arrayCategoryNames[i]);
-            hmPairs.put("category_image",Integer.toString(arrayCategoryImages[i]));
-            categoriesNamesImages.add(hmPairs);
-        }
-
-        //Keys used in HashMap.
-        String [] from = {"category_image","category_name"};
-
-        //Ids used in HashMap.
-        int [] to = {R.id.category_image,R.id.category_name};
-
-
-        // Instantiating an adapter to store each items
-        // R.layout.home_category_list defines the layout of each item
-        SimpleAdapter categoryListAdapter = new SimpleAdapter(getBaseContext(),categoriesNamesImages,R.layout.home_category_list,from,to);
-        listViewCategories.setAdapter(categoryListAdapter);
-
-        //Setting Y value as 168, that is height of toolbar.
-        listViewCategories.setY(168);
-
-
-        listViewCategories.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
-
-                Toast.makeText(getBaseContext(), "Item clicked at"+ position, Toast.LENGTH_SHORT).show();
-
-
-         }
-        });
+//        List<HashMap<String,String>> categoriesNamesImages = new ArrayList<HashMap<String, String>>();
+//
+//        for (int i=0; i<arrayCategoryNames.length;i++){
+//            HashMap<String,String> hmPairs = new HashMap<>();
+//            hmPairs.put("category_name",arrayCategoryNames[i]);
+//            hmPairs.put("category_image",Integer.toString(arrayCategoryImages[i]));
+//            categoriesNamesImages.add(hmPairs);
+//        }
+//
+//        //Keys used in HashMap.
+//        String [] from = {"category_image","category_name"};
+//
+//        //Ids used in HashMap.
+//        int [] to = {R.id.category_image,R.id.category_name};
+//
+//
+//        // Instantiating an adapter to store each items
+//        // R.layout.home_category_list defines the layout of each item
+//        SimpleAdapter categoryListAdapter = new SimpleAdapter(getBaseContext(),categoriesNamesImages,R.layout.home_category_list,from,to);
+//        listViewCategories.setAdapter(categoryListAdapter);
+//
+//        //Setting Y value as 168, that is height of toolbar.
+//        listViewCategories.setY(168);
+//
+//
+//        listViewCategories.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+//
+//                Toast.makeText(getBaseContext(), "Item clicked at"+ position, Toast.LENGTH_SHORT).show();
+//
+//
+//         }
+//        });
 
 
     }
@@ -219,5 +238,12 @@ public class HomePage extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+
+    }
+
+
 
 }
