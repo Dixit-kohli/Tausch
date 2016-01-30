@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.SearchView;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -57,11 +58,11 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
     private final int textTitleWidth = 240;
     private final int marginToReduceFromWidth = 40;
-    private ListView listViewCategories;
+//    private ListView listViewCategories;
 
     //Names and images for categories.
-    private String[] arrayCategoryNames = new String[]{"AUTOMOBILES","BOOKS","LAPTOPS","RENTALS"};
-    private int[] arrayCategoryImages = new int[]{R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add};
+//    private String[] arrayCategoryNames = new String[]{"AUTOMOBILES","BOOKS","LAPTOPS","RENTALS"};
+//    private int[] arrayCategoryImages = new int[]{R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add};
     private CharSequence[] items = {"Menu", "My Offers", "My Messages","Settings","Help","About","Sign out"};
     private final int MENU = 0;
     private final int MY_OFFERS = 1;
@@ -91,149 +92,27 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         // display the first navigation drawer view on app launch
         displayView(0);
 
-
-        //mToolbar = (Toolbar) findViewById(R.id.toolbar);
-      //  listViewCategories = (ListView)findViewById(R.id.list_categories);
-
-//        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        //Following line is added to remove title.
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
-//        DisplayMetrics displaymetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//        int height = displaymetrics.heightPixels;
-//        int width = displaymetrics.widthPixels;
-
-//        TextView textTitle = new TextView(this);
-//
-//        //name of application from strings xml.
-//        textTitle.setText(getResources().getString(R.string.app_name));
-//        textTitle.setTextColor(Color.WHITE);
-//        textTitle.setWidth(textTitleWidth);
-//        textTitle.setGravity(Gravity.CENTER);
-//        textTitle.setTextSize(24);
-//        textTitle.setTypeface(null,Typeface.BOLD);
-
-//        float remainingWidth = width-textTitleWidth;
-//        float textTitleXPos = remainingWidth/2;
-
-        //deducting some value from deduced x position to make it look centre aligned.
-//        textTitle.setX(textTitleXPos - marginToReduceFromWidth);
-//        mToolbar.addView(textTitle);
-
-
-        /*
-
-        final Button buttonLeftMenu = new Button(this);
-        buttonLeftMenu.setBackgroundResource(R.drawable.ic_action_menu);
-        buttonLeftMenu.setX(-300);
-        buttonLeftMenu.setWidth(20);
-        buttonLeftMenu.setHeight(20);
-        mToolbar.addView(buttonLeftMenu);
-
-        buttonLeftMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this,R.style.ThemeDialogCustom);
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-
-                        if (item == MENU) {
-
-                            Toast.makeText(getBaseContext(),"menu clicked",Toast.LENGTH_SHORT).show();
-
-                        } else if (item == MY_OFFERS) {
-                            Toast.makeText(getBaseContext(),"my offers clicked",Toast.LENGTH_SHORT).show();
-
-
-                        } else if (item == MY_MESSAGES) {
-                            Toast.makeText(getBaseContext(),"my messages clicked",Toast.LENGTH_SHORT).show();
-
-
-                        }else if (item == SETTINGS) {
-                            Toast.makeText(getBaseContext(),"settings clicked",Toast.LENGTH_SHORT).show();
-
-
-                        }else if (item == HELP) {
-                            Toast.makeText(getBaseContext(),"help clicked",Toast.LENGTH_SHORT).show();
-
-
-                        }else if (item == ABOUT) {
-                            Toast.makeText(getBaseContext(),"about clicked",Toast.LENGTH_SHORT).show();
-
-
-                        }else if (item == SIGN_OUT) {
-                            Toast.makeText(getBaseContext(),"signout clicked",Toast.LENGTH_SHORT).show();
-
-
-                        }
-
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-                //Following 4 commented lines - if we want to adjust Y coordinate of dialog box.
-
-//                WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
-//                wmlp.gravity = Gravity.LEFT;
-//                wmlp.x = 0;   //x position
-//                wmlp.y = -180;   //y position
-
-                dialog.show();
-
-            }
-        });
-*/
-
-        //Show all the categories on this page.
-//        List<HashMap<String,String>> categoriesNamesImages = new ArrayList<HashMap<String, String>>();
-//
-//        for (int i=0; i<arrayCategoryNames.length;i++){
-//            HashMap<String,String> hmPairs = new HashMap<>();
-//            hmPairs.put("category_name",arrayCategoryNames[i]);
-//            hmPairs.put("category_image",Integer.toString(arrayCategoryImages[i]));
-//            categoriesNamesImages.add(hmPairs);
-//        }
-//
-//        //Keys used in HashMap.
-//        String [] from = {"category_image","category_name"};
-//
-//        //Ids used in HashMap.
-//        int [] to = {R.id.category_image,R.id.category_name};
-//
-//
-//        // Instantiating an adapter to store each items
-//        // R.layout.home_category_list defines the layout of each item
-//        SimpleAdapter categoryListAdapter = new SimpleAdapter(getBaseContext(),categoriesNamesImages,R.layout.home_category_list,from,to);
-//        listViewCategories.setAdapter(categoryListAdapter);
-//
-//        //Setting Y value as 168, that is height of toolbar.
-//        listViewCategories.setY(168);
-//
-//
-//        listViewCategories.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
-//
-//                Toast.makeText(getBaseContext(), "Item clicked at"+ position, Toast.LENGTH_SHORT).show();
-//
-//
-//         }
-//        });
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_launch_screen, menu);
+
+        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                return false;
+            }
+        });
         return true;
     }
 

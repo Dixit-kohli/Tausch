@@ -24,14 +24,6 @@ android:layout_height="match_parent">
             layout="@layout/toolbar" />
     </LinearLayout>
 
-   <!-- <ListView
-        android:id="@+id/list_categories"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5.0sp">
-    </ListView> -->
-
     <FrameLayout
         android:id="@+id/container_body"
         android:layout_width="fill_parent"
