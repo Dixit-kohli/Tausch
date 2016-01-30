@@ -15,4 +15,6 @@ public class Constants {
     public static final String EMAIL_DOMAIN_SCU = "scu.edu";
     public static final String HANDLE_USERNAME = "pjain3@scu.edu";
     public static final String HANDLE_PASSWORD = "111";
+    public static final String USER_PREFS_NAME = "TauschPrefs";
+
 }

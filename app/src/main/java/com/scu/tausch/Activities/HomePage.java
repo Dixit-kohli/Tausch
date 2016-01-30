@@ -1,5 +1,8 @@
 package com.scu.tausch.Activities;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import android.content.DialogInterface;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -264,17 +268,58 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         Fragment fragment = null;
         String title = getString(R.string.app_name);
         switch (position) {
-            case 0:
+            case MENU:
                 fragment = new MenuFragment();
                 title = getString(R.string.title_menu);
                 break;
-            case 1:
+            case MY_OFFERS:
                 fragment = new MyOfferFragment();
                 title = getString(R.string.title_myoffer);
                 break;
-            case 2:
+            case MY_MESSAGES:
                 fragment = new MyMessagesFragment();
                 title = getString(R.string.title_mymessages);
+                break;
+            case SETTINGS:
+                fragment = new SettingsFragment();
+                title = getString(R.string.title_settings);
+                break;
+            case HELP:
+                fragment = new HelpFragment();
+                title = getString(R.string.title_help);
+                break;
+            case ABOUT:
+                fragment = new AboutFragment();
+                title = getString(R.string.title_about);
+                break;
+            case SIGN_OUT:
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Do you really want to Sign out?");
+
+                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        //Setting value - user is login
+                        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("isLogin", "false");
+                        editor.commit();
+
+                        Intent intent = new Intent(HomePage.this,Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton("Cancel",null);
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
                 break;
             default:
                 break;

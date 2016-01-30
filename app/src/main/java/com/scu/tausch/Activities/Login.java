@@ -3,7 +3,9 @@ package com.scu.tausch.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -136,6 +138,12 @@ public class Login extends Activity {
     public void loginSuccessful(){
 
         progress.dismiss();
+
+        //Setting value - user is login
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("isLogin", "true");
+        editor.commit();
 
         Intent intent = new Intent(this, HomePage.class);
         startActivity(intent);

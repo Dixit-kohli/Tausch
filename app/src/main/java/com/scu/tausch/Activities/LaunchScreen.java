@@ -1,7 +1,9 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,9 @@ public class LaunchScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_screen);
 
+
+
+
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -29,8 +34,17 @@ public class LaunchScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(LaunchScreen.this, Login.class);
-                startActivity(i);
+
+
+                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+                if (sharedPreferences.getString("isLogin","false").equals("true")){
+                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
+                    startActivity(i);
+                }
+                else {
+                    Intent i = new Intent(LaunchScreen.this, Login.class);
+                    startActivity(i);
+                }
 
                 // close this activity
                 finish();
