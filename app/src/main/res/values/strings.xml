@@ -24,9 +24,9 @@
         <item>@string/nav_item_signout</item>
     </string-array>
 
-    <string name="title_messages">Messages</string>
-    <string name="title_friends">Friends</string>
-    <string name="title_home">Home</string>
+    <string name="title_mymessages">My Messages</string>
+    <string name="title_myoffer">My Offer</string>
+    <string name="title_menu">Menu</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

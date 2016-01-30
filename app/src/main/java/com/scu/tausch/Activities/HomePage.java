@@ -25,7 +25,17 @@ import android.content.DialogInterface;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.scu.tausch.R;
-
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +45,12 @@ import java.util.List;
  */
 public class HomePage extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
+
+    private static String TAG = HomePage.class.getSimpleName();
+
     private Toolbar mToolbar;
+    private FragmentDrawer drawerFragment;
+
     private final int textTitleWidth = 240;
     private final int marginToReduceFromWidth = 40;
     private ListView listViewCategories;
@@ -51,7 +66,6 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private final int HELP = 4;
     private final int ABOUT = 5;
     private final int SIGN_OUT = 6;
-    private FragmentDrawer drawerFragment;
 
 
     @Override
@@ -70,6 +84,8 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         drawerFragment.setDrawerListener(this);
 
 
+        // display the first navigation drawer view on app launch
+        displayView(0);
 
 
         //mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -241,9 +257,39 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
-
+        displayView(position);
     }
 
+    private void displayView(int position) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+        switch (position) {
+            case 0:
+                fragment = new MenuFragment();
+                title = getString(R.string.title_menu);
+                break;
+            case 1:
+                fragment = new MyOfferFragment();
+                title = getString(R.string.title_myoffer);
+                break;
+            case 2:
+                fragment = new MyMessagesFragment();
+                title = getString(R.string.title_mymessages);
+                break;
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
+
+            // set the toolbar title
+            getSupportActionBar().setTitle(title);
+        }
+    }
 
 
 }
