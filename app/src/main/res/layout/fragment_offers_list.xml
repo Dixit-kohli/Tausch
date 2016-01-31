@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/dialogBoxBackground"
-    android:id="@+id/myFragmentMenuWindow"
-    tools:context="com.scu.tausch.Activities.MenuFragment">
+    android:id="@+id/myItemsInCategoryWindow"
+    tools:context="com.scu.tausch.Activities.OffersList">
 
 
     <ListView
-        android:id="@+id/list_categories"
+        android:id="@+id/list_items_in_category"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:divider="@android:color/transparent"

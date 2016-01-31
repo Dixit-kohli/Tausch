@@ -46,7 +46,7 @@
             android:value="sEUcfQaYWWBIJWdPdK4svwTL2EDkg6vins7Hhn9a" />
 
         <activity
-            android:name=".Activities.ChatActivity"
+            android:name=".Activities.ChatFragment"
             android:label="@string/title_activity_chat" >
         </activity>
     </application>

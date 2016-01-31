@@ -20,6 +20,18 @@ public class MyMessagesFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        //DO NOT DELETE FOLLOWING CODE
+        //ChatFragment nextFrag= new ChatFragment();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+        // Commit the transaction
+
+//        this.getFragmentManager().beginTransaction()
+//                .replace(R.id.myMessagesWindow, nextFrag)
+//                .addToBackStack(null)
+//                .commit();
     }
 
     @Override

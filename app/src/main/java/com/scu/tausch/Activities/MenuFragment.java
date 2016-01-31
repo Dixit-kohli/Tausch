@@ -70,7 +70,19 @@ public class MenuFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
 
-                Toast.makeText(getActivity().getBaseContext(), "Item clicked at" + position, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity().getBaseContext(), "Item clicked at" + position, Toast.LENGTH_SHORT).show();
+
+
+                OffersList nextFrag= new OffersList();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+                // Commit the transaction
+
+        MenuFragment.this.getFragmentManager().beginTransaction()
+                .replace(R.id.myFragmentMenuWindow, nextFrag)
+                .addToBackStack(null)
+                .commit();
 
 
          }
