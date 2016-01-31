@@ -70,14 +70,9 @@ public class Login extends Activity {
         progress.setIndeterminate(true);
         progress.show();
 
-        //Following line is added to improve testing. It wont hit server for login.
-        //Its temporary and later we would delete it.
-        loginSuccessful();
 
-        //Following 2 lines are commented for improving our testing. We would uncomment
-        //it later. DO NOT DELETE FOLLOWING 2 COMMENTED LINES.
-        //dbAccessor = DBAccessor.getInstance();
-        //dbAccessor.checkUsernamePasswordValidity(loginDTO, this);
+        dbAccessor = DBAccessor.getInstance();
+        dbAccessor.checkUsernamePasswordValidity(loginDTO, this);
 
     }
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/dialogBoxBackground"
     tools:context="com.scu.tausch.Activities.MenuFragment">
 
 
@@ -13,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="5.0sp">
+        android:dividerHeight="5.0sp"
+        android:layout_marginTop="5dp">
     </ListView>
 
 
