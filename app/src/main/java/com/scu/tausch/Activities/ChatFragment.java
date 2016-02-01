@@ -12,11 +12,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.scu.tausch.Adapters.ChatListAdapter;
+import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.Message;
 import com.scu.tausch.R;
 import android.os.Handler;
@@ -78,6 +81,12 @@ public class ChatFragment extends Fragment {
             startWithCurrentUser();
         } else { // If not logged in, login as a new anonymous user
             // login();
+            //We need current user many times, so need to make sure its not null.
+          //  if (ParseUser.getCurrentUser()==null) {
+                ParseUser.enableAutomaticUser();
+                ParseUser.getCurrentUser().saveInBackground();
+            startWithCurrentUser();
+         //   }
         }
 
         return rootView;
@@ -155,9 +164,9 @@ public class ChatFragment extends Fragment {
 
     }
 
-    }
+
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
-//    void login() {
+    void login() {
 //        ParseAnonymousUtils.logIn(new LogInCallback() {
 //            @Override
 //            public void done(ParseUser user, ParseException e) {
@@ -168,5 +177,17 @@ public class ChatFragment extends Fragment {
 //                }
 //            }
 //        });
-//    }
 
+        ParseUser.logInInBackground("pjain3@scu.edu", "111", new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    // Hooray! The user is logged in.
+                } else {
+                    // Signup failed. Look at the ParseException to see what happened.
+                }
+            }
+        });
+
+    }
+
+}

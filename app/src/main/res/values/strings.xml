@@ -31,6 +31,14 @@
     <string name="title_help">Help</string>
     <string name="title_about">About</string>
 
+    <string name="key_contact">Contact:</string>
+    <string name="key_city">City:</string>
+    <string name="key_price">Price:</string>
+    <string name="key_condition">Condition:</string>
+
+
+
+
     <string name="profile_me">My Profile Pic</string>
     <string name="profile_other">Other profile pic</string>
     <string name="message_hint">Type your message</string>
@@ -40,5 +48,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_chat">ChatActivity</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut est diam, laoreet ac volutpat eget, commodo non eros. Nam convallis tortor porta ipsum congue, eu blandit felis convallis. Vestibulum ut arcu ut est elementum bibendum vitae a velit. Suspendisse auctor sapien ut ornare faucibus. Fusce non pulvinar ipsum, sit amet elementum ipsum. Mauris molestie eros eu consectetur venenatis. Fusce ut lorem vitae neque tristique ullamcorper. Duis eleifend eros ipsum. Cras non felis enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec sed quam lectus. Aliquam et erat luctus magna sodales ullamcorper. Cras accumsan nec eros sit amet commodo.
+
+Vestibulum ullamcorper lorem in sapien consectetur condimentum. Mauris nec aliquam nibh. Phasellus sed turpis in ex molestie facilisis vel nec sapien. Nulla tincidunt, odio in consequat finibus, arcu nisi aliquet nibh, dapibus consequat orci dui a massa. Fusce eget tristique mauris. Donec sem leo, faucibus non laoreet eu, consequat quis erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc malesuada nunc eget sem consectetur vehicula.
+
+Proin eu volutpat ante, non vulputate ex. Fusce scelerisque odio quam, ac tristique massa viverra et. Pellentesque in nibh a mi pharetra malesuada et nec arcu. Nulla porttitor sed nisl vitae facilisis. Nunc at arcu vitae mi mollis viverra. Aliquam ultrices ligula erat, eu molestie enim sollicitudin in. Pellentesque dictum, nunc vitae mattis finibus, dolor velit consectetur mi, eu scelerisque arcu mauris at est. Integer viverra suscipit pulvinar. Morbi non justo odio. Morbi egestas sapien turpis, et pellentesque mauris cursus dignissim. Pellentesque non ligula fermentum, placerat dolor at, cursus libero.</string>
+
 </resources>

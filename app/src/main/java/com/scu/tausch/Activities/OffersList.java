@@ -6,10 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.scu.tausch.R;
 
@@ -22,8 +22,16 @@ import java.util.List;
  */
 public class OffersList extends Fragment {
 
-    private String[] arrayItemNames = new String[]{"Table","Table","Table","Table","Table","Table","Table","Table","Table","Table"};
-    private int[] arrayItemImages = new int[]{R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher};
+    /*
+    * ##################################
+    * DATA FOR FOLLOWING 3 ARRAYS WILL BE REPLACED BY THE DATA WE ARE GOING TO FETCH FROM PARSE SERVER.
+    * TABLE WOULD HAVE IMAGE, TITLE, DESCRIPTION, COST ETC.
+    * ##################################
+    * */
+
+
+    private String[] arrayItemNames = new String[]{"Table","Chair","bicycle","Nortan Antivirus","Shoes","Handmade cotton bookholder and a pack of socks as well as tapes","Table","Table","Table","Table"};
+    private int[] arrayItemImages = new int[]{R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder};
     private  String[] arrayItemCosts = new String[]{"$12","$12","$12","$12","$12","$12","$12","$12","$12","$12"};
     private ListView listViewItems;
 
@@ -72,12 +80,20 @@ public class OffersList extends Fragment {
 //        listViewCategories.setY(168);
 
 
+        //On tap of particular item, new fragment should be shown where descriptive information would
+        //be available.
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
 
-                Toast.makeText(getActivity().getBaseContext(), "Item clicked at" + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity().getBaseContext(), "Item clicked at" + position, Toast.LENGTH_SHORT).show();
 
+                DetailedItemFragement nextFrag= new DetailedItemFragement();
+
+                OffersList.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.myItemsInCategoryWindow, nextFrag)
+                        .addToBackStack(null)
+                        .commit();
 
             }
         });
