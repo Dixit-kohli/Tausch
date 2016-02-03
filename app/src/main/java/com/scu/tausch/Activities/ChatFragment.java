@@ -50,7 +50,7 @@ public class ChatFragment extends Fragment {
     Runnable mRefreshMessagesRunnable = new Runnable() {
         @Override
         public void run() {
-            refreshMessages();
+         //   refreshMessages();
             mHandler.postDelayed(this, POLL_INTERVAL);
         }
     };
@@ -137,35 +137,35 @@ public class ChatFragment extends Fragment {
     }
 
     // Query messages from Parse so we can load them into the chat adapter
-    void refreshMessages() {
-
-        // Construct query to execute
-        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
-        // Configure limit and sort order
-        query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
-        query.orderByAscending("createdAt");
-        // Execute query to fetch all messages from Parse asynchronously
-        // This is equivalent to a SELECT query with SQL
-
-        query.findInBackground(new FindCallback<Message>() {
-            @Override
-            public void done(List<Message> messages, com.parse.ParseException e) {
-                if (e == null) {
-                    mMessages.clear();
-                    mMessages.addAll(messages);
-                    mAdapter.notifyDataSetChanged(); // update adapter
-                    // Scroll to the bottom of the list on initial load
-                    if (mFirstLoad) {
-                        lvChat.setSelection(mAdapter.getCount() - 1);
-                        mFirstLoad = false;
-                    }
-                } else {
-                    Log.e("message", "Error Loading Messages" + e);
-                }
-            }
-        });
-
-    }
+//    void refreshMessages() {
+//
+//        // Construct query to execute
+//        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
+//        // Configure limit and sort order
+//        query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
+//        query.orderByAscending("createdAt");
+//        // Execute query to fetch all messages from Parse asynchronously
+//        // This is equivalent to a SELECT query with SQL
+//
+//        query.findInBackground(new FindCallback<Message>() {
+//            @Override
+//            public void done(List<Message> messages, com.parse.ParseException e) {
+//                if (e == null) {
+//                    mMessages.clear();
+//                    mMessages.addAll(messages);
+//                    mAdapter.notifyDataSetChanged(); // update adapter
+//                    // Scroll to the bottom of the list on initial load
+//                    if (mFirstLoad) {
+//                        lvChat.setSelection(mAdapter.getCount() - 1);
+//                        mFirstLoad = false;
+//                    }
+//                } else {
+//                    Log.e("message", "Error Loading Messages" + e);
+//                }
+//            }
+//        });
+//
+//    }
 
 
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
