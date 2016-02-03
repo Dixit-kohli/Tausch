@@ -101,6 +101,9 @@ public class ChatFragment extends Fragment {
     // Setup message field and posting
     void setupMessagePosting() {
         // Find the text field and button
+
+
+
         etMessage = (EditText) rootView.findViewById(R.id.etMessage);
         btSend = (Button) rootView.findViewById(R.id.btSend);
         lvChat = (ListView) rootView.findViewById(R.id.lvChat);
