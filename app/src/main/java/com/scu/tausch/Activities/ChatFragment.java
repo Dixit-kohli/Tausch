@@ -46,14 +46,14 @@ public class ChatFragment extends Fragment {
     static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
     static final int POLL_INTERVAL = 100; // milliseconds
     // Create a handler which can run code periodically
-    final Handler mHandler = new Handler();  // android.os.Handler
-    Runnable mRefreshMessagesRunnable = new Runnable() {
-        @Override
-        public void run() {
-         //   refreshMessages();
-            mHandler.postDelayed(this, POLL_INTERVAL);
-        }
-    };
+//    final Handler mHandler = new Handler();  // android.os.Handler
+//    Runnable mRefreshMessagesRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//         //   refreshMessages();
+//       //     mHandler.postDelayed(this, POLL_INTERVAL);
+//        }
+//    };
 
     public ChatFragment(){
      // Required empty public constructor
@@ -65,7 +65,7 @@ public class ChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
+     //   mHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
 
     }
 
@@ -128,7 +128,7 @@ public class ChatFragment extends Fragment {
                         Toast.makeText(getActivity(), "Successfully created message on Parse",
                                 Toast.LENGTH_SHORT).show();
 
-                        refreshMessages();
+                     //   refreshMessages();
                     }
                 });
                 etMessage.setText(null);
