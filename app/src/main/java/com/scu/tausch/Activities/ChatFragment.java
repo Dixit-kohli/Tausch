@@ -43,8 +43,8 @@ public class ChatFragment extends Fragment {
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
 
-    static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
-    static final int POLL_INTERVAL = 100; // milliseconds
+   // static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
+   // static final int POLL_INTERVAL = 100; // milliseconds
     // Create a handler which can run code periodically
 //    final Handler mHandler = new Handler();  // android.os.Handler
 //    Runnable mRefreshMessagesRunnable = new Runnable() {
@@ -83,9 +83,9 @@ public class ChatFragment extends Fragment {
             // login();
             //We need current user many times, so need to make sure its not null.
           //  if (ParseUser.getCurrentUser()==null) {
-                ParseUser.enableAutomaticUser();
-                ParseUser.getCurrentUser().saveInBackground();
-            startWithCurrentUser();
+//                ParseUser.enableAutomaticUser();
+//                ParseUser.getCurrentUser().saveInBackground();
+//            startWithCurrentUser();
          //   }
         }
 
@@ -122,15 +122,15 @@ public class ChatFragment extends Fragment {
                 ParseObject message = ParseObject.create("Message");
                 message.put(Message.USER_ID_KEY, userId);
                 message.put(Message.BODY_KEY, data);
-                message.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(com.parse.ParseException e) {
-                        Toast.makeText(getActivity(), "Successfully created message on Parse",
-                                Toast.LENGTH_SHORT).show();
-
-                     //   refreshMessages();
-                    }
-                });
+//                message.saveInBackground(new SaveCallback() {
+//                    @Override
+//                    public void done(com.parse.ParseException e) {
+//                        Toast.makeText(getActivity(), "Successfully created message on Parse",
+//                                Toast.LENGTH_SHORT).show();
+//
+//                     //   refreshMessages();
+//                    }
+//                });
                 etMessage.setText(null);
             }
         });
