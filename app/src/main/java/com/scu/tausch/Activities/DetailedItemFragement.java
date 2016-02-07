@@ -41,12 +41,17 @@ public class DetailedItemFragement extends Fragment{
 
 //                Toast.makeText(getActivity().getBaseContext(),"Message button is tapped",Toast.LENGTH_SHORT).show();
 
-                ChatFragment nextFrag= new ChatFragment();
 
-                DetailedItemFragement.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.myDetailedItemFragment, nextFrag)
-                        .addToBackStack(null)
-                        .commit();
+                /*
+                * DO NOT DELETE FOLLOWING LINES OF CODE. TO BE REORGANIZED AFTER ALL OTHER VIEW ARE DONE.
+                *
+                * */
+//                ChatFragment nextFrag= new ChatFragment();
+//
+//                DetailedItemFragement.this.getFragmentManager().beginTransaction()
+//                        .replace(R.id.myDetailedItemFragment, nextFrag)
+//                        .addToBackStack(null)
+//                        .commit();
 
             }
         });

@@ -182,15 +182,15 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
                         dialog.dismiss();
 
                         //Setting value - user is login
-                        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("isLogin", "false");
-                        editor.commit();
+//                        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("isLogin", "false");
+//                        editor.commit();
 
-                        Intent intent = new Intent(HomePage.this,Login.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(HomePage.this,Login.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(intent);
+//                        finish();
 
                     }
                 });

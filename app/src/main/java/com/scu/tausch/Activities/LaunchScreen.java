@@ -36,15 +36,15 @@ public class LaunchScreen extends Activity {
                 // Start your app main activity
 
 
-                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-                if (sharedPreferences.getString("isLogin","false").equals("true")){
-                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
-                    startActivity(i);
-                }
-                else {
+//                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+//                if (sharedPreferences.getString("isLogin","false").equals("true")){
+//                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
+//                    startActivity(i);
+//                }
+//                else {
                     Intent i = new Intent(LaunchScreen.this, Login.class);
                     startActivity(i);
-                }
+               // }
 
                 // close this activity
                 finish();

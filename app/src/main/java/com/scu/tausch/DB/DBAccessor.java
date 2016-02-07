@@ -1,6 +1,7 @@
 package com.scu.tausch.DB;
 
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.scu.tausch.DTO.LoginDTO;
@@ -32,7 +33,7 @@ public class DBAccessor {
     }
 
     //method to see if username is already available during registation
-    public void checkIfUsernameExists(RegistrationDTO regDTO, final Registration callbackReg){
+    public void checkIfUsernameExists(final RegistrationDTO regDTO, final Registration callbackReg){
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.logOut();
@@ -49,6 +50,10 @@ public class DBAccessor {
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("username", regDTO.getEmail());
+                    installation.saveInBackground();
+
                     // Sign up successful.
                     callbackReg.showSignupSuccessfulMessage();
                 } else {
