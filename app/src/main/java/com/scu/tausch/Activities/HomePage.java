@@ -3,8 +3,10 @@ package com.scu.tausch.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.app.AlertDialog;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -53,8 +56,10 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
     private static String TAG = HomePage.class.getSimpleName();
 
-    private Toolbar mToolbar;
+    private Toolbar mToolbar,toolbarBottom;
     private FragmentDrawer drawerFragment;
+    private ImageButton buttonFilter;
+    private ImageButton buttonSort;
 
     private final int textTitleWidth = 240;
     private final int marginToReduceFromWidth = 40;
@@ -72,13 +77,13 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private final int ABOUT = 5;
     private final int SIGN_OUT = 6;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarBottom = (Toolbar) findViewById(R.id.toolbarBottom);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -88,6 +93,68 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
 
+
+        buttonFilter = new ImageButton(this);
+        buttonFilter.setImageResource(R.mipmap.ic_filter);
+        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
+        buttonFilter.setColorFilter(Color.argb(255, 255, 255, 255));
+        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
+        toolbarBottom.addView(buttonFilter);
+
+        buttonSort = new ImageButton(this);
+        buttonSort.setImageResource(R.mipmap.ic_sort);
+        buttonSort.setBackgroundColor(Color.TRANSPARENT);
+        buttonSort.setColorFilter(Color.argb(255, 255, 255, 255));
+        buttonSort.setBackgroundColor(Color.TRANSPARENT);
+        toolbarBottom.addView(buttonSort);
+
+
+        buttonFilter.setOnClickListener(new View.OnClickListener() {
+
+            Fragment fragment = null;
+            String title;
+
+            @Override
+            public void onClick(View v) {
+
+                title = getString(R.string.app_name);
+
+                fragment = new FilterFragment();
+                title = getString(R.string.title_filter);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
+
+                // set the toolbar title
+                getSupportActionBar().setTitle(title);
+            }
+        });
+
+        buttonSort.setOnClickListener(new View.OnClickListener() {
+
+            Fragment fragment = null;
+            String title;
+
+            @Override
+            public void onClick(View v) {
+
+                title = getString(R.string.app_name);
+
+                fragment = new SortFragment();
+                title = getString(R.string.title_sort);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
+
+                // set the toolbar title
+                getSupportActionBar().setTitle(title);
+
+            }
+        });
 
         // display the first navigation drawer view on app launch
         displayView(0);
@@ -113,6 +180,18 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
                 return false;
             }
         });
+
+
+
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        int width = displayMetrics.widthPixels;
+
+        int buttonFilter_X = 20;
+        int buttonSort_X = (width - (buttonSort.getWidth()+40+20));
+
+        buttonFilter.setX(buttonFilter_X);
+        buttonSort.setX(buttonSort_X);
+
         return true;
     }
 

@@ -2,6 +2,7 @@
     <string name="app_name">Tausch</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
+    <string name="action_add">Add</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
@@ -35,6 +36,10 @@
     <string name="key_city">City:</string>
     <string name="key_price">Price:</string>
     <string name="key_condition">Condition:</string>
+
+    <string name="title_filter">Filter</string>
+    <string name="title_sort">Sort</string>
+    <string name="spinner_title">Category</string>
 
 
 
