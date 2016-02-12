@@ -124,7 +124,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.replace(R.id.container_body, fragment,"tagFilterFragment");
                 fragmentTransaction.commit();
 
                 // set the toolbar title

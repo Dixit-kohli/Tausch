@@ -38,7 +38,7 @@ public class FilterFragment extends Fragment {
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
 
-            Fragment fragment = null;
+          //  Fragment fragment = null;
             String title;
 
             @Override
@@ -46,14 +46,19 @@ public class FilterFragment extends Fragment {
 
                     title = getString(R.string.app_name);
 
-                    fragment = new ImageAddFragment();
+                 //   fragment = new ImageAddFragment();
                     title = getString(R.string.title_filter);
 
 
                         ImageAddFragment nextFrag= new ImageAddFragment();
 
+                //Below, addToBackStack(null) means that if we transition to next fragment, this
+                //fragment will not be destroyed and would appear again if user taps back button.
+                //addToBackStack(null) works for current fragment, like
+                //FilterFragment in this case.
+
                         FilterFragment.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_body, nextFrag)
+                        .replace(R.id.container_body, nextFrag,"tagImageAdd")
                         .addToBackStack(null)
                         .commit();
 
