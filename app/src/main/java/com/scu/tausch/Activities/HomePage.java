@@ -119,29 +119,6 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 title = getString(R.string.app_name);
 
-                fragment = new FilterFragment();
-                title = getString(R.string.title_filter);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_body, fragment,"tagFilterFragment");
-                fragmentTransaction.commit();
-
-                // set the toolbar title
-                getSupportActionBar().setTitle(title);
-            }
-        });
-
-        buttonSort.setOnClickListener(new View.OnClickListener() {
-
-            Fragment fragment = null;
-            String title;
-
-            @Override
-            public void onClick(View v) {
-
-                title = getString(R.string.app_name);
-
                 fragment = new SortFragment();
                 title = getString(R.string.title_sort);
 
@@ -152,6 +129,16 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 // set the toolbar title
                 getSupportActionBar().setTitle(title);
+
+            }
+        });
+
+        buttonSort.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+
 
             }
         });
@@ -210,7 +197,20 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         }
         if (id == R.id.action_add) {
 
-            Toast.makeText(this,"Add button tapped",Toast.LENGTH_SHORT).show();
+            Fragment fragment = null;
+            String title;
+
+            fragment = new FilterFragment();
+            title = getString(R.string.title_filter);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment,"tagFilterFragment");
+            fragmentTransaction.commit();
+
+            // set the toolbar title
+            getSupportActionBar().setTitle(title);
+
             return true;
         }
 
