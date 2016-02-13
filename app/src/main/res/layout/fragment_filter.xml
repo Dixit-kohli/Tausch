@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:id="@+id/myFilterFragment"
+    android:background="@color/dialogBoxBackground"
     tools:context="com.scu.tausch.Activities.FilterFragment">
 
 

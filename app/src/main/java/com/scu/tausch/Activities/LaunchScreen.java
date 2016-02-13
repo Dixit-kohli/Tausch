@@ -42,7 +42,7 @@ public class LaunchScreen extends Activity {
 //                    startActivity(i);
 //                }
 //                else {
-                    Intent i = new Intent(LaunchScreen.this, Login.class);
+                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
                     startActivity(i);
                // }
 

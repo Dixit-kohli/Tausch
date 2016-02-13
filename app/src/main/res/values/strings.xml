@@ -40,6 +40,8 @@
     <string name="title_filter">Filter</string>
     <string name="title_sort">Sort</string>
     <string name="spinner_title">Category</string>
+    <string name="spinner_category">Select a Category</string>
+    <string name="spinner_select_condition">Select a Condition</string>
 
 
 
