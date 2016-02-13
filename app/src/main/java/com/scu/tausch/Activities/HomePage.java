@@ -31,6 +31,7 @@ import android.widget.Toast;
 import android.content.DialogInterface;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.parse.ParseUser;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 import android.os.Bundle;
@@ -266,10 +267,11 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 //                        editor.putString("isLogin", "false");
 //                        editor.commit();
 
-//                        Intent intent = new Intent(HomePage.this,Login.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        startActivity(intent);
-//                        finish();
+                        ParseUser.getCurrentUser().logOut();
+                        Intent intent = new Intent(HomePage.this,Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
 
                     }
                 });

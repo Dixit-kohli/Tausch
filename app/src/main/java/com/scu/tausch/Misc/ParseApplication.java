@@ -23,8 +23,8 @@ public class ParseApplication extends Application {
 
         //We need current user many times, so need to make sure its not null.
         if (ParseUser.getCurrentUser()==null) {
-            ParseUser.enableAutomaticUser();
-            ParseUser.getCurrentUser().saveInBackground();
+            //ParseUser.enableAutomaticUser();
+         //   ParseUser.getCurrentUser().saveInBackground();
         }
     }
 

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Handler;
 
+import com.parse.ParseUser;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
@@ -36,14 +37,27 @@ public class LaunchScreen extends Activity {
                 // Start your app main activity
 
 
+                ParseUser currentUser = ParseUser.getCurrentUser();
+
+                if (currentUser==null){
+                    Intent i = new Intent(LaunchScreen.this, Login.class);
+                    startActivity(i);
+                }
+                else{
+                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
+                    startActivity(i);
+                }
+
+
+
+
 //                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
 //                if (sharedPreferences.getString("isLogin","false").equals("true")){
 //                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
 //                    startActivity(i);
 //                }
 //                else {
-                    Intent i = new Intent(LaunchScreen.this, Login.class);
-                    startActivity(i);
+
                // }
 
                 // close this activity
