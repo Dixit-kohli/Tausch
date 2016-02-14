@@ -1,26 +1,29 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.scu.tausch.Adapters.CustomListAdapter;
 import com.scu.tausch.R;
 
+import com.parse.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Praneet on 1/31/16.
  */
-public class OffersList extends Fragment {
+public class OffersList extends Fragment implements DBListener{
 
     /*
     * ##################################
@@ -30,9 +33,10 @@ public class OffersList extends Fragment {
     * */
 
 
-    private String[] arrayItemNames = new String[]{"Table","Chair","bicycle","Nortan Antivirus","Shoes","Handmade cotton bookholder and a pack of socks as well as tapes","Table","Table","Table","Table"};
-    private int[] arrayItemImages = new int[]{R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder,R.mipmap.item_placeholder};
-    private  String[] arrayItemCosts = new String[]{"$12","$12","$12","$12","$12","$12","$12","$12","$12","$12"};
+    private List<ParseObject> itemObjects;
+    private String[] arrayItemNames;
+    private Bitmap[] arrayItemImages;
+    private  String[] arrayItemCosts;
     private ListView listViewItems;
 
 
@@ -52,56 +56,78 @@ public class OffersList extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_offers_list, container, false);
 
-        List<HashMap<String,String>> itemNamesImagesCosts = new ArrayList<>();
-
-        for (int i=0; i<arrayItemNames.length;i++){
-            HashMap<String,String> hmPairs = new HashMap<>();
-            hmPairs.put("item_name",arrayItemNames[i]);
-            hmPairs.put("item_image",Integer.toString(arrayItemImages[i]));
-            hmPairs.put("item_cost",arrayItemCosts[i]);
-            itemNamesImagesCosts.add(hmPairs);
-        }
-
-        //Keys used in HashMap.
-        String [] from = {"item_image","item_name","item_cost"};
-
-        //Ids used in HashMap.
-        int [] to = {R.id.item_image,R.id.item_name,R.id.item_cost};
-
-
-        // Instantiating an adapter to store each items
-        // R.layout.home_category_list defines the layout of each item
-        SimpleAdapter itemListAdapter = new SimpleAdapter(getActivity().getBaseContext(),itemNamesImagesCosts,R.layout.category_items_list_row,from,to);
 
         listViewItems=(ListView)rootView.findViewById(R.id.list_items_in_category);
-        listViewItems.setAdapter(itemListAdapter);
-
-        //Setting Y value as 168, that is height of toolbar.
-//        listViewCategories.setY(168);
 
 
-        //On tap of particular item, new fragment should be shown where descriptive information would
-        //be available.
+
+
+        // Inflate the layout for this fragment
+        return rootView;
+    }
+
+    //Method is called when data has been fetched from server.
+    public void fetchedDataFromServer(){
+
+        CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
+        listViewItems.setAdapter(customListAdapter);
+
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//                Toast.makeText(getActivity().getBaseContext(), "Item clicked at" + position, Toast.LENGTH_SHORT).show();
 
-                DetailedItemFragement nextFrag= new DetailedItemFragement();
+
+                DetailedItemFragment nextFrag= new DetailedItemFragment();
+
+                nextFrag.setArguments(itemObjects.get(position),arrayItemImages,position,arrayItemNames,arrayItemCosts);
 
                 OffersList.this.getFragmentManager().beginTransaction()
                         .replace(R.id.myItemsInCategoryWindow, nextFrag)
                         .addToBackStack(null)
                         .commit();
 
+
             }
         });
 
 
+    }
 
-        // Inflate the layout for this fragment
-        return rootView;
+    @Override
+    public void callback(List<ParseObject> objects) {
+
+        itemObjects=objects;
+
+        List<String> arrayTitles = new ArrayList<>();
+        List<Bitmap> arrayImages = new ArrayList<>();
+        List<String> arrayPrice = new ArrayList<>();
+
+        for(ParseObject itemObject:itemObjects){
+
+            String itemTitle = (String)itemObject.get("offer_title");
+            arrayTitles.add(itemTitle);
+            String itemPrice = (String)itemObject.get("price");
+            arrayPrice.add(itemPrice);
+
+            try {
+                ParseFile bum = (ParseFile) itemObject.get("image_one");
+                byte[] file = bum.getData();
+                Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
+                arrayImages.add(image);
+
+            }
+            catch (ParseException e){
+
+            }
+
+        }
+
+        arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
+        arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
+        arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
+        fetchedDataFromServer();
+
     }
 
     @Override

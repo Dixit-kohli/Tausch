@@ -1,24 +1,39 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseObject;
 import com.scu.tausch.R;
+
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Praneet on 1/31/16.
  */
-public class DetailedItemFragement extends Fragment{
+public class DetailedItemFragment extends Fragment{
 
     private ImageButton messageButton;
+    private String title;
+    private String description;
+    private Bitmap image_one;
+    private String item_price;
+    private String offeror;
 
-    public DetailedItemFragement() {
+    public DetailedItemFragment() {
         // Required empty public constructor
     }
 
@@ -28,12 +43,35 @@ public class DetailedItemFragement extends Fragment{
 
     }
 
+            public void setArguments(ParseObject itemObject, Bitmap[] images,int positionInList,String[] titles, String[] prices){
+
+                title = titles[positionInList];
+                description = (String)itemObject.get("offer_description");
+                image_one = images[positionInList];
+                item_price = prices[positionInList];
+                offeror = (String)itemObject.get("offeror");
+
+            }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detailed_item, container, false);
 
         messageButton = (ImageButton)rootView.findViewById(R.id.icon_message_box);
+        TextView textTitle = (TextView)rootView.findViewById(R.id.item_title);
+        TextView textDescription=(TextView)rootView.findViewById(R.id.item_description);
+        ImageView imageItem = (ImageView)rootView.findViewById(R.id.item_image);
+        TextView textOfferor = (TextView)rootView.findViewById(R.id.value_name);
+        TextView textPrice = (TextView)rootView.findViewById(R.id.value_price);
+
+
+        textTitle.setText(title);
+        textDescription.setText(description);
+        imageItem.setImageBitmap(image_one);
+        textOfferor.setText(offeror);
+        textPrice.setText("$"+item_price);
+
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +86,7 @@ public class DetailedItemFragement extends Fragment{
                 * */
 //                ChatFragment nextFrag= new ChatFragment();
 //
-//                DetailedItemFragement.this.getFragmentManager().beginTransaction()
+//                DetailedItemFragment.this.getFragmentManager().beginTransaction()
 //                        .replace(R.id.myDetailedItemFragment, nextFrag)
 //                        .addToBackStack(null)
 //                        .commit();

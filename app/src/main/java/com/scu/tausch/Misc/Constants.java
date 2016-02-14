@@ -16,5 +16,13 @@ public class Constants {
     public static final String HANDLE_USERNAME = "pjain3@scu.edu";
     public static final String HANDLE_PASSWORD = "111";
     public static final String USER_PREFS_NAME = "TauschPrefs";
+    public static final int CATEGORY_AUTOMOBILES = 0;
+    public static final int CATEGORY_BOOKS = 1;
+    public static final int CATEGORY_LAPTOPS =2;
+    public static final int CATEGORY_RENTALS = 3;
+    public static final String CATEGORY_AUTOMOBILES_OBJECT_ID="qcTS2jc5Di";
+    public static final String CATEGORY_BOOKS_OBJECT_ID="PupH4JYB6T";
+    public static final String CATEGORY_LAPTOPS_OBJECT_ID="baaf0IRDvl";
+    public static final String CATEGORY_RENTALS_OBJECT_ID="hPCobHXvGv";
 
 }

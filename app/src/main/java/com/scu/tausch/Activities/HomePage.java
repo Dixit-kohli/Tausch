@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import android.content.DialogInterface;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
@@ -61,6 +63,8 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private FragmentDrawer drawerFragment;
     private ImageButton buttonFilter;
     private ImageButton buttonSort;
+    private Fragment fragment = null;
+
 
     private final int textTitleWidth = 240;
     private final int marginToReduceFromWidth = 40;
@@ -224,7 +228,6 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     }
 
     private void displayView(int position) {
-        Fragment fragment = null;
         String title = getString(R.string.app_name);
         switch (position) {
             case MENU:
@@ -286,6 +289,10 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         }
 
         if (fragment != null) {
+
+            //Passing context of this class to fragment.
+            MenuFragment.context = this;
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
@@ -295,6 +302,5 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             getSupportActionBar().setTitle(title);
         }
     }
-
 
 }

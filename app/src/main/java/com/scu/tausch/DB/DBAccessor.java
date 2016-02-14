@@ -1,9 +1,21 @@
 package com.scu.tausch.DB;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+
+import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+import com.scu.tausch.Activities.DBListener;
+import com.scu.tausch.Activities.HomePage;
+import com.scu.tausch.Activities.MyOfferFragment;
+import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.RegistrationDTO;
 import com.scu.tausch.Activities.Login;
@@ -12,6 +24,9 @@ import com.scu.tausch.Activities.Registration;
 import com.parse.SignUpCallback;
 import com.parse.LogInCallback;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 
 /**
  * Created by Praneet on 1/16/16.
@@ -19,6 +34,7 @@ import com.parse.LogInCallback;
 public class DBAccessor {
 
     private static DBAccessor instance = null;
+    private DBListener dbListener;
 
     protected DBAccessor() {
         // Exists only to defeat instantiation.
@@ -30,6 +46,10 @@ public class DBAccessor {
             instance = new DBAccessor();
         }
         return instance;
+    }
+
+    private void setDBListener(DBListener dbListener){
+        this.dbListener=dbListener;
     }
 
     //method to see if username is already available during registation
@@ -96,6 +116,28 @@ public class DBAccessor {
                         }
                     }
                 });
+    }
+
+    public void getItemsForCategory(String categoryID, final HomePage homePage){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+        query.whereEqualTo("category_id", categoryID);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                //Getting the fragment already created using tag.
+            OffersList offerListFragment = (OffersList)homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
+             setDBListener(offerListFragment);
+
+                if (dbListener!=null) {
+                    dbListener.callback(objects);
+                }
+
+            }
+        });
+
     }
 
 
