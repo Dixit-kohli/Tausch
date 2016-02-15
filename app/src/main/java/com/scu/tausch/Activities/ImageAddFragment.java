@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +21,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.DialogInterface;
 
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.R;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +41,7 @@ public class ImageAddFragment extends Fragment {
     private final int REQUEST_CAMERA = 1;
     private final int SELECT_FILE = 2;
     private ImageView currentImageView;
+    private OfferDTO offerDTO;
 
     public ImageAddFragment() {
         // Required empty public constructor
@@ -45,6 +51,10 @@ public class ImageAddFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    public void currentOfferDetails(OfferDTO offerDTO){
+        this.offerDTO=offerDTO;
     }
 
     @Override
@@ -104,7 +114,60 @@ public class ImageAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getActivity().getBaseContext(), "code to push images", Toast.LENGTH_SHORT).show();
+
+                Bitmap bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
+
+                // Convert it to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                // Compress image to lower quality scale 1 - 100
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] image = stream.toByteArray();
+
+                // Create the ParseFile
+                ParseFile file = new ParseFile("image.png", image);
+                // Upload the image into Parse Cloud
+                file.saveInBackground();
+
+                // Create a New Class called "ImageUpload" in Parse
+                ParseObject imgupload = new ParseObject("Offers");
+
+                // Create a column named "ImageName" and set the string
+                String objectIdUser = (String)ParseUser.getCurrentUser().getObjectId();
+                imgupload.put("user_id", objectIdUser);
+
+                imgupload.put("category_id",offerDTO.getCategoryId());
+
+                imgupload.put("offer_title",offerDTO.getOfferTitle());
+
+                imgupload.put("offer_description",offerDTO.getOfferDescription());
+
+                imgupload.put("price",offerDTO.getPrice());
+
+                imgupload.put("condition",offerDTO.getCondition());
+
+                imgupload.put("zipcode",offerDTO.getZip());
+
+                imgupload.put("offeror",offerDTO.getOfferorName());
+
+                imgupload.put("city",offerDTO.getCityId());
+
+                // Create a column named "ImageFile" and insert the image
+                imgupload.put("image_one", file);
+
+                // Create the class and the columns
+                imgupload.saveInBackground();
+
+                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
+                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
+
+                //After removing fragment in above line, we popBackStack() to remove from stack.
+                getFragmentManager().popBackStack();
+
+                MenuFragment nextFrag= new MenuFragment();
+
+                ImageAddFragment.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_body, nextFrag)
+                        .commit();
 
             }
         });

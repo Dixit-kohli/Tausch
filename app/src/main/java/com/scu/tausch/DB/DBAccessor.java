@@ -12,6 +12,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+import com.scu.tausch.Activities.AddOfferFragment;
 import com.scu.tausch.Activities.DBListener;
 import com.scu.tausch.Activities.HomePage;
 import com.scu.tausch.Activities.MyOfferFragment;
@@ -128,15 +129,38 @@ public class DBAccessor {
             public void done(List<ParseObject> objects, ParseException e) {
 
                 //Getting the fragment already created using tag.
-            OffersList offerListFragment = (OffersList)homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
-             setDBListener(offerListFragment);
+                OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
+                setDBListener(offerListFragment);
 
-                if (dbListener!=null) {
+                if (dbListener != null) {
                     dbListener.callback(objects);
                 }
 
             }
         });
+
+    }
+
+    public void getCityForZip(String zip,final HomePage homePage){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("zip_code_database");
+        query.whereEqualTo("zip", zip);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                //Getting the fragment already created using tag.
+                AddOfferFragment addOfferFragment = (AddOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag("tagAddOfferFragment");
+                setDBListener(addOfferFragment);
+
+                if (dbListener != null) {
+                    dbListener.callback(objects);
+                }
+
+            }
+        });
+
 
     }
 

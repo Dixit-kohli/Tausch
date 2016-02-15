@@ -26,13 +26,6 @@ import java.util.List;
  */
 public class OffersList extends Fragment implements DBListener{
 
-    /*
-    * ##################################
-    * DATA FOR FOLLOWING 3 ARRAYS WILL BE REPLACED BY THE DATA WE ARE GOING TO FETCH FROM PARSE SERVER.
-    * TABLE WOULD HAVE IMAGE, TITLE, DESCRIPTION, COST ETC.
-    * ##################################
-    * */
-
 
     private List<ParseObject> itemObjects;
     private String[] arrayItemNames;

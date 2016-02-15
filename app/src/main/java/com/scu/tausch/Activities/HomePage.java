@@ -1,55 +1,27 @@
 package com.scu.tausch.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.SearchView;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.app.AlertDialog;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.content.DialogInterface;
-import android.widget.AdapterView.OnItemClickListener;
 
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
-import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Praneet on 1/17/16.
@@ -61,8 +33,8 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
     private Toolbar mToolbar,toolbarBottom;
     private FragmentDrawer drawerFragment;
-    private ImageButton buttonFilter;
-    private ImageButton buttonSort;
+    private Button buttonFilter;
+    private Button buttonSort;
     private Fragment fragment = null;
 
 
@@ -98,18 +70,19 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
 
+        AddOfferFragment.context=this;
 
-        buttonFilter = new ImageButton(this);
-        buttonFilter.setImageResource(R.mipmap.ic_filter);
+        buttonFilter = new Button(this);
+        buttonFilter.setText("Filter");
+        buttonFilter.setTextColor(Color.WHITE);
         buttonFilter.setBackgroundColor(Color.TRANSPARENT);
-        buttonFilter.setColorFilter(Color.argb(255, 255, 255, 255));
         buttonFilter.setBackgroundColor(Color.TRANSPARENT);
         toolbarBottom.addView(buttonFilter);
 
-        buttonSort = new ImageButton(this);
-        buttonSort.setImageResource(R.mipmap.ic_sort);
+        buttonSort = new Button(this);
+        buttonSort.setText("Sort");
+        buttonSort.setTextColor(Color.WHITE);
         buttonSort.setBackgroundColor(Color.TRANSPARENT);
-        buttonSort.setColorFilter(Color.argb(255, 255, 255, 255));
         buttonSort.setBackgroundColor(Color.TRANSPARENT);
         toolbarBottom.addView(buttonSort);
 
@@ -124,8 +97,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 title = getString(R.string.app_name);
 
-                fragment = new SortFragment();
-                title = getString(R.string.title_sort);
+                fragment = new FilterFragment();
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -205,12 +177,12 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             Fragment fragment = null;
             String title;
 
-            fragment = new FilterFragment();
+            fragment = new AddOfferFragment();
             title = getString(R.string.title_filter);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment,"tagFilterFragment");
+            fragmentTransaction.replace(R.id.container_body, fragment,"tagAddOfferFragment");
             fragmentTransaction.commit();
 
             // set the toolbar title
@@ -264,11 +236,6 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                         dialog.dismiss();
 
-                        //Setting value - user is login
-//                        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("isLogin", "false");
-//                        editor.commit();
 
                         ParseUser.getCurrentUser().logOut();
                         Intent intent = new Intent(HomePage.this,Login.class);
