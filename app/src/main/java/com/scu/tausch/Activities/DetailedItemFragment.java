@@ -32,6 +32,8 @@ public class DetailedItemFragment extends Fragment{
     private Bitmap image_one;
     private String item_price;
     private String offeror;
+    private String condition;
+    private String city;
 
     public DetailedItemFragment() {
         // Required empty public constructor
@@ -50,6 +52,8 @@ public class DetailedItemFragment extends Fragment{
                 image_one = images[positionInList];
                 item_price = prices[positionInList];
                 offeror = (String)itemObject.get("offeror");
+                condition = (String)itemObject.get("condition");
+                city = (String)itemObject.get("city");
 
             }
 
@@ -64,6 +68,8 @@ public class DetailedItemFragment extends Fragment{
         ImageView imageItem = (ImageView)rootView.findViewById(R.id.item_image);
         TextView textOfferor = (TextView)rootView.findViewById(R.id.value_name);
         TextView textPrice = (TextView)rootView.findViewById(R.id.value_price);
+        TextView textCondition = (TextView)rootView.findViewById(R.id.value_condition);
+        TextView textCity = (TextView)rootView.findViewById(R.id.value_city);
 
 
         textTitle.setText(title);
@@ -71,6 +77,8 @@ public class DetailedItemFragment extends Fragment{
         imageItem.setImageBitmap(image_one);
         textOfferor.setText(offeror);
         textPrice.setText("$"+item_price);
+        textCondition.setText(condition);
+        textCity.setText(city);
 
 
         messageButton.setOnClickListener(new View.OnClickListener() {
