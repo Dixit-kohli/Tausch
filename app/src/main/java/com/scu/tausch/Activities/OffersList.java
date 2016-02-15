@@ -1,6 +1,7 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class OffersList extends Fragment implements DBListener{
     private Bitmap[] arrayItemImages;
     private  String[] arrayItemCosts;
     private ListView listViewItems;
-
+    private ProgressDialog progress;
 
     public OffersList() {
         // Required empty public constructor
@@ -48,6 +49,10 @@ public class OffersList extends Fragment implements DBListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        progress = new ProgressDialog(getActivity());
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
     }
 
 
@@ -97,6 +102,7 @@ public class OffersList extends Fragment implements DBListener{
     @Override
     public void callback(List<ParseObject> objects) {
 
+        progress.dismiss();
         itemObjects=objects;
 
         List<String> arrayTitles = new ArrayList<>();

@@ -32,8 +32,8 @@ public class MenuFragment extends Fragment {
 
     public static HomePage context;
 
-    private String[] arrayCategoryNames = new String[]{"AUTOMOBILES", "BOOKS", "LAPTOPS", "RENTALS"};
-    private int[] arrayCategoryImages = new int[]{R.mipmap.ic_category_automobiles, R.mipmap.ic_category_books, R.mipmap.ic_category_laptops, R.mipmap.ic_category_rentals};
+    private String[] arrayCategoryNames = new String[]{"AUTOMOBILES", "BOOKS", "LAPTOPS","FURNITURE","RENTALS"};
+    private int[] arrayCategoryImages = new int[]{R.mipmap.ic_category_automobiles, R.mipmap.ic_category_books, R.mipmap.ic_category_laptops,R.mipmap.ic_furniture ,R.mipmap.ic_category_rentals};
     private ListView listViewCategories;
 
     public MenuFragment() {
@@ -100,6 +100,11 @@ public class MenuFragment extends Fragment {
                 } else if (position == Constants.CATEGORY_LAPTOPS) {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_LAPTOPS_OBJECT_ID,context);
+
+
+                } else if (position == Constants.CATEGORY_FURNITURE) {
+
+                    DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_FURNITURE_OBJECT_ID,context);
 
 
                 } else if (position == Constants.CATEGORY_RENTALS) {
