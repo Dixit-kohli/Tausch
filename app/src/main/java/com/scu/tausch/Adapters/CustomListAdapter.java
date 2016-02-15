@@ -41,7 +41,7 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
         textTitle.setText(itemName[position]);
         imageView.setImageBitmap(imageId[position]);
-        textPrice.setText(itemPrice[position]);
+        textPrice.setText("$"+itemPrice[position]);
         return rowView;
 
     }
