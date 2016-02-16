@@ -241,6 +241,7 @@ public class ImageAddFragment extends Fragment {
                     destination.createNewFile();
                     fo = new FileOutputStream(destination);
                     fo.write(bytes.toByteArray());
+                    bytes.close();
                     fo.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

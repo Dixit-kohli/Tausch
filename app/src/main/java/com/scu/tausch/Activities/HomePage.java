@@ -204,27 +204,21 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         switch (position) {
             case MENU:
                 fragment = new MenuFragment();
-                title = getString(R.string.title_menu);
                 break;
             case MY_OFFERS:
                 fragment = new MyOfferFragment();
-                title = getString(R.string.title_myoffer);
                 break;
             case MY_MESSAGES:
                 fragment = new MyMessagesFragment();
-                title = getString(R.string.title_mymessages);
                 break;
             case SETTINGS:
                 fragment = new SettingsFragment();
-                title = getString(R.string.title_settings);
                 break;
             case HELP:
                 fragment = new HelpFragment();
-                title = getString(R.string.title_help);
                 break;
             case ABOUT:
                 fragment = new AboutFragment();
-                title = getString(R.string.title_about);
                 break;
             case SIGN_OUT:
                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
