@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@color/dialogBoxBackground"
     android:id="@+id/myFragmentMenuWindow"
+    android:clickable="true"
     tools:context="com.scu.tausch.Activities.MenuFragment">
 
 

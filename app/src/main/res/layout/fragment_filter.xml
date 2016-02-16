@@ -7,6 +7,7 @@
     android:gravity="center_horizontal"
     android:id="@+id/mySortFragment"
     android:background="@color/dialogBoxBackground"
+    android:clickable="true"
     tools:context=".Activities.FilterFragment">
 
 
