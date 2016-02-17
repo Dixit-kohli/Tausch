@@ -1,7 +1,6 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,14 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
-import com.parse.ParseObject;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,7 +24,7 @@ import java.util.List;
 /**
  * Created by Praneet on 1/29/16.
  */
-public class MenuFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     public static HomePage context;
 
@@ -36,7 +32,7 @@ public class MenuFragment extends Fragment {
     private int[] arrayCategoryImages = new int[]{R.mipmap.ic_category_automobiles, R.mipmap.ic_category_books, R.mipmap.ic_category_laptops,R.mipmap.ic_furniture ,R.mipmap.ic_category_rentals};
     private ListView listViewCategories;
 
-    public MenuFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -49,7 +45,7 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
+        View rootView = inflater.inflate(R.layout.home_menu, container, false);
 
         List<HashMap<String, String>> categoriesNamesImages = new ArrayList<>();
 
@@ -121,7 +117,7 @@ public class MenuFragment extends Fragment {
 // and add the transaction to the back stack so the user can navigate back
                 // Commit the transaction
 
-                MenuFragment.this.getFragmentManager().beginTransaction()
+                HomeFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.myFragmentMenuWindow, nextFrag,"tagOfferList")
                         .addToBackStack(null)
                         .commit();

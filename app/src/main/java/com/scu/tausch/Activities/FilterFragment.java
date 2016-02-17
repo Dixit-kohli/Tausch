@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scu.tausch.R;
@@ -60,7 +59,7 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                MenuFragment nextFrag= new MenuFragment();
+                HomeFragment nextFrag= new HomeFragment();
 
                 FilterFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_body, nextFrag)
@@ -75,6 +74,7 @@ public class FilterFragment extends Fragment {
         categories.add("Automobiles");
         categories.add("Books");
         categories.add("Laptops");
+        categories.add("Furniture");
         categories.add("Rentals");
 
         List<String> conditions = new ArrayList<>();

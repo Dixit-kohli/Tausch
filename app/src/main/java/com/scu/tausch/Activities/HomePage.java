@@ -40,13 +40,10 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
     private final int textTitleWidth = 240;
     private final int marginToReduceFromWidth = 40;
-//    private ListView listViewCategories;
 
     //Names and images for categories.
-//    private String[] arrayCategoryNames = new String[]{"AUTOMOBILES","BOOKS","LAPTOPS","RENTALS"};
-//    private int[] arrayCategoryImages = new int[]{R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add,R.drawable.ic_action_add};
-    private CharSequence[] items = {"Menu", "My Offers", "My Messages","Settings","Help","About","Sign out"};
-    private final int MENU = 0;
+    private CharSequence[] items = {"Home", "My Offers", "My Messages","Settings","Help","About","Sign out"};
+    private final int HOME = 0;
     private final int MY_OFFERS = 1;
     private final int MY_MESSAGES = 2;
     private final int SETTINGS = 3;
@@ -202,8 +199,8 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private void displayView(int position) {
         String title = getString(R.string.app_name);
         switch (position) {
-            case MENU:
-                fragment = new MenuFragment();
+            case HOME:
+                fragment = new HomeFragment();
                 break;
             case MY_OFFERS:
                 fragment = new MyOfferFragment();
@@ -252,7 +249,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         if (fragment != null) {
 
             //Passing context of this class to fragment.
-            MenuFragment.context = this;
+            HomeFragment.context = this;
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

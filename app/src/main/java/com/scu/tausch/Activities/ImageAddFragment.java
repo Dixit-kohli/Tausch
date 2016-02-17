@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.content.DialogInterface;
 
 import com.parse.ParseFile;
@@ -163,7 +162,7 @@ public class ImageAddFragment extends Fragment {
                 //After removing fragment in above line, we popBackStack() to remove from stack.
                 getFragmentManager().popBackStack();
 
-                MenuFragment nextFrag= new MenuFragment();
+                HomeFragment nextFrag= new HomeFragment();
 
                 ImageAddFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_body, nextFrag)
@@ -182,7 +181,7 @@ public class ImageAddFragment extends Fragment {
                 //After removing fragment in above line, we popBackStack() to remove from stack.
                 getFragmentManager().popBackStack();
 
-                MenuFragment nextFrag= new MenuFragment();
+                HomeFragment nextFrag= new HomeFragment();
 
                 ImageAddFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_body, nextFrag)
