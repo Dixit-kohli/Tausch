@@ -1,11 +1,6 @@
 package com.scu.tausch.DB;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
-
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -15,7 +10,6 @@ import com.parse.RequestPasswordResetCallback;
 import com.scu.tausch.Activities.AddOfferFragment;
 import com.scu.tausch.Activities.DBListener;
 import com.scu.tausch.Activities.HomePage;
-import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.Activities.SearchListener;
 import com.scu.tausch.DTO.LoginDTO;
@@ -25,9 +19,7 @@ import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.Activities.Registration;
 import com.parse.SignUpCallback;
 import com.parse.LogInCallback;
-import com.scu.tausch.R;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 
@@ -191,6 +183,14 @@ public class DBAccessor {
         });
 
     }
+
+public void updateEmailForVerificationAgain(final HomePage homePage){
+
+    ParseUser parseUser = ParseUser.getCurrentUser();
+    parseUser.setEmail(parseUser.getEmail());
+
+    parseUser.saveInBackground();
+}
 
 
 }

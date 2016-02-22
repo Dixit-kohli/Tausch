@@ -2,6 +2,7 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.content.DialogInterface;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.R;
 
@@ -44,6 +46,7 @@ public class ImageAddFragment extends Fragment {
     private final int SELECT_FILE = 2;
     private ImageView currentImageView;
     private OfferDTO offerDTO;
+    public static HomePage context;
 
     public ImageAddFragment() {
         // Required empty public constructor
@@ -126,6 +129,17 @@ public class ImageAddFragment extends Fragment {
         buttonPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ParseUser user = ParseUser.getCurrentUser();
+                boolean isUserVerified = user.getBoolean("emailVerified");
+
+
+                if(!isUserVerified){
+
+                    showDialogBoxForUnverfiedUser();
+                    return;
+                }
+
 
 
                 Bitmap bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
@@ -284,5 +298,45 @@ public class ImageAddFragment extends Fragment {
                 currentImageView.setImageBitmap(bm);
             }
         }
+
     }
+
+    private void showDialogBoxForUnverfiedUser(){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage("You must verify your Email!");
+
+        alertDialogBuilder.setPositiveButton("Resend Email", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+                DBAccessor.getInstance().updateEmailForVerificationAgain(context);
+
+                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
+                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
+
+                //After removing fragment in above line, we popBackStack() to remove from stack.
+                getFragmentManager().popBackStack();
+
+                HomeFragment nextFrag= new HomeFragment();
+
+                ImageAddFragment.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_body, nextFrag)
+                        .commit();
+
+
+
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel",null);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
 }
