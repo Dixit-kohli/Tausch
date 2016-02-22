@@ -9,6 +9,12 @@
     android:clickable="true"
     tools:context="com.scu.tausch.Activities.OffersList">
 
+<TextView
+    android:id="@android:id/empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:textSize="24dp"/>
 
     <ListView
         android:id="@+id/list_items_in_category"
@@ -21,5 +27,16 @@
         android:layout_marginLeft="5dp">
     </ListView>
 
+    <LinearLayout
+        android:id="@+id/container_toolbar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbarBottom"
+            layout="@layout/toolbar" />
+    </LinearLayout>
 
 </RelativeLayout>

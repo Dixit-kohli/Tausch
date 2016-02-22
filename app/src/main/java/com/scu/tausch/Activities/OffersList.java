@@ -2,23 +2,35 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.scu.tausch.Adapters.CustomListAdapter;
 import com.scu.tausch.R;
 
 import com.parse.ParseException;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +46,10 @@ public class OffersList extends Fragment implements DBListener{
     private  String[] arrayItemCosts;
     private ListView listViewItems;
     private ProgressDialog progress;
+    boolean isFilterActive=false;
+    boolean isSearchActive=false;
+    private TextView emptyListTextView;
+    private List<ParseObject> retainItemObjects;
 
     public OffersList() {
         // Required empty public constructor
@@ -49,6 +65,88 @@ public class OffersList extends Fragment implements DBListener{
         progress.show();
     }
 
+    public void setRetainItemObjects(List<ParseObject> retainItemObjects){
+        this.retainItemObjects=retainItemObjects;
+    }
+
+    public void searchList(List<ParseObject> searchedObjects){
+
+        isSearchActive=true;
+
+        itemObjects = null;
+        itemObjects=searchedObjects;
+
+
+        List<String> arrayTitles = new ArrayList<>();
+        List<Bitmap> arrayImages = new ArrayList<>();
+        List<String> arrayPrice = new ArrayList<>();
+
+        for(ParseObject itemObject:searchedObjects){
+
+            String itemTitle = (String)itemObject.get("offer_title");
+            arrayTitles.add(itemTitle);
+            String itemPrice = (String)itemObject.get("price");
+            arrayPrice.add(itemPrice);
+
+            try {
+                ParseFile bum = (ParseFile) itemObject.get("image_one");
+                byte[] file = bum.getData();
+                Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
+                arrayImages.add(image);
+
+            }
+            catch (ParseException e){
+
+            }
+
+        }
+
+        arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
+        arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
+        arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
+
+
+    }
+
+ public void filterList(List<ParseObject> filteredObjects){
+
+     isFilterActive=true;
+
+     itemObjects = null;
+     itemObjects=filteredObjects;
+
+
+     List<String> arrayTitles = new ArrayList<>();
+     List<Bitmap> arrayImages = new ArrayList<>();
+     List<String> arrayPrice = new ArrayList<>();
+
+     for(ParseObject itemObject:filteredObjects){
+
+         String itemTitle = (String)itemObject.get("offer_title");
+         arrayTitles.add(itemTitle);
+         String itemPrice = (String)itemObject.get("price");
+         arrayPrice.add(itemPrice);
+
+         try {
+             ParseFile bum = (ParseFile) itemObject.get("image_one");
+             byte[] file = bum.getData();
+             Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
+             arrayImages.add(image);
+
+         }
+         catch (ParseException e){
+
+         }
+
+     }
+
+     arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
+     arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
+     arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
+
+
+ }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,9 +154,68 @@ public class OffersList extends Fragment implements DBListener{
         View rootView = inflater.inflate(R.layout.fragment_offers_list, container, false);
 
 
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+                return false;
+            }
+        });
+
+
         listViewItems=(ListView)rootView.findViewById(R.id.list_items_in_category);
+        Toolbar toolbarBottom = (Toolbar)rootView.findViewById(R.id.toolbarBottom);
+        emptyListTextView=(TextView)rootView.findViewById(android.R.id.empty);
+
+        Button buttonFilter = new Button(getActivity());
+        int buttonFilter_X = 20;
+        buttonFilter.setX(buttonFilter_X);
+
+        buttonFilter.setText("Filter");
+        buttonFilter.setTextColor(Color.WHITE);
+        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
+        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
+        toolbarBottom.addView(buttonFilter);
+
+        buttonFilter.setOnClickListener(new View.OnClickListener() {
+
+            FilterFragment fragment = null;
+            String title;
+
+            @Override
+            public void onClick(View v) {
+
+                title = getString(R.string.app_name);
+
+                fragment = new FilterFragment();
+                if (itemObjects.size()==0){
+                    itemObjects=retainItemObjects;
+                }
+                fragment.fetchedItemObjects(itemObjects);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
 
 
+            }
+        });
+
+        if (isFilterActive) {
+            fetchedDataFromServer();
+            isFilterActive=false;
+            progress.dismiss();
+        }
+
+        if (isSearchActive){
+            fetchedDataFromServer();
+            isSearchActive=false;
+            progress.dismiss();
+        }
 
 
         // Inflate the layout for this fragment
@@ -71,15 +228,19 @@ public class OffersList extends Fragment implements DBListener{
         CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
         listViewItems.setAdapter(customListAdapter);
 
+        if (itemObjects.size() == 0) {
+            emptyListTextView.setText("No items found.");
+            listViewItems.setEmptyView(emptyListTextView);
+        }
+
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
+                DetailedItemFragment nextFrag = new DetailedItemFragment();
 
-                DetailedItemFragment nextFrag= new DetailedItemFragment();
-
-                nextFrag.setArguments(itemObjects.get(position),arrayItemImages,position,arrayItemNames,arrayItemCosts);
+                nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
 
                 OffersList.this.getFragmentManager().beginTransaction()
                         .replace(R.id.myItemsInCategoryWindow, nextFrag)
@@ -133,13 +294,12 @@ public class OffersList extends Fragment implements DBListener{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
     }
-
-
 
 }

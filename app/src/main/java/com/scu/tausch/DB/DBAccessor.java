@@ -17,6 +17,7 @@ import com.scu.tausch.Activities.DBListener;
 import com.scu.tausch.Activities.HomePage;
 import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
+import com.scu.tausch.Activities.SearchListener;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.RegistrationDTO;
 import com.scu.tausch.Activities.Login;
@@ -24,6 +25,7 @@ import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.Activities.Registration;
 import com.parse.SignUpCallback;
 import com.parse.LogInCallback;
+import com.scu.tausch.R;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -36,6 +38,7 @@ public class DBAccessor {
 
     private static DBAccessor instance = null;
     private DBListener dbListener;
+    private SearchListener searchListener;
 
     protected DBAccessor() {
         // Exists only to defeat instantiation.
@@ -51,6 +54,10 @@ public class DBAccessor {
 
     private void setDBListener(DBListener dbListener){
         this.dbListener=dbListener;
+    }
+
+    private void setSearchListener(SearchListener searchListener){
+        this.searchListener=searchListener;
     }
 
     //method to see if username is already available during registation
@@ -161,6 +168,27 @@ public class DBAccessor {
             }
         });
 
+
+    }
+
+
+    public void getSearchResults(String itemsToSearch, final HomePage homePage){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+        query.whereEqualTo("offer_title", itemsToSearch);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                setSearchListener(homePage);
+
+                if (searchListener != null) {
+                    searchListener.searchResults(objects);
+                }
+
+            }
+        });
 
     }
 

@@ -1,17 +1,26 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.parse.ParseObject;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import java.util.ArrayList;
@@ -21,6 +30,9 @@ import java.util.List;
  * Created by Praneet on 2/11/16.
  */
 public class FilterFragment extends Fragment {
+
+    private List<ParseObject> itemObjects;
+
     public FilterFragment() {
         // Required empty public constructor
     }
@@ -31,17 +43,31 @@ public class FilterFragment extends Fragment {
 
     }
 
+    public void fetchedItemObjects(List<ParseObject> itemObjects){
+        this.itemObjects=itemObjects;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_filter, container, false);
 
-        Spinner spinnerCategory = (Spinner)rootView.findViewById(R.id.spinner_category);
-        Spinner spinnerCondition = (Spinner)rootView.findViewById(R.id.spinner_condition);
-        EditText editDescription = (EditText)rootView.findViewById(R.id.edit_description);
-        EditText editCity = (EditText)rootView.findViewById(R.id.edit_city_of_item);
-        EditText editMin = (EditText)rootView.findViewById(R.id.edit_min_price);
-        EditText editMax = (EditText)rootView.findViewById(R.id.edit_max_price);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+                return false;
+            }
+        });
+
+        final Spinner spinnerCondition = (Spinner)rootView.findViewById(R.id.spinner_condition);
+        final EditText editDescription = (EditText)rootView.findViewById(R.id.edit_description);
+        final EditText editCity = (EditText)rootView.findViewById(R.id.edit_city_of_item);
+        final EditText editMin = (EditText)rootView.findViewById(R.id.edit_min_price);
+        final EditText editMax = (EditText)rootView.findViewById(R.id.edit_max_price);
 
         Button searchButton = (Button)rootView.findViewById(R.id.button_search);
         Button cancelButton = (Button)rootView.findViewById(R.id.button_cancel);
@@ -50,7 +76,90 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getActivity().getBaseContext(),"Code to search on parse",Toast.LENGTH_SHORT).show();
+
+                String condition = spinnerCondition.getSelectedItem().toString().trim();
+                String description = editDescription.getText().toString().trim();
+                String city = editCity.getText().toString().trim();
+                String strMin = editMin.getText().toString().trim();
+                String strMax = editMax.getText().toString().trim();
+                double min=0;
+                double max=0;
+                if (strMin.length()>0) {
+                    min = Double.parseDouble(strMin);
+                }
+               if (strMax.length()>0) {
+                   max = Double.parseDouble(strMax);
+               }
+
+                if (description.length()==0){
+
+                    showDialogToEnterDescription();
+                    return;
+                }
+
+                List<ParseObject> filteredObjects = new ArrayList<>();
+
+                for (ParseObject object:itemObjects) {
+
+                    String pricee = "";
+
+                    if (((String)object.get("price")).length()==0){
+                        pricee="0";
+                    }
+                    else{
+                        pricee=(String)object.get("price");
+                    }
+
+                    String desc = (String)object.get("offer_description");
+                    String conditiond=(String)object.get("condition");
+                    String cityy = (String)object.get("city");
+
+
+
+                    double price = Double.parseDouble(pricee);
+
+                        if (object.get("city").equals(city) || city.length()==0){
+
+                            if (price>=min || price==0){
+
+                                if (price<=max || price==0 || max==0){
+
+                                    if (object.get("condition").equals(condition)){
+
+                                        if (object.get("offer_description").equals(description)){
+
+                                            filteredObjects.add(object);
+
+
+                                        }
+                                        if(((String) object.get("offer_description")).contains(description)){
+
+                                            filteredObjects.add(object);
+
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+
+
+                        }
+
+                }
+
+                OffersList fragment = new OffersList();
+                fragment.filterList(filteredObjects);
+                fragment.setRetainItemObjects(itemObjects);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.container_body, fragment);
+                fragmentTransaction.commit();
+
+
+
+
 
             }
         });
@@ -81,10 +190,6 @@ public class FilterFragment extends Fragment {
         conditions.add("New");
         conditions.add("Used");
 
-        ArrayAdapter<String> adapterCategories = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
-        adapterCategories.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinnerCategory.setAdapter(adapterCategories);
-
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);
         adapterConditions.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCondition.setAdapter(adapterConditions);
@@ -92,6 +197,24 @@ public class FilterFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void showDialogToEnterDescription(){
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage("Description is required!");
+
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override

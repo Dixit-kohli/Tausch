@@ -21,14 +21,6 @@
         android:text="Filter"
         />
 
-    <Spinner
-        android:id="@+id/spinner_category"
-        android:layout_width="260dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:prompt="@string/spinner_category"/>
-
     <EditText
         android:id="@+id/edit_description"
         android:layout_width="260dp"
@@ -90,7 +82,7 @@
             android:id="@+id/button_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="Filter"
             android:background="@android:color/transparent"
             android:layout_marginTop="10dp"/>
 
