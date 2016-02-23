@@ -187,8 +187,12 @@ public class DBAccessor {
 public void updateEmailForVerificationAgain(final HomePage homePage){
 
     ParseUser parseUser = ParseUser.getCurrentUser();
-    parseUser.setEmail(parseUser.getEmail());
+    String email = parseUser.getEmail();
+    parseUser.setEmail("");
 
+    parseUser.saveInBackground();
+
+    parseUser.setEmail(email);
     parseUser.saveInBackground();
 }
 
