@@ -118,18 +118,31 @@ public class FilterFragment extends Fragment {
 
                     double price = Double.parseDouble(pricee);
 
-                        if (object.get("city").equals(city) || city.length()==0){
+                        if (((String) object.get("city")).equalsIgnoreCase(city) || city.length()==0){
 
                             if (price>=min || price==0){
 
                                 if (price<=max || price==0 || max==0){
 
-                                    if (object.get("condition").equals(condition)){
+                                    if (((String) object.get("condition")).equalsIgnoreCase(condition)){
 
-                                        if (object.get("offer_description").equals(description)){
+                                        if (((String) object.get("offer_description")).equalsIgnoreCase(description)){
 
                                             filteredObjects.add(object);
 
+
+                                        }
+                                        if(((String) object.get("offer_description")).contains(description)){
+
+                                            filteredObjects.add(object);
+
+                                        }
+                                    }
+                                    else {
+
+                                        if (((String) object.get("offer_description")).equalsIgnoreCase(description)){
+
+                                            filteredObjects.add(object);
 
                                         }
                                         if(((String) object.get("offer_description")).contains(description)){
@@ -189,6 +202,7 @@ public class FilterFragment extends Fragment {
         List<String> conditions = new ArrayList<>();
         conditions.add("New");
         conditions.add("Used");
+        conditions.add("Both");
 
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);
         adapterConditions.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
