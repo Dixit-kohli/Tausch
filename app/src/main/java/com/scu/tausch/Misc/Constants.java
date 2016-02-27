@@ -26,6 +26,12 @@ public class Constants {
     public static final String CATEGORY_LAPTOPS_OBJECT_ID="baaf0IRDvl";
     public static final String CATEGORY_RENTALS_OBJECT_ID="hPCobHXvGv";
     public static final String CATEGORY_FURNITURE_OBJECT_ID="NR5bYNsrgH";
+    public static final int SEARCH_CODE_HOME_PAGE = 0;
+    public static final int SEARCH_CODE_AUTOMOBILES = 1;
+    public static final int SEARCH_CODE_BOOKS = 2;
+    public static final int SEARCH_CODE_LAPTOPS = 3;
+    public static final int SEARCH_CODE_FURNITURE = 4;
+    public static final int SEARCH_CODE_RENTALS = 5;
 
 
 }

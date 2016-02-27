@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import android.content.DialogInterface;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import android.support.v4.app.Fragment;
@@ -167,6 +169,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         switch (position) {
             case HOME:
                 fragment = new HomeFragment();
+                DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
                 break;
             case MY_OFFERS:
                 fragment = new MyOfferFragment();
@@ -257,4 +260,13 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+if (DBAccessor.searchCode == Constants.SEARCH_CODE_AUTOMOBILES || DBAccessor.searchCode==Constants.SEARCH_CODE_BOOKS || DBAccessor.searchCode==Constants.SEARCH_CODE_FURNITURE || DBAccessor.searchCode==Constants.SEARCH_CODE_RENTALS|| DBAccessor.searchCode==Constants.SEARCH_CODE_LAPTOPS){
+    DBAccessor.searchCode=Constants.SEARCH_CODE_HOME_PAGE;
+}
+
+    }
 }

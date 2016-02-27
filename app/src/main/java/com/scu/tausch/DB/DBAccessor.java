@@ -31,6 +31,7 @@ public class DBAccessor {
     private static DBAccessor instance = null;
     private DBListener dbListener;
     private SearchListener searchListener;
+    public static int searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
     protected DBAccessor() {
         // Exists only to defeat instantiation.
@@ -52,7 +53,7 @@ public class DBAccessor {
         this.searchListener=searchListener;
     }
 
-    //method to see if username is already available during registation
+    //method to see if username is already available during registration
     public void checkIfUsernameExists(final RegistrationDTO regDTO, final Registration callbackReg){
 
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -167,7 +168,42 @@ public class DBAccessor {
     public void getSearchResults(String itemsToSearch, final HomePage homePage){
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+
         query.whereEqualTo("offer_title", itemsToSearch);
+
+        switch (searchCode){
+
+            case Constants.SEARCH_CODE_AUTOMOBILES:{
+                query.whereEqualTo("category_id",Constants.CATEGORY_AUTOMOBILES);
+
+                break;
+            }
+            case Constants.SEARCH_CODE_FURNITURE:{
+
+                query.whereEqualTo("category_id",Constants.CATEGORY_FURNITURE);
+
+                break;
+            }
+            case Constants.SEARCH_CODE_LAPTOPS:{
+
+                query.whereEqualTo("category_id",Constants.CATEGORY_LAPTOPS);
+
+                break;
+            }
+            case Constants.SEARCH_CODE_RENTALS:{
+
+                query.whereEqualTo("category_id",Constants.CATEGORY_RENTALS);
+
+                break;
+            }
+            case Constants.SEARCH_CODE_BOOKS:{
+
+                query.whereEqualTo("category_id",Constants.CATEGORY_BOOKS);
+
+                break;
+            }
+        }
+
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override

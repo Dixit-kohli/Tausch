@@ -99,27 +99,34 @@ public class HomeFragment extends Fragment {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_AUTOMOBILES_OBJECT_ID,context);
 
-
+                     DBAccessor.searchCode = Constants.SEARCH_CODE_AUTOMOBILES;
 
 
                 } else if (position == Constants.CATEGORY_BOOKS) {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_BOOKS_OBJECT_ID,context);
 
+                    DBAccessor.searchCode = Constants.SEARCH_CODE_BOOKS;
+
 
                 } else if (position == Constants.CATEGORY_LAPTOPS) {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_LAPTOPS_OBJECT_ID,context);
+
+                    DBAccessor.searchCode = Constants.SEARCH_CODE_LAPTOPS;
 
 
                 } else if (position == Constants.CATEGORY_FURNITURE) {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_FURNITURE_OBJECT_ID,context);
 
+                    DBAccessor.searchCode = Constants.SEARCH_CODE_FURNITURE;
 
                 } else if (position == Constants.CATEGORY_RENTALS) {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_RENTALS_OBJECT_ID,context);
+
+                    DBAccessor.searchCode = Constants.SEARCH_CODE_RENTALS;
 
 
                 }
