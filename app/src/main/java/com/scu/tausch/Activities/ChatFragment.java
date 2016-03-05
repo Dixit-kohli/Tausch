@@ -35,10 +35,7 @@ import java.util.List;
 public class ChatFragment extends Fragment {
 
     static final String TAG = ChatFragment.class.getSimpleName();
-    static final String USER_ID_KEY = "userId";
-    static final String BODY_KEY = "body";
-    static String RECEIVER_ID_KEY = "receiverId";
-static String dealObj="";
+    static String dealObj="";
 
     private EditText etMessage;
     private Button btSend;

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -126,30 +127,21 @@ public class FilterFragment extends Fragment {
 
                                     if (((String) object.get("condition")).equalsIgnoreCase(condition)){
 
-                                        if (((String) object.get("offer_description")).equalsIgnoreCase(description)){
-
-                                            filteredObjects.add(object);
-
-
-                                        }
-                                        if(((String) object.get("offer_description")).contains(description)){
+                                        if (desc.equalsIgnoreCase(description) || desc.contains(description) || desc.toLowerCase().contains(description.toLowerCase())){
 
                                             filteredObjects.add(object);
 
                                         }
+
                                     }
                                     else {
 
-                                        if (((String) object.get("offer_description")).equalsIgnoreCase(description)){
+                                        if (desc.equalsIgnoreCase(description) || desc.contains(description)){
 
                                             filteredObjects.add(object);
 
                                         }
-                                        if(((String) object.get("offer_description")).contains(description)){
 
-                                            filteredObjects.add(object);
-
-                                        }
                                     }
 
                                 }

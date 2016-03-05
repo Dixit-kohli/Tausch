@@ -45,10 +45,12 @@ public class DBAccessor {
         return instance;
     }
 
+    //setting the reference for callback.
     private void setDBListener(DBListener dbListener){
         this.dbListener=dbListener;
     }
 
+    //setting the reference for callback.
     private void setSearchListener(SearchListener searchListener){
         this.searchListener=searchListener;
     }
@@ -56,8 +58,10 @@ public class DBAccessor {
     //method to see if username is already available during registration
     public void checkIfUsernameExists(final RegistrationDTO regDTO, final Registration callbackReg){
 
+        //Initially logout the current user.
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.logOut();
+
         ParseUser user = new ParseUser();
         user.setUsername(regDTO.getEmail());
         user.setPassword(regDTO.getPassword());
@@ -72,7 +76,7 @@ public class DBAccessor {
             public void done(ParseException e) {
                 if (e == null) {
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                    installation.put("username", regDTO.getEmail());
+                    installation.put(Constants.DB_USERNAME, regDTO.getEmail());
                     installation.saveInBackground();
 
                     // Sign up successful.
@@ -119,17 +123,19 @@ public class DBAccessor {
                 });
     }
 
+
+    //Fetch all the items for a particular category from database.
     public void getItemsForCategory(String categoryID, final HomePage homePage){
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
-        query.whereEqualTo("category_id", categoryID);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
+        query.whereEqualTo(Constants.DB_CATEGORY_ID, categoryID);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
 
                 //Getting the fragment already created using tag.
-                OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
+                OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Offer_List);
                 setDBListener(offerListFragment);
 
                 if (dbListener != null) {
@@ -141,17 +147,18 @@ public class DBAccessor {
 
     }
 
+    //get the name of city from its zipcode.
     public void getCityForZip(String zip,final HomePage homePage){
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("zip_code_database");
-        query.whereEqualTo("zip", zip);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_ZIP_CODE_DATABASE);
+        query.whereEqualTo(Constants.DB_ZIP, zip);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
 
                 //Getting the fragment already created using tag.
-                AddOfferFragment addOfferFragment = (AddOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag("tagAddOfferFragment");
+                AddOfferFragment addOfferFragment = (AddOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Add_Offer_Fragment);
                 setDBListener(addOfferFragment);
 
                 if (dbListener != null) {
@@ -164,47 +171,47 @@ public class DBAccessor {
 
     }
 
-
+//Check search results for either category or general search.
     public void getSearchResults(String itemsToSearch, final HomePage homePage){
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
 
-        query.whereEqualTo("offer_title", itemsToSearch);
+        query.whereEqualTo(Constants.DB_Offer_Title, itemsToSearch);
 
         switch (searchCode){
 
             case Constants.SEARCH_CODE_AUTOMOBILES:{
-                query.whereEqualTo("category_id",Constants.CATEGORY_AUTOMOBILES);
+                query.whereEqualTo(Constants.DB_CATEGORY_ID,Constants.CATEGORY_AUTOMOBILES_OBJECT_ID);
 
                 break;
             }
             case Constants.SEARCH_CODE_FURNITURE:{
 
-                query.whereEqualTo("category_id",Constants.CATEGORY_FURNITURE);
+                query.whereEqualTo(Constants.DB_CATEGORY_ID,Constants.CATEGORY_FURNITURE_OBJECT_ID);
 
                 break;
             }
             case Constants.SEARCH_CODE_LAPTOPS:{
 
-                query.whereEqualTo("category_id",Constants.CATEGORY_LAPTOPS);
+                query.whereEqualTo(Constants.DB_CATEGORY_ID,Constants.CATEGORY_LAPTOPS_OBJECT_ID);
 
                 break;
             }
             case Constants.SEARCH_CODE_RENTALS:{
 
-                query.whereEqualTo("category_id",Constants.CATEGORY_RENTALS);
+                query.whereEqualTo(Constants.DB_CATEGORY_ID,Constants.CATEGORY_RENTALS_OBJECT_ID);
 
                 break;
             }
             case Constants.SEARCH_CODE_BOOKS:{
 
-                query.whereEqualTo("category_id",Constants.CATEGORY_BOOKS);
+                query.whereEqualTo(Constants.DB_CATEGORY_ID,Constants.CATEGORY_BOOKS_OBJECT_ID);
 
                 break;
             }
         }
 
-
+//If none of the above category is selected, get results of generalized search.
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -220,6 +227,7 @@ public class DBAccessor {
 
     }
 
+    //Resend verification mail to user if she/he hasn't verfied email address.
 public void updateEmailForVerificationAgain(final HomePage homePage){
 
     ParseUser parseUser = ParseUser.getCurrentUser();

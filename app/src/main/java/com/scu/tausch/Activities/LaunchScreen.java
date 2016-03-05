@@ -34,7 +34,7 @@ public class LaunchScreen extends Activity {
 
 
 
-
+        //Showing splash screen.
 
         new Handler().postDelayed(new Runnable() {
 
@@ -48,7 +48,7 @@ public class LaunchScreen extends Activity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
 
-
+               //Decision based on current status - login or logout.
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
                 if (currentUser==null){

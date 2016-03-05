@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.scu.tausch.Model.NavDrawerItem;
+import com.scu.tausch.DTO.NavDrawerItem;
 import com.scu.tausch.R;
 
 import java.util.Collections;

@@ -32,6 +32,44 @@ public class Constants {
     public static final int SEARCH_CODE_LAPTOPS = 3;
     public static final int SEARCH_CODE_FURNITURE = 4;
     public static final int SEARCH_CODE_RENTALS = 5;
+    public static final String TAG_Image_Add = "tagImageAdd";
+    public static final String TAG_Offer_List = "tagOfferList";
+    public static final String TAG_Add_Offer_Fragment = "tagAddOfferFragment";
 
+    public static final String DB_Offers = "Offers";
+    public static final String DB_Offer_Title = "offer_title";
+    public static final String DB_Price = "price";
+    public static final String DB_Image_ONE = "image_one";
+
+    public static final String HOMEPAGE_HOME = "Home";
+    public static final String HOMEPAGE_MY_OFFERS = "My Offers";
+    public static final String HOMEPAGE_MY_MESSAGES = "My Messages";
+    public static final String HOMEPAGE_SETTINGS = "Settings";
+    public static final String HOMEPAGE_HELP = "Help";
+    public static final String HOMEPAGE_ABOUT = "About";
+    public static final String HOMEPAGE_SIGNOUT = "Sign out";
+
+
+    public static final String Array_Category_Automobiles = "Automobiles";
+    public static final String Array_Category_Books = "Books";
+    public static final String Array_Category_Laptops = "Laptops";
+    public static final String Array_Category_Furniture = "Furniture";
+    public static final String Array_Category_Rentals = "Rentals";
+    public static final String ITEM_TYPE_NEW = "New";
+    public static final String ITEM_TYPE_USED = "Used";
+    public static final String DB_PRIMARY_CITY = "primary_city";
+    public static final String DB_USERNAME = "username";
+    public static final String DB_OFFERS = "Offers";
+    public static final String DB_CATEGORY_ID = "category_id";
+    public static final String DB_ZIP_CODE_DATABASE = "zip_code_database";
+    public static final String DB_ZIP = "zip";
+    public static final String DB_OFFER_DESCRIPTION = "offer_description";
+    public static final String DB_OFFEROR = "offeror";
+    public static final String DB_CONDITION = "condition";
+    public static final String DB_CITY = "city";
+
+    public static final String USER_ID_KEY = "userId";
+    public static final String BODY_KEY = "body";
+    public static String RECEIVER_ID_KEY = "receiverId";
 
 }

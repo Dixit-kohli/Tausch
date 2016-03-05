@@ -74,36 +74,37 @@ public class AddOfferFragment extends Fragment implements DBListener{
         final EditText editZip = (EditText)rootView.findViewById(R.id.edit_zip);
         textCityName=(TextView)rootView.findViewById(R.id.text_city);
 
+
+        //adding all categories in list.
         List<String> categories = new ArrayList<>();
-        categories.add("Automobiles");
-        categories.add("Books");
-        categories.add("Laptops");
-        categories.add("Furniture");
-        categories.add("Rentals");
+        categories.add(Constants.Array_Category_Automobiles);
+        categories.add(Constants.Array_Category_Books);
+        categories.add(Constants.Array_Category_Laptops);
+        categories.add(Constants.Array_Category_Furniture);
+        categories.add(Constants.Array_Category_Rentals);
 
+        //adding type whether used or new to list.
         List<String> conditions = new ArrayList<>();
-        conditions.add("New");
-        conditions.add("Used");
+        conditions.add(Constants.ITEM_TYPE_NEW);
+        conditions.add(Constants.ITEM_TYPE_USED);
 
 
 
-
+       //Creating and setting adapter to array of categories required in spinner.
         ArrayAdapter<String> adapterCategories = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapterCategories.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCategory.setAdapter(adapterCategories);
 
+        //Creating and setting adapter to array of conditions required in spinner.
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);
         adapterConditions.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCondition.setAdapter(adapterConditions);
 
 
-
-
-
-
-
-
-
+/*
+* Setting data to dto object on click of next button to retain value.
+*
+* */
         Button buttonNext = (Button)rootView.findViewById(R.id.button_next);
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +127,8 @@ public class AddOfferFragment extends Fragment implements DBListener{
                 offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
                 offerDTO.setOfferorName((String) ParseUser.getCurrentUser().get("firstname"));
 
+
+                //fetching the value of city from server by providing the zip code.
                 DBAccessor.getInstance().getCityForZip(editZip.getText().toString().trim(), context);
 
                 progress = new ProgressDialog(getActivity());
@@ -142,6 +145,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
         return rootView;
     }
 
+    //Verification if all the required fields in the form are provided by user.
     public boolean isFormComplete(String title, String description,String price, String zip, String city){
 
         boolean isComplete = true;
@@ -200,21 +204,23 @@ public class AddOfferFragment extends Fragment implements DBListener{
         alertDialog.show();
 
     }
+
+    //Get the id of category used in database.
     public String getCategoryId(String categoryName){
 
-        if (categoryName.equals("Automobiles")){
+        if (categoryName.equals(Constants.Array_Category_Automobiles)){
             return Constants.CATEGORY_AUTOMOBILES_OBJECT_ID;
         }
-        if (categoryName.equals("Books")){
+        if (categoryName.equals(Constants.Array_Category_Books)){
             return Constants.CATEGORY_BOOKS_OBJECT_ID;
         }
-        if (categoryName.equals("Laptops")){
+        if (categoryName.equals(Constants.Array_Category_Laptops)){
             return Constants.CATEGORY_LAPTOPS_OBJECT_ID;
         }
-        if (categoryName.equals("Furniture")){
+        if (categoryName.equals(Constants.Array_Category_Furniture)){
             return Constants.CATEGORY_FURNITURE_OBJECT_ID;
         }
-        if (categoryName.equals("Rentals")){
+        if (categoryName.equals(Constants.Array_Category_Rentals)){
             return Constants.CATEGORY_RENTALS_OBJECT_ID;
         }
         return null;
@@ -224,11 +230,12 @@ public class AddOfferFragment extends Fragment implements DBListener{
     public void callback(List<ParseObject> objects) {
 
         progress.dismiss();
+
         if (objects==null || objects.size()==0){
             showDialogBoxForIncorrectZip();
             return;
         }
-        offerDTO.setCityId((String) (objects.get(0).get("primary_city")));
+        offerDTO.setCityId((String) (objects.get(0).get(Constants.DB_PRIMARY_CITY)));
         textCityName.setText(offerDTO.getCityId());
 
         boolean isCompleted = isFormComplete(offerDTO.getOfferTitle(),offerDTO.getOfferDescription(),offerDTO.getPrice(),offerDTO.getZip(),offerDTO.getCityId());
@@ -247,7 +254,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
         //AddOfferFragment in this case.
 
         AddOfferFragment.this.getFragmentManager().beginTransaction()
-                .replace(R.id.container_body, nextFrag,"tagImageAdd")
+                .replace(R.id.container_body, nextFrag, Constants.TAG_Image_Add)
                 .addToBackStack(null)
                 .commit();
 

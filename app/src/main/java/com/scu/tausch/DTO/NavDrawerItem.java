@@ -1,4 +1,4 @@
-package com.scu.tausch.Model;
+package com.scu.tausch.DTO;
 
 /**
  * Created by Praneet on 1/29/16.

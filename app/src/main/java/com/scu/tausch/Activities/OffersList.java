@@ -25,6 +25,7 @@ import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.scu.tausch.Adapters.CustomListAdapter;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import com.parse.ParseException;
@@ -46,8 +47,8 @@ public class OffersList extends Fragment implements DBListener{
     private  String[] arrayItemCosts;
     private ListView listViewItems;
     private ProgressDialog progress;
-    boolean isFilterActive=false;
-    boolean isSearchActive=false;
+    private boolean isFilterActive=false;
+    private boolean isSearchActive=false;
     private TextView emptyListTextView;
     private List<ParseObject> retainItemObjects;
 
@@ -69,27 +70,21 @@ public class OffersList extends Fragment implements DBListener{
         this.retainItemObjects=retainItemObjects;
     }
 
-    public void searchList(List<ParseObject> searchedObjects){
-
-        isSearchActive=true;
-
-        itemObjects = null;
-        itemObjects=searchedObjects;
-
+    private void setArraysForNamesImagesCost(List<ParseObject> arrayOfItemObjects){
 
         List<String> arrayTitles = new ArrayList<>();
         List<Bitmap> arrayImages = new ArrayList<>();
         List<String> arrayPrice = new ArrayList<>();
 
-        for(ParseObject itemObject:searchedObjects){
+        for(ParseObject itemObject:arrayOfItemObjects){
 
-            String itemTitle = (String)itemObject.get("offer_title");
+            String itemTitle = (String)itemObject.get(Constants.DB_Offer_Title);
             arrayTitles.add(itemTitle);
-            String itemPrice = (String)itemObject.get("price");
+            String itemPrice = (String)itemObject.get(Constants.DB_Price);
             arrayPrice.add(itemPrice);
 
             try {
-                ParseFile bum = (ParseFile) itemObject.get("image_one");
+                ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
                 byte[] file = bum.getData();
                 Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
                 arrayImages.add(image);
@@ -105,6 +100,19 @@ public class OffersList extends Fragment implements DBListener{
         arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
         arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
 
+    }
+
+
+    public void searchList(List<ParseObject> searchedObjects){
+
+        isSearchActive=true;
+
+        itemObjects = null;
+        itemObjects=searchedObjects;
+
+
+
+        setArraysForNamesImagesCost(searchedObjects);
 
     }
 
@@ -116,34 +124,7 @@ public class OffersList extends Fragment implements DBListener{
      itemObjects=filteredObjects;
 
 
-     List<String> arrayTitles = new ArrayList<>();
-     List<Bitmap> arrayImages = new ArrayList<>();
-     List<String> arrayPrice = new ArrayList<>();
-
-     for(ParseObject itemObject:filteredObjects){
-
-         String itemTitle = (String)itemObject.get("offer_title");
-         arrayTitles.add(itemTitle);
-         String itemPrice = (String)itemObject.get("price");
-         arrayPrice.add(itemPrice);
-
-         try {
-             ParseFile bum = (ParseFile) itemObject.get("image_one");
-             byte[] file = bum.getData();
-             Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
-             arrayImages.add(image);
-
-         }
-         catch (ParseException e){
-
-         }
-
-     }
-
-     arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
-     arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
-     arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
-
+     setArraysForNamesImagesCost(filteredObjects);
 
  }
 
@@ -191,6 +172,10 @@ public class OffersList extends Fragment implements DBListener{
                 title = getString(R.string.app_name);
 
                 fragment = new FilterFragment();
+                if (itemObjects==null){
+                    progress.dismiss();
+                    return;
+                }
                 if (itemObjects.size()==0){
                     itemObjects=retainItemObjects;
                 }
@@ -260,36 +245,12 @@ public class OffersList extends Fragment implements DBListener{
         progress.dismiss();
         itemObjects=objects;
 
-        List<String> arrayTitles = new ArrayList<>();
-        List<Bitmap> arrayImages = new ArrayList<>();
-        List<String> arrayPrice = new ArrayList<>();
+        setArraysForNamesImagesCost(objects);
 
-        for(ParseObject itemObject:itemObjects){
-
-            String itemTitle = (String)itemObject.get("offer_title");
-            arrayTitles.add(itemTitle);
-            String itemPrice = (String)itemObject.get("price");
-            arrayPrice.add(itemPrice);
-
-            try {
-                ParseFile bum = (ParseFile) itemObject.get("image_one");
-                byte[] file = bum.getData();
-                Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
-                arrayImages.add(image);
-
-            }
-            catch (ParseException e){
-
-            }
-
-        }
-
-        arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
-        arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
-        arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
         fetchedDataFromServer();
 
     }
+
 
     @Override
     public void onAttach(Activity activity) {

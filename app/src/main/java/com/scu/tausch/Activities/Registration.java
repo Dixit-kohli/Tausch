@@ -77,11 +77,12 @@ public class Registration extends Activity {
 
 
         //do email verification stuff
-        if (!isEmailValid(regDTO.getEmail())){
-            showIncorrectEMailDialogBox();
-            editEmail.setText(null);
-            return;
-        }
+      //  Commented for now. UNCOMMENT LATER.
+//        if (!isEmailValid(regDTO.getEmail())){
+//            showIncorrectEMailDialogBox();
+//            editEmail.setText(null);
+//            return;
+//        }
 
         if (checkIfFieldsEmpty()){
             showDialogForEmptyFields();

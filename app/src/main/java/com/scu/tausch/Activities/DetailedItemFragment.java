@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseObject;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import org.w3c.dom.Text;
@@ -51,12 +52,12 @@ public class DetailedItemFragment extends Fragment{
             public void setArguments(ParseObject itemObject, Bitmap[] images,int positionInList,String[] titles, String[] prices){
 
                 title = titles[positionInList];
-                description = (String)itemObject.get("offer_description");
+                description = (String)itemObject.get(Constants.DB_OFFER_DESCRIPTION);
                 image_one = images[positionInList];
                 item_price = prices[positionInList];
-                offeror = (String)itemObject.get("offeror");
-                condition = (String)itemObject.get("condition");
-                city = (String)itemObject.get("city");
+                offeror = (String)itemObject.get(Constants.DB_OFFEROR);
+                condition = (String)itemObject.get(Constants.DB_CONDITION);
+                city = (String)itemObject.get(Constants.DB_CITY);
 
             }
 

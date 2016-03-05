@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scu.tausch.Adapters.NavigationDrawerAdapter;
-import com.scu.tausch.Model.NavDrawerItem;
+import com.scu.tausch.DTO.NavDrawerItem;
 import com.scu.tausch.R;
 
 /**

@@ -29,6 +29,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.OfferDTO;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import java.io.ByteArrayOutputStream;
@@ -232,6 +233,8 @@ public class ImageAddFragment extends Fragment {
         super.onDetach();
     }
 
+
+    //Options provided for image selection. Either gallery or camera.
     private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -254,6 +257,8 @@ public class ImageAddFragment extends Fragment {
         builder.show();
     }
 
+
+    //Fetching image and applying it to imageView after compressing it.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -314,7 +319,7 @@ public class ImageAddFragment extends Fragment {
 
                 DBAccessor.getInstance().updateEmailForVerificationAgain(context);
 
-                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
+                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag(Constants.TAG_Image_Add);
                 getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
 
                 //After removing fragment in above line, we popBackStack() to remove from stack.

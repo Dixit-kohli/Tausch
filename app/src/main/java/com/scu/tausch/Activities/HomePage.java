@@ -51,7 +51,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private final int marginToReduceFromWidth = 40;
 
     //Names and images for categories.
-    private CharSequence[] items = {"Home", "My Offers", "My Messages","Settings","Help","About","Sign out"};
+    private CharSequence[] items = {Constants.HOMEPAGE_HOME, Constants.HOMEPAGE_MY_OFFERS, Constants.HOMEPAGE_MY_MESSAGES,Constants.HOMEPAGE_SETTINGS,Constants.HOMEPAGE_HELP,Constants.HOMEPAGE_ABOUT,Constants.HOMEPAGE_SIGNOUT};
     private final int HOME = 0;
     private final int MY_OFFERS = 1;
     private final int MY_MESSAGES = 2;
@@ -98,7 +98,9 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 showProgressForSearch();
                 DBAccessor.getInstance().getSearchResults(query, HomePage.this);
-
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                        INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
                 return false;
             }
@@ -147,7 +149,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment,"tagAddOfferFragment");
+            fragmentTransaction.replace(R.id.container_body, fragment,Constants.TAG_Add_Offer_Fragment);
             fragmentTransaction.commit();
 
             // set the toolbar title
@@ -239,7 +241,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         fragment.searchList(objects);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container_body, fragment,"tagOfferList");
+        fragmentTransaction.replace(R.id.container_body, fragment,Constants.TAG_Offer_List);
         fragmentTransaction.commit();
 
     }
@@ -264,9 +266,9 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     public void onBackPressed() {
         super.onBackPressed();
 
-if (DBAccessor.searchCode == Constants.SEARCH_CODE_AUTOMOBILES || DBAccessor.searchCode==Constants.SEARCH_CODE_BOOKS || DBAccessor.searchCode==Constants.SEARCH_CODE_FURNITURE || DBAccessor.searchCode==Constants.SEARCH_CODE_RENTALS|| DBAccessor.searchCode==Constants.SEARCH_CODE_LAPTOPS){
-    DBAccessor.searchCode=Constants.SEARCH_CODE_HOME_PAGE;
-}
+//if (DBAccessor.searchCode == Constants.SEARCH_CODE_AUTOMOBILES || DBAccessor.searchCode==Constants.SEARCH_CODE_BOOKS || DBAccessor.searchCode==Constants.SEARCH_CODE_FURNITURE || DBAccessor.searchCode==Constants.SEARCH_CODE_RENTALS|| DBAccessor.searchCode==Constants.SEARCH_CODE_LAPTOPS){
+//    DBAccessor.searchCode=Constants.SEARCH_CODE_HOME_PAGE;
+//}
 
     }
 }
