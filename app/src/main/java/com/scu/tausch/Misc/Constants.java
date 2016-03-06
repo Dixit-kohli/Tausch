@@ -57,6 +57,7 @@ public class Constants {
     public static final String Array_Category_Rentals = "Rentals";
     public static final String ITEM_TYPE_NEW = "New";
     public static final String ITEM_TYPE_USED = "Used";
+    public static final String ITEM_TYPE_All = "All";
     public static final String DB_PRIMARY_CITY = "primary_city";
     public static final String DB_USERNAME = "username";
     public static final String DB_OFFERS = "Offers";

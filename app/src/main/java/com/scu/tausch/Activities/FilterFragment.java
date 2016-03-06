@@ -70,10 +70,10 @@ public class FilterFragment extends Fragment {
         final EditText editMin = (EditText)rootView.findViewById(R.id.edit_min_price);
         final EditText editMax = (EditText)rootView.findViewById(R.id.edit_max_price);
 
-        Button searchButton = (Button)rootView.findViewById(R.id.button_search);
+        Button filterButton = (Button)rootView.findViewById(R.id.button_filter);
         Button cancelButton = (Button)rootView.findViewById(R.id.button_cancel);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -111,38 +111,47 @@ public class FilterFragment extends Fragment {
                         pricee=(String)object.get("price");
                     }
 
-                    String desc = (String)object.get("offer_description");
-                    String conditiond=(String)object.get("condition");
-                    String cityy = (String)object.get("city");
+                    String lDescription = (String)object.get("offer_description");
+                    String lCondition=(String)object.get("condition");
+                    String lCity = (String)object.get("city");
 
 
 
                     double price = Double.parseDouble(pricee);
 
-                        if (((String) object.get("city")).equalsIgnoreCase(city) || city.length()==0){
+                        if (lCity.equalsIgnoreCase(city) || city.length()==0){
 
                             if (price>=min || price==0){
 
                                 if (price<=max || price==0 || max==0){
 
-                                    if (((String) object.get("condition")).equalsIgnoreCase(condition)){
+                                    if (lCondition.equalsIgnoreCase(condition)){
 
-                                        if (desc.equalsIgnoreCase(description) || desc.contains(description) || desc.toLowerCase().contains(description.toLowerCase())){
-
-                                            filteredObjects.add(object);
-
-                                        }
-
-                                    }
-                                    else {
-
-                                        if (desc.equalsIgnoreCase(description) || desc.contains(description)){
+                                        if (lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())){
 
                                             filteredObjects.add(object);
 
                                         }
 
                                     }
+                                    else if(condition.equalsIgnoreCase(Constants.ITEM_TYPE_All)){
+
+                                        if (lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())){
+
+                                            filteredObjects.add(object);
+
+                                        }
+
+                                    }
+//                                    else {
+//
+//                                        if (lDescription.equalsIgnoreCase(description) || lDescription.contains(description)){
+//
+//                                            filteredObjects.add(object);
+//
+//                                        }
+//
+//                                    }
 
                                 }
 
@@ -173,7 +182,7 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                HomeFragment nextFrag= new HomeFragment();
+                HomeFragment nextFrag = new HomeFragment();
 
                 FilterFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_body, nextFrag)
@@ -185,16 +194,16 @@ public class FilterFragment extends Fragment {
 
 
         List<String> categories = new ArrayList<>();
-        categories.add("Automobiles");
-        categories.add("Books");
-        categories.add("Laptops");
-        categories.add("Furniture");
-        categories.add("Rentals");
+        categories.add(Constants.Array_Category_Automobiles);
+        categories.add(Constants.Array_Category_Books);
+        categories.add(Constants.Array_Category_Laptops);
+        categories.add(Constants.Array_Category_Furniture);
+        categories.add(Constants.Array_Category_Rentals);
 
         List<String> conditions = new ArrayList<>();
-        conditions.add("New");
-        conditions.add("Used");
-        conditions.add("Both");
+        conditions.add(Constants.ITEM_TYPE_All);
+        conditions.add(Constants.ITEM_TYPE_NEW);
+        conditions.add(Constants.ITEM_TYPE_USED);
 
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);
         adapterConditions.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
