@@ -104,16 +104,16 @@ public class FilterFragment extends Fragment {
 
                     String pricee = "";
 
-                    if (((String)object.get("price")).length()==0){
+                    if (((String)object.get(Constants.DB_Price)).length()==0){
                         pricee="0";
                     }
                     else{
-                        pricee=(String)object.get("price");
+                        pricee=(String)object.get(Constants.DB_Price);
                     }
 
-                    String lDescription = (String)object.get("offer_description");
-                    String lCondition=(String)object.get("condition");
-                    String lCity = (String)object.get("city");
+                    String lDescription = (String)object.get(Constants.DB_OFFER_DESCRIPTION);
+                    String lCondition=(String)object.get(Constants.DB_CONDITION);
+                    String lCity = (String)object.get(Constants.DB_CITY);
 
 
 
@@ -205,7 +205,7 @@ public class FilterFragment extends Fragment {
         conditions.add(Constants.ITEM_TYPE_NEW);
         conditions.add(Constants.ITEM_TYPE_USED);
 
-        ArrayAdapter<String> adapterConditions = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);
+        ArrayAdapter<String> adapterConditions = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);
         adapterConditions.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCondition.setAdapter(adapterConditions);
 
