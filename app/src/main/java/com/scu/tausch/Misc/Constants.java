@@ -32,9 +32,14 @@ public class Constants {
     public static final int SEARCH_CODE_LAPTOPS = 3;
     public static final int SEARCH_CODE_FURNITURE = 4;
     public static final int SEARCH_CODE_RENTALS = 5;
+
+
+    public static final String TAG_Image_Edit = "tagEditImage";
+    public static final String TAG_Edit_Offer_Fragment = "tagEditOffer";
     public static final String TAG_Image_Add = "tagImageAdd";
     public static final String TAG_Offer_List = "tagOfferList";
     public static final String TAG_Add_Offer_Fragment = "tagAddOfferFragment";
+    public static final String TAG_My_Offer_Fragment = "tagMyOfferFragment";
 
     public static final String DB_Offers = "Offers";
     public static final String DB_Offer_Title = "offer_title";
@@ -50,6 +55,7 @@ public class Constants {
     public static final String HOMEPAGE_SIGNOUT = "Sign out";
 
 
+    public static final String DB_USER_ID = "user_id";
     public static final String Array_Category_Automobiles = "Automobiles";
     public static final String Array_Category_Books = "Books";
     public static final String Array_Category_Laptops = "Laptops";

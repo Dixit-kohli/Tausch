@@ -15,12 +15,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.OfferDTO;
@@ -31,22 +29,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Praneet on 2/11/16.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link EditOfferFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link EditOfferFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class AddOfferFragment extends Fragment implements DBListener{
+public class EditOfferFragment extends Fragment implements DBListener{
 
     public static HomePage context;
     private OfferDTO offerDTO;
     private ProgressDialog progress;
     private TextView textCityName;
+    private boolean isOfferEditable=false;
+    private String updateSpinnerCategory;
+    private String updateSpinnerCondition;
+    private String updateEditTitle;
+    private String updateEditDescription;
+    private String updateEditPrice;
+    private String updateEditZip;
+    private String updateTextCityName;
+    private int categoryPosition;
+    private ParseObject editableObject;
 
-    public AddOfferFragment() {
+   public EditOfferFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    public void setArgumentsForUpdate(ParseObject itemObject){
+
+        isOfferEditable=true;
+        String categoryID = (String)itemObject.get("category_id");
+        updateSpinnerCategory = getCategoryName(categoryID);
+        updateSpinnerCondition = (String)itemObject.get("condition");
+        updateEditTitle = (String)itemObject.get("offer_title");
+        updateEditDescription=(String)itemObject.get("offer_description");
+        updateEditPrice=(String)itemObject.get("price");
+        updateEditZip=(String)itemObject.get("zipcode");
+        updateTextCityName=(String)itemObject.get("city");
+        editableObject=itemObject;
 
     }
 
@@ -90,7 +118,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
 
 
 
-       //Creating and setting adapter to array of categories required in spinner.
+        //Creating and setting adapter to array of categories required in spinner.
         ArrayAdapter<String> adapterCategories = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapterCategories.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCategory.setAdapter(adapterCategories);
@@ -100,10 +128,18 @@ public class AddOfferFragment extends Fragment implements DBListener{
         adapterConditions.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCondition.setAdapter(adapterConditions);
 
-/*
-* Setting data to dto object on click of next button to retain value.
-*
-* */
+        if (isOfferEditable){
+
+            spinnerCategory.setSelection(categoryPosition);
+            spinnerCondition.setSelection(updateSpinnerCondition.equals("New") ? 0 : 1);
+            editTitle.setText(updateEditTitle);
+            editDescription.setText(updateEditDescription);
+            editPrice.setText(updateEditPrice);
+            editZip.setText(updateEditZip);
+            textCityName.setText(updateTextCityName);
+
+        }
+
         Button buttonNext = (Button)rootView.findViewById(R.id.button_next);
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -126,23 +162,26 @@ public class AddOfferFragment extends Fragment implements DBListener{
                 offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
                 offerDTO.setOfferorName((String) ParseUser.getCurrentUser().get("firstname"));
 
-
-                //fetching the value of city from server by providing the zip code.
-                DBAccessor.getInstance().getCityForZip(editZip.getText().toString().trim(), context);
-
                 progress = new ProgressDialog(getActivity());
                 progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progress.setIndeterminate(true);
                 progress.show();
+
+                //fetching the value of city from server by providing the zip code.
+                DBAccessor.getInstance().getUpdatedCityForZip(editZip.getText().toString().trim(), context);
+
 
 
 
             }
         });
 
+
+
         // Inflate the layout for this fragment
         return rootView;
     }
+
 
     //Verification if all the required fields in the form are provided by user.
     public boolean isFormComplete(String title, String description,String price, String zip, String city){
@@ -225,6 +264,34 @@ public class AddOfferFragment extends Fragment implements DBListener{
         return null;
     }
 
+    public String getCategoryName(String categoryID){
+
+
+        if (Constants.CATEGORY_AUTOMOBILES_OBJECT_ID.equals(categoryID)){
+            categoryPosition=0;
+            return Constants.Array_Category_Automobiles;
+        }
+
+        if (Constants.CATEGORY_BOOKS_OBJECT_ID.equals(categoryID)){
+            categoryPosition=1;
+            return Constants.Array_Category_Books;
+        }
+        if (Constants.CATEGORY_LAPTOPS_OBJECT_ID.equals(categoryID)){
+            categoryPosition=2;
+            return Constants.Array_Category_Laptops;
+        }
+        if (Constants.CATEGORY_FURNITURE_OBJECT_ID.equals(categoryID)){
+            categoryPosition=3;
+            return Constants.Array_Category_Furniture;
+        }
+        if (Constants.CATEGORY_RENTALS_OBJECT_ID.equals(categoryID)){
+            categoryPosition=4;
+            return Constants.Array_Category_Rentals;
+        }
+        return null;
+
+    }
+
     @Override
     public void callback(List<ParseObject> objects) {
 
@@ -244,7 +311,14 @@ public class AddOfferFragment extends Fragment implements DBListener{
         }
 
 
-        ImageAddFragment nextFrag= new ImageAddFragment();
+        EditImageFragment nextFrag= new EditImageFragment();
+
+        if (isOfferEditable && editableObject!=null){
+
+            nextFrag.setArgumentsForUpdateComplete(editableObject);
+
+            isOfferEditable=false;
+        }
 
         nextFrag.currentOfferDetails(offerDTO);
 
@@ -253,13 +327,15 @@ public class AddOfferFragment extends Fragment implements DBListener{
         //addToBackStack(null) works for current fragment, like
         //AddOfferFragment in this case.
 
-        AddOfferFragment.this.getFragmentManager().beginTransaction()
-                .replace(R.id.container_body, nextFrag, Constants.TAG_Image_Add)
+        EditOfferFragment.this.getFragmentManager().beginTransaction()
+                .replace(R.id.container_body, nextFrag, Constants.TAG_Image_Edit)
                 .addToBackStack(null)
                 .commit();
 
 
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {

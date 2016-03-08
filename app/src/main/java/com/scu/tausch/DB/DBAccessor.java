@@ -9,7 +9,9 @@ import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.scu.tausch.Activities.AddOfferFragment;
 import com.scu.tausch.Activities.DBListener;
+import com.scu.tausch.Activities.EditOfferFragment;
 import com.scu.tausch.Activities.HomePage;
+import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.Activities.SearchListener;
 import com.scu.tausch.DTO.LoginDTO;
@@ -147,6 +149,29 @@ public class DBAccessor {
 
     }
 
+    //Fetch all the items posted by user
+    public void getItemsPostedByUser(final HomePage homePage){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
+        query.whereEqualTo(Constants.DB_USER_ID, ParseUser.getCurrentUser().getObjectId());
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                //Getting the fragment already created using tag.
+                MyOfferFragment myOfferFragment = (MyOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_My_Offer_Fragment);
+                setDBListener(myOfferFragment);
+
+                if (dbListener != null) {
+                    dbListener.callback(objects);
+                }
+
+            }
+        });
+
+    }
+
     //get the name of city from its zipcode.
     public void getCityForZip(String zip,final HomePage homePage){
 
@@ -160,6 +185,30 @@ public class DBAccessor {
                 //Getting the fragment already created using tag.
                 AddOfferFragment addOfferFragment = (AddOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Add_Offer_Fragment);
                 setDBListener(addOfferFragment);
+
+                if (dbListener != null) {
+                    dbListener.callback(objects);
+                }
+
+            }
+        });
+
+
+    }
+
+    //get the name of city from its zipcode.
+    public void getUpdatedCityForZip(String zip,final HomePage homePage){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_ZIP_CODE_DATABASE);
+        query.whereEqualTo(Constants.DB_ZIP, zip);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                //Getting the fragment already created using tag.
+                EditOfferFragment editOfferFragment = (EditOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Edit_Offer_Fragment);
+                setDBListener(editOfferFragment);
 
                 if (dbListener != null) {
                     dbListener.callback(objects);

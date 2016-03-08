@@ -41,6 +41,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
 
     private static String TAG = HomePage.class.getSimpleName();
+    private String Tag_Name;
 
     private Toolbar mToolbar,toolbarBottom;
     private FragmentDrawer drawerFragment;
@@ -67,6 +68,9 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         setContentView(R.layout.activity_home_page);
 
         ImageAddFragment.context=this;
+        MyOfferFragment.context=this;
+        EditOfferFragment.context=this;
+        EditImageFragment.context=this;
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -172,21 +176,27 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             case HOME:
                 fragment = new HomeFragment();
                 DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+                Tag_Name=null;
                 break;
             case MY_OFFERS:
                 fragment = new MyOfferFragment();
+                Tag_Name=Constants.TAG_My_Offer_Fragment;
                 break;
             case MY_MESSAGES:
                 fragment = new MyMessagesFragment();
+                Tag_Name=null;
                 break;
             case SETTINGS:
                 fragment = new SettingsFragment();
+                Tag_Name=null;
                 break;
             case HELP:
                 fragment = new HelpFragment();
+                Tag_Name=null;
                 break;
             case ABOUT:
                 fragment = new AboutFragment();
+                Tag_Name=null;
                 break;
             case SIGN_OUT:
                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -224,7 +234,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.replace(R.id.container_body, fragment,Tag_Name);
             fragmentTransaction.commit();
 
             // set the toolbar title
