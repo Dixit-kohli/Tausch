@@ -100,43 +100,42 @@ public class FilterFragment extends Fragment {
 
                 List<ParseObject> filteredObjects = new ArrayList<>();
 
-                for (ParseObject object:itemObjects) {
+                if (itemObjects!=null) {
+                    for (ParseObject object : itemObjects) {
 
-                    String pricee = "";
+                        String pricee = "";
 
-                    if (((String)object.get(Constants.DB_Price)).length()==0){
-                        pricee="0";
-                    }
-                    else{
-                        pricee=(String)object.get(Constants.DB_Price);
-                    }
+                        if (((String) object.get(Constants.DB_Price)).length() == 0) {
+                            pricee = "0";
+                        } else {
+                            pricee = (String) object.get(Constants.DB_Price);
+                        }
 
-                    String lDescription = (String)object.get(Constants.DB_OFFER_DESCRIPTION);
-                    String lCondition=(String)object.get(Constants.DB_CONDITION);
-                    String lCity = (String)object.get(Constants.DB_CITY);
+                        String lTitle = (String)object.get(Constants.DB_Offer_Title);
+                        String lDescription = (String) object.get(Constants.DB_OFFER_DESCRIPTION);
+                        String lCondition = (String) object.get(Constants.DB_CONDITION);
+                        String lCity = (String) object.get(Constants.DB_CITY);
 
 
+                        double price = Double.parseDouble(pricee);
 
-                    double price = Double.parseDouble(pricee);
+                        if (lCity.equalsIgnoreCase(city) || city.length() == 0) {
 
-                        if (lCity.equalsIgnoreCase(city) || city.length()==0){
+                            if (price >= min || price == 0) {
 
-                            if (price>=min || price==0){
+                                if (price <= max || price == 0 || max == 0) {
 
-                                if (price<=max || price==0 || max==0){
+                                    if (lCondition.equalsIgnoreCase(condition)) {
 
-                                    if (lCondition.equalsIgnoreCase(condition)){
-
-                                        if (lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())){
+                                        if (lTitle.equalsIgnoreCase(description) || lTitle.contains(description) || lTitle.toLowerCase().contains(description.toLowerCase()) || lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())) {
 
                                             filteredObjects.add(object);
 
                                         }
 
-                                    }
-                                    else if(condition.equalsIgnoreCase(Constants.ITEM_TYPE_All)){
+                                    } else if (condition.equalsIgnoreCase(Constants.ITEM_TYPE_All)) {
 
-                                        if (lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())){
+                                        if (lTitle.equalsIgnoreCase(description) || lTitle.contains(description) || lTitle.toLowerCase().contains(description.toLowerCase())|| lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())) {
 
                                             filteredObjects.add(object);
 
@@ -158,11 +157,10 @@ public class FilterFragment extends Fragment {
                             }
 
 
-
                         }
 
+                    }
                 }
-
                 OffersList fragment = new OffersList();
                 fragment.filterList(filteredObjects);
                 fragment.setRetainItemObjects(itemObjects);
