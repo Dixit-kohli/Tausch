@@ -50,7 +50,7 @@ public class OffersList extends Fragment implements DBListener{
     private boolean isFilterActive=false;
     private boolean isSearchActive=false;
     private TextView emptyListTextView;
-    private List<ParseObject> retainItemObjects;
+    static List<ParseObject> retainItemObjects;
 
     public OffersList() {
         // Required empty public constructor
@@ -176,7 +176,7 @@ public class OffersList extends Fragment implements DBListener{
                     progress.dismiss();
                     return;
                 }
-                if (itemObjects.size()==0){
+                if (itemObjects.size()==0 || itemObjects==null){
                     itemObjects=retainItemObjects;
                 }
                 fragment.fetchedItemObjects(itemObjects);
@@ -243,6 +243,7 @@ public class OffersList extends Fragment implements DBListener{
     public void callback(List<ParseObject> objects) {
 
         progress.dismiss();
+        setRetainItemObjects(objects);
         itemObjects=objects;
 
         setArraysForNamesImagesCost(objects);

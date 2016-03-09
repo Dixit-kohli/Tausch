@@ -42,6 +42,8 @@
     <string name="spinner_title">Category</string>
     <string name="spinner_category">Select a Category</string>
     <string name="spinner_select_condition">Select a Condition</string>
+    <string name="heading_help">TAUSCH: Frequently Asked Questions</string>
+
 
 
     <string name="profile_me">My Profile Pic</string>
@@ -52,6 +54,89 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_chat">ChatActivity</string>
+
+    <string name="faqs"><b>GETTING STARTED</b>\n
+    <b>1.	When can I start buying or selling on Tausch?</b>\n
+    To become either a buyer or a seller, you will have to register yourself at the time of signing in for the first time. Once you have created your profile and your email has been verified, you will be able to login, browse through categories of your choice, and buy or sell items.\n\n\n
+
+    <b>2.	What do I do if I have forgotten my password?</b>\n
+    You can click on the link “Forgot Password” on the login page. An email containing the password reset link will be sent to your registered email account. Once you click on that link, you will be able to reset your password.\n\n\n
+
+    <b>3.	Can I have more than one account on Tausch?</b>\n
+    A user will be able to use Tausch with a unique registered email address. If you have more than one account using different email addresses, you will still be able to use Tausch as two separate users. But it is recommended that a user uses one account so that you will be able to better track your offers and communication.\n\n\n
+    <b>4.	What devices or OS does Tausch run on?</b>\n
+    Currently, we are enabling Tausch to be functional across all mobile devices that run on the Android OS. We will soon be releasing the iOS version.\n\n\n
+    <b>BROWSING AND SEARCHING</b>\n
+    <b>1.	How do I search?</b>\n
+    You will find a small magnifying glass on the top right of your Tausch app that will help you search based on your preferences.\n\n\n
+
+    <b>2.	Can I search with specific keywords?</b>\n
+    Yes. You will be able to enter words of your choice into the search bar. The app will use these words to search across various offers to give you the results you want.\n\n\n
+    <b>3.	What are my options to customize my search?</b>\n
+    You will be able to specify keywords in the search bar. But to further customize your search, you have the advantage of using the “Filter” button on the top left of your Tausch app. Using the Filter button, you can specify the city and zip code, the specific category, and many more.\n\n\n
+
+    <b>4.	How do I get the best search results?</b>\n
+    This depends on the kind of keywords that you are using and also the filter criteria you apply. But if you are sure of the category you want to search in, it is recommended that you click on that particular category and then perform the search and filter operations.\n\n\n
+
+    <b>CREATING, MODIFYING, AND DELETING AN OFFER</b>\n
+    <b>1.	How do I create a new offer?</b>\n
+    You will need to click on the “+” button on the top right of your Tausch app to create a new offer. Once you click, you will have to enter your offer information, such as choosing the appropriate category, title, description, price, and pictures. You will be able to upload 5 pictures per offer, though this is not mandatory.\n\n\n
+    <b>2.	How do I modify or delete my offer?</b>\n
+
+    You will need to click on Menu, and choose My Offers from the drop down list. From the list of your offers, choose the offer that you need to modify or delete, and click on the “compose” button for modification or “trash” button for deletion of your offer.\n\n\n
+
+    <b>MESSAGES</b>\n
+    <b>1.	How do I contact the owner of a post?</b>\n
+    Whenever you click on an offer, you will see a “send message” button. If you click on it, you will be able to send a message directly to the owner of the offer. To see the continued chat thread, you can go to Menu, click on My Messages, and then choose the appropriate chat thread for the latest chat updates.\n\n\n
+    <b>2.	How will I be alerted of new messages?</b>\n
+    Tausch enables you to receive latest updates to your messages. With only a connection the
+    Internet, if you receive a reply, you will be able to see a notification under Menu, My messages.\n\n\n
+
+    <b>DELETING AN ACCOUNT</b>\n
+    <b>1.	How do I delete my account?</b>\n
+    You will be able to deactivate your account by going to Menu and Settings. If you want to reactivate your account to use Tausch, you have to register once again. If you use the same registration details like your first time, and if you register within 365 days from the day you had deactivated your account, you will still be able to view your old offer data.\n\n\n
+
+    <b>PROFILE INFORMATION</b>\n
+    <b>1.	How do I edit my profile information?</b>\n
+    You can go to Menu, and choose Settings to update or modify your profile information. You also have the option of adding a profile picture for your account, but this is not mandatory.\n\n
+
+
+    </string>
+
+
+    <string name="bottom_label">TERMS OF SERVICE</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut est diam, laoreet ac volutpat eget, commodo non eros. Nam convallis tortor porta ipsum congue, eu blandit felis convallis. Vestibulum ut arcu ut est elementum bibendum vitae a velit. Suspendisse auctor sapien ut ornare faucibus. Fusce non pulvinar ipsum, sit amet elementum ipsum. Mauris molestie eros eu consectetur venenatis. Fusce ut lorem vitae neque tristique ullamcorper. Duis eleifend eros ipsum. Cras non felis enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec sed quam lectus. Aliquam et erat luctus magna sodales ullamcorper. Cras accumsan nec eros sit amet commodo.
 
