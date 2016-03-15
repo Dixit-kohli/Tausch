@@ -85,20 +85,31 @@ public class EditImageFragment extends Fragment {
 
         editableItemObject=itemObject;
 
-        ParseFile imageFileOne = (ParseFile)itemObject.get("image_one");
-        imageFileOne.getDataInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] data, com.parse.ParseException e) {
-                if (e == null) {
-                    // data has the bytes for the image
-                    bitmapImageOne = BitmapFactory.decodeByteArray(data, 0, data.length);
 
+        try {
+            ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
+            byte[] file = bum.getData();
+            bitmapImageOne = BitmapFactory.decodeByteArray(file, 0, file.length);
 
-                } else {
-                    // something went wrong
-                }
-            }
-        });
+        }
+        catch (ParseException e){
+
+        }
+
+//        ParseFile imageFileOne = (ParseFile)itemObject.get("image_one");
+//        imageFileOne.getDataInBackground(new GetDataCallback() {
+//            @Override
+//            public void done(byte[] data, com.parse.ParseException e) {
+//                if (e == null) {
+//                    // data has the bytes for the image
+//                     = BitmapFactory.decodeByteArray(data, 0, data.length);
+//
+//
+//                } else {
+//                    // something went wrong
+//                }
+//            }
+//        });
 
 
 

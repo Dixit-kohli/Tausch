@@ -55,6 +55,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_chat">ChatActivity</string>
 
+    <string name="about_text">
+        Tausch - Bartering made easy\n\n
+
+    A one-stop portal for buying and selling in your community. Browse through a range of categories, take photos of items, and seal the deal... all within a minute!
+
+
+    </string>
+
+
+
     <string name="faqs"><b>GETTING STARTED</b>\n
     <b>1.	When can I start buying or selling on Tausch?</b>\n
     To become either a buyer or a seller, you will have to register yourself at the time of signing in for the first time. Once you have created your profile and your email has been verified, you will be able to login, browse through categories of your choice, and buy or sell items.\n\n\n
