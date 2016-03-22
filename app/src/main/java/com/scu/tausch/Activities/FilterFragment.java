@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.parse.ParseObject;
+import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
@@ -42,6 +43,7 @@ public class FilterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
     }
 
     public void fetchedItemObjects(List<ParseObject> itemObjects){

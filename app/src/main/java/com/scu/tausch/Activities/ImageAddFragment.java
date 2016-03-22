@@ -66,6 +66,8 @@ public class ImageAddFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+
     }
 
 //    public void setArgumentsForUpdateComplete(ParseObject itemObject){

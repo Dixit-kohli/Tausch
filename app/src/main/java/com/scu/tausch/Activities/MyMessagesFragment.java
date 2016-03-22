@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.scu.tausch.DB.DBAccessor;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 /**
  * Created by Praneet on 1/29/16.
@@ -24,6 +26,7 @@ public class MyMessagesFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
         //DO NOT DELETE FOLLOWING CODE
         //ChatFragment nextFrag= new ChatFragment();

@@ -61,6 +61,8 @@ public class EditOfferFragment extends Fragment implements DBListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+
     }
 
     public void setArgumentsForUpdate(ParseObject itemObject){

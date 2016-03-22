@@ -67,6 +67,8 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+
         ImageAddFragment.context=this;
         MyOfferFragment.context=this;
         EditOfferFragment.context=this;

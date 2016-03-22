@@ -47,6 +47,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
     }
 

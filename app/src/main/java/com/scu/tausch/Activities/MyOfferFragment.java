@@ -55,6 +55,8 @@ public class MyOfferFragment extends Fragment implements DBListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+
         progress = new ProgressDialog(getActivity());
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);

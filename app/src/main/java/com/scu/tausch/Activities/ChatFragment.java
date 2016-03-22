@@ -26,6 +26,7 @@ import com.parse.SaveCallback;
 import com.scu.tausch.Adapters.ChatListAdapter;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.Message;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 import android.os.Handler;
 
@@ -60,6 +61,7 @@ public class ChatFragment extends Fragment {
 
      //   mHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
 
+        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
 
     }
