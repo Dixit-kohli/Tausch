@@ -47,17 +47,6 @@ public class ChatFragment extends Fragment {
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
 
-   // static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
-   // static final int POLL_INTERVAL = 100; // milliseconds
-    // Create a handler which can run code periodically
-//    final Handler mHandler = new Handler();  // android.os.Handler
-//    Runnable mRefreshMessagesRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//         //   refreshMessages();
-//       //     mHandler.postDelayed(this, POLL_INTERVAL);
-//        }
-//    };
 
     public ChatFragment(){
      // Required empty public constructor
@@ -98,14 +87,6 @@ public class ChatFragment extends Fragment {
         // User login
         if (myCurrentUser != null) { // start with existing user
             startWithCurrentUser();
-        } else { // If not logged in, login as a new anonymous user
-            // login();
-            //We need current user many times, so need to make sure its not null.
-          //  if (ParseUser.getCurrentUser()==null) {
-//                ParseUser.enableAutomaticUser();
-//                ParseUser.getCurrentUser().saveInBackground();
-//            startWithCurrentUser();
-         //   }
         }
 
         return rootView;
@@ -143,7 +124,7 @@ public class ChatFragment extends Fragment {
                 query.findInBackground(new FindCallback<ParseObject>() {
                     public void done(List<ParseObject> objects, ParseException e) {
                         if (e == null) {
-                            // row of Object Id "U8mCwTHOaC"
+                           //  row of Object Id "U8mCwTHOaC"
 
                             for (final ParseObject dealsObject : objects) {
                                 // use dealsObject.get('columnName') to access the properties of the Deals object.
@@ -159,47 +140,23 @@ public class ChatFragment extends Fragment {
                                 message.put(Message.BODY_KEY, data);
 
                                 //currently its for pjain3@scu.edu, it should be receiver dealObj
-                                message.put(Message.RECEIVER_ID_KEY, "Q1HVhZTKHe");
+                                message.put(Message.RECEIVER_ID_KEY, "I1l9L8XiYC");
                                 message.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(com.parse.ParseException e) {
                                         Toast.makeText(getActivity(), "Successfully created message on Parse",
                                                 Toast.LENGTH_SHORT).show();
 
-
-//                                        ParseQuery pushQuery = ParseInstallation.getQuery();
-//                                        pushQuery.whereEqualTo(Message.RECEIVER_ID_KEY, dealObj);
-//                                     //   ParseUser currentUser = ParseUser.getCurrentUser();
-//                                       // String message = currentUser.getString("name") + " says Hi!";
-//
-//                                        ParsePush push = new ParsePush();
-//                                        push.setQuery(pushQuery); // Set our Installation query
-//                                        push.setMessage("data");
-//                                        push.sendInBackground();
-
-
-
-
-
-
-
-//                                        ParsePush push = new ParsePush();
-//                                        String message = "Client message testinggg";
-//                                        push.setChannel("abc");
-//                                        push.setMessage(message);
-//                                        push.sendInBackground();
-
-
                                         ParsePush parsePush = new ParsePush();
                                         ParseQuery pQuery = ParseInstallation.getQuery(); // <-- Installation query
-                                        pQuery.whereEqualTo("username", "praneetchhabra@gmail.com"); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
+                                        pQuery.whereEqualTo("username", "pjain3@scu.edu"); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
                                         parsePush.sendMessageInBackground("Only for special people", pQuery);
 
 
 
 
 
-                                        //   refreshMessages();
+                                         //  refreshMessages();
                                     }
                                 });
                                 etMessage.setText(null);
@@ -219,35 +176,35 @@ public class ChatFragment extends Fragment {
     }
 
     // Query messages from Parse so we can load them into the chat adapter
-//    void refreshMessages() {
-//
-//        // Construct query to execute
-//        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
-//        // Configure limit and sort order
-//        query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
-//        query.orderByAscending("createdAt");
-//        // Execute query to fetch all messages from Parse asynchronously
-//        // This is equivalent to a SELECT query with SQL
-//
-//        query.findInBackground(new FindCallback<Message>() {
-//            @Override
-//            public void done(List<Message> messages, com.parse.ParseException e) {
-//                if (e == null) {
-//                    mMessages.clear();
-//                    mMessages.addAll(messages);
-//                    mAdapter.notifyDataSetChanged(); // update adapter
-//                    // Scroll to the bottom of the list on initial load
-//                    if (mFirstLoad) {
-//                        lvChat.setSelection(mAdapter.getCount() - 1);
-//                        mFirstLoad = false;
-//                    }
-//                } else {
-//                    Log.e("message", "Error Loading Messages" + e);
-//                }
-//            }
-//        });
-//
-//    }
+    void refreshMessages() {
+
+        // Construct query to execute
+        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
+        // Configure limit and sort order
+       // query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
+        query.orderByAscending("createdAt");
+        // Execute query to fetch all messages from Parse asynchronously
+        // This is equivalent to a SELECT query with SQL
+
+        query.findInBackground(new FindCallback<Message>() {
+            @Override
+            public void done(List<Message> messages, com.parse.ParseException e) {
+                if (e == null) {
+                    mMessages.clear();
+                    mMessages.addAll(messages);
+                    mAdapter.notifyDataSetChanged(); // update adapter
+                    // Scroll to the bottom of the list on initial load
+                    if (mFirstLoad) {
+                        lvChat.setSelection(mAdapter.getCount() - 1);
+                        mFirstLoad = false;
+                    }
+                } else {
+                    Log.e("message", "Error Loading Messages" + e);
+                }
+            }
+        });
+
+    }
 
 
     // Create an anonymous user using ParseAnonymousUtils and set sUserId

@@ -108,12 +108,12 @@ public class DetailedItemFragment extends Fragment{
                 * DO NOT DELETE FOLLOWING LINES OF CODE. TO BE REORGANIZED AFTER ALL OTHER VIEW ARE DONE.
                 *
                 * */
-//                ChatFragment nextFrag= new ChatFragment();
-//
-//                DetailedItemFragment.this.getFragmentManager().beginTransaction()
-//                        .replace(R.id.myDetailedItemFragment, nextFrag)
-//                        .addToBackStack(null)
-//                        .commit();
+                ChatFragment nextFrag= new ChatFragment();
+
+                DetailedItemFragment.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.myDetailedItemFragment, nextFrag)
+                        .addToBackStack(null)
+                        .commit();
 
             }
         });
