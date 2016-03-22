@@ -29,6 +29,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
+        android:singleLine="true"
         android:hint="FIRST NAME" />
 
     <EditText
@@ -38,6 +39,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
+        android:singleLine="true"
         android:hint="LAST NAME" />
 
     <EditText
@@ -48,6 +50,7 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:inputType="textEmailAddress"
+        android:singleLine="true"
         android:hint="EMAIL" />
 
     <EditText
@@ -58,6 +61,7 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:hint="PASSWORD"
+        android:singleLine="true"
         android:password="true" />
 
     <EditText
@@ -68,6 +72,7 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:hint="CONFIRM PASSWORD"
+        android:singleLine="true"
         android:password="true" />
 
     <EditText
@@ -78,6 +83,7 @@
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:hint="MOBILE"
+        android:singleLine="true"
         android:inputType="number"/>
 
     <CheckBox
