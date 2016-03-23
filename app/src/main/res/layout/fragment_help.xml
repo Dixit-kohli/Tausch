@@ -40,14 +40,16 @@
 
     </ScrollView>
 
-    <TextView
+    <Button
         android:id="@+id/bottom_label"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center_horizontal"
         android:textSize="18dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/bottom_label"
+        android:textAllCaps="false"
+        android:text="Contact us!"
+        android:background="@android:color/transparent"
         android:textStyle="bold"/>
 
 

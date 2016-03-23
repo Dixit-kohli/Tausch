@@ -2,6 +2,7 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
@@ -51,6 +53,24 @@ public class HelpFragment extends Fragment {
                 return false;
             }
         });
+
+        Button contactButton = (Button) rootView.findViewById(R.id.bottom_label);
+
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "praneet@tauschapp.com" });
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(Intent.createChooser(intent, ""));
+
+
+            }
+        });
+
 
         // Inflate the layout for this fragment
         return rootView;
