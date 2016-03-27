@@ -96,7 +96,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_launch_screen, menu);
 
-        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -245,12 +245,12 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     }
 
     @Override
-    public void searchResults(List<ParseObject> objects) {
+    public void searchResults(List<ParseObject> objects, String searchStr) {
 
         progress.dismiss();
 
         OffersList fragment = new OffersList();
-        fragment.searchList(objects);
+        fragment.searchList(objects, searchStr);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container_body, fragment,Constants.TAG_Offer_List);

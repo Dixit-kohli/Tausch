@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface SearchListener {
 
-    void searchResults(List<ParseObject> objects);
+    void searchResults(List<ParseObject> objects, String itemsToSearch);
 }

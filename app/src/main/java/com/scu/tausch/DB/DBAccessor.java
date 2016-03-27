@@ -221,11 +221,12 @@ public class DBAccessor {
     }
 
 //Check search results for either category or general search.
-    public void getSearchResults(String itemsToSearch, final HomePage homePage){
+    public void getSearchResults(String searchStr, final HomePage homePage){
+        final String searchStr1 = searchStr;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
 
-        query.whereEqualTo(Constants.DB_Offer_Title, itemsToSearch);
+       // TODO: Need to add status ="Open" (true) in queries, we need to search only open offers and not closed/deleted
 
         switch (searchCode){
 
@@ -268,7 +269,7 @@ public class DBAccessor {
                 setSearchListener(homePage);
 
                 if (searchListener != null) {
-                    searchListener.searchResults(objects);
+                    searchListener.searchResults(objects,searchStr1);
                 }
 
             }

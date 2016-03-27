@@ -15,6 +15,7 @@ public class OfferDTO {
     private String cityId;
     private String zip;
     private String condition;
+    private String rentalType;
     private String price;
     private Bitmap image_one;
     private Bitmap image_two;
@@ -22,8 +23,28 @@ public class OfferDTO {
     private Bitmap image_four;
     private Bitmap image_five;
     private String offeror;
-
     private boolean offerStatus;
+
+    public OfferDTO(){
+
+    }
+
+    public OfferDTO(String offerId, String postedBy, String categoryId, String offerTitle, String offerDescription,
+                    String cityId, String zip, String condition, String rentalType,String price, Bitmap image_one, String offeror, boolean offerStatus) {
+        this.offerId = offerId;
+        this.postedBy = postedBy;
+        this.categoryId = categoryId;
+        this.offerTitle = offerTitle;
+        this.offerDescription = offerDescription;
+        this.cityId = cityId;
+        this.zip = zip;
+        this.condition = condition;
+        this.rentalType = rentalType;
+        this.price = price;
+        this.image_one = image_one;
+        this.offeror = offeror;
+        this.offerStatus = offerStatus;
+    }
 
     public String getOfferorName() {
         return offeror;
@@ -150,5 +171,13 @@ public class OfferDTO {
 
     public void setOfferStatus(boolean offerStatus) {
         this.offerStatus = offerStatus;
+    }
+
+    public String getRentalType() {
+        return rentalType;
+    }
+
+    public void setRentalType(String rentalType) {
+        this.rentalType = rentalType;
     }
 }

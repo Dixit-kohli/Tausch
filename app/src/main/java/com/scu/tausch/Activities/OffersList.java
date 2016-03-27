@@ -20,12 +20,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.scu.tausch.Adapters.CustomListAdapter;
 import com.scu.tausch.DB.DBAccessor;
+import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
@@ -106,16 +108,117 @@ public class OffersList extends Fragment implements DBListener{
     }
 
 
-    public void searchList(List<ParseObject> searchedObjects){
+    public void searchList(List<ParseObject> searchedObjects, String searchStr){
 
         isSearchActive=true;
 
         itemObjects = null;
         itemObjects=searchedObjects;
+        List<OfferDTO> offers = new ArrayList<OfferDTO>();
+
+        // commented as we do not want this function any more
+
+        offers = searchOffersWithASearchStr(searchedObjects, offers, searchStr);
+
+        setArraysForSearchResults(offers);
+        // setArraysForNamesImagesCost(searchedObjects);
+
+    }
+
+
+    public List<OfferDTO>  searchOffersWithASearchStr(List<ParseObject> offersParseList, List<OfferDTO> offersList, String searchStr){
+
+        // till here we fetched all the offers specific to a category and which are open offers... not closed
+        List<OfferDTO> searchedOffers = new ArrayList<OfferDTO>();
+        //progress.dismiss();
+        if(offersParseList.size()>0) {
+            for (ParseObject parseOffer : offersParseList) {
+                Bitmap image = null;
+                try {
+                    ParseFile bum = (ParseFile) parseOffer.get(Constants.DB_Image_ONE);
+                    byte[] file = bum.getData();
+                    image = BitmapFactory.decodeByteArray(file, 0, file.length);
+
+                }
+                catch (ParseException e){
+                }
+                OfferDTO offer = new OfferDTO(
+                        parseOffer.getObjectId(),
+                        parseOffer.getString("offeror"),
+                        parseOffer.getString("category_id"),
+                        parseOffer.getString("offer_title"),
+                        parseOffer.getString("offer_description"),
+                        parseOffer.getString("city"),
+                        parseOffer.getString("zipcode"),
+                        parseOffer.getString("condition"),
+                        parseOffer.getString("rental_type"),
+                        parseOffer.getString("price"),
+                        image,
+                        parseOffer.getString("offeror"),
+                        parseOffer.getBoolean("status")
+                );
+                offersList.add(offer);
+            }
+        }
+
+        // now perform the search on the offersList to search the string -
+        // currently performed search on below columns: offer-title, offer_description, zipcode, price and condition
+        // Can add others but they are all IDs stored like category_id,condition_id
+        if(offersList!=null && !offersList.isEmpty()) {
+            for (OfferDTO offer : offersList) {
+                if (
+                        offer.getOfferTitle().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                offer.getOfferDescription().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                offer.getPrice().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                //offer.getZip().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                offer.getCondition().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                offer.getCityId().toLowerCase().contains(searchStr.toLowerCase())
+                        )
+                    searchedOffers.add(offer);
+            }
+        }
+
+        // searchedOffers will only contain those offers which has the string that is to be searched
+        if(searchedOffers!=null && !searchedOffers.isEmpty()) {
+            {
+               // Toast.makeText(this,Toast.LENGTH_SHORT).show();
+                int count = 0;
+                for (OfferDTO o : searchedOffers) {
+                    count++;
+                 //   Toast.makeText(this, "Offer " + count + ": " + o.getOfferId()+" , "+o.getOfferTitle() + " , " + o.getOfferDescription(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        //else
+       //     Toast.makeText(this, "No records found", Toast.LENGTH_SHORT).show();
+
+        //finish();
+        return searchedOffers;
+    }
 
 
 
-        setArraysForNamesImagesCost(searchedObjects);
+    private void setArraysForSearchResults(List<OfferDTO> offers){
+
+        List<String> arrayTitles = new ArrayList<>();
+        List<Bitmap> arrayImages = new ArrayList<>();
+        List<String> arrayPrice = new ArrayList<>();
+
+        for(OfferDTO offer:offers){
+
+            String itemTitle = offer.getOfferTitle();
+            arrayTitles.add(itemTitle);
+            String itemPrice = offer.getPrice();
+            arrayPrice.add(itemPrice);
+                //ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
+                //byte[] file = bum.getData();
+                Bitmap image = offer.getImage_one();
+                arrayImages.add(image);
+        }
+
+        arrayItemNames = arrayTitles.toArray(new String[offers.size()]);
+        arrayItemCosts = arrayPrice.toArray(new String[offers.size()]);
+        arrayItemImages = arrayImages.toArray(new Bitmap[offers.size()]);
 
     }
 
