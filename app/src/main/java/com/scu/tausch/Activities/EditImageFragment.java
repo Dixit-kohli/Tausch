@@ -117,23 +117,6 @@ public class EditImageFragment extends Fragment {
 
         }
 
-//        ParseFile imageFileOne = (ParseFile)itemObject.get("image_one");
-//        imageFileOne.getDataInBackground(new GetDataCallback() {
-//            @Override
-//            public void done(byte[] data, com.parse.ParseException e) {
-//                if (e == null) {
-//                    // data has the bytes for the image
-//                     = BitmapFactory.decodeByteArray(data, 0, data.length);
-//
-//
-//                } else {
-//                    // something went wrong
-//                }
-//            }
-//        });
-
-
-
 
     }
 
@@ -215,21 +198,6 @@ public class EditImageFragment extends Fragment {
             buttonPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-//                    ParseUser currentUser = ParseUser.getCurrentUser();
-//                    currentUser.fetchInBackground(new GetCallback<ParseObject>() {
-//                        @Override
-//                        public void done(ParseObject object, ParseException e) {
-//                            if (e == null) {
-//
-//
-//
-//                            } else {
-//                                // Failure!
-//                            }
-//                        }
-//                    });
-
 
                     if (isOfferEditable){
 
@@ -383,77 +351,8 @@ public class EditImageFragment extends Fragment {
                         });
 
 
-//                        query.whereEqualTo("objectId", objectIdForTuple);
-//                        query.findInBackground(new FindCallback<ParseObject>() {
-//                            @Override
-//                            public void done(List<ParseObject> objects, com.parse.ParseException e) {
-//
-//                                if (e == null) {
-//
-//
-//                                } else {
-//                                    Log.d("Post retrieval", "Error: " + e.getMessage());
-//                                }
-//
-//                            }
-//                        });
-
-
                     }
 
-//                    Bitmap bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
-//
-//                    // Convert it to byte
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    // Compress image to lower quality scale 1 - 100
-//                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    byte[] image = stream.toByteArray();
-//
-//                    // Create the ParseFile
-//                    ParseFile file = new ParseFile("image.png", image);
-//                    // Upload the image into Parse Cloud
-//                    file.saveInBackground();
-//
-//                    // Create a New Class called "ImageUpload" in Parse
-//                    ParseObject imgupload = new ParseObject("Offers");
-//
-//                    // Create a column named "ImageName" and set the string
-//                    String objectIdUser = (String)ParseUser.getCurrentUser().getObjectId();
-//                    imgupload.put("user_id", objectIdUser);
-//
-//                    imgupload.put("category_id",offerDTO.getCategoryId());
-//
-//                    imgupload.put("offer_title",offerDTO.getOfferTitle());
-//
-//                    imgupload.put("offer_description",offerDTO.getOfferDescription());
-//
-//                    imgupload.put("price",offerDTO.getPrice());
-//
-//                    imgupload.put("condition",offerDTO.getCondition());
-//
-//                    imgupload.put("zipcode",offerDTO.getZip());
-//
-//                    imgupload.put("offeror",offerDTO.getOfferorName());
-//
-//                    imgupload.put("city",offerDTO.getCityId());
-//
-//                    // Create a column named "ImageFile" and insert the image
-//                    imgupload.put("image_one", file);
-//
-//                    // Create the class and the columns
-//                    imgupload.saveInBackground();
-//
-//                    Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
-//                    getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
-//
-//                    //After removing fragment in above line, we popBackStack() to remove from stack.
-//                    getFragmentManager().popBackStack();
-//
-//                    HomeFragment nextFrag= new HomeFragment();
-//
-//                    EditImageFragment.this.getFragmentManager().beginTransaction()
-//                            .replace(R.id.container_body, nextFrag)
-//                            .commit();
 
                 }
             });
@@ -563,42 +462,5 @@ public class EditImageFragment extends Fragment {
         }
 
     }
-
-//    private void showDialogBoxForUnverfiedUser(){
-//
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-//        alertDialogBuilder.setMessage("You must verify your Email!");
-//
-//        alertDialogBuilder.setPositiveButton("Resend Email", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                dialog.dismiss();
-//
-//                DBAccessor.getInstance().updateEmailForVerificationAgain(context);
-//
-//                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag(Constants.TAG_Image_Add);
-//                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
-//
-//                //After removing fragment in above line, we popBackStack() to remove from stack.
-//                getFragmentManager().popBackStack();
-//
-//                HomeFragment nextFrag= new HomeFragment();
-//
-//                EditImageFragment.this.getFragmentManager().beginTransaction()
-//                        .replace(R.id.container_body, nextFrag)
-//                        .commit();
-//
-//
-//
-//
-//            }
-//        });
-//
-//        alertDialogBuilder.setNegativeButton("Cancel", null);
-//
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
-//    }
 
 }
