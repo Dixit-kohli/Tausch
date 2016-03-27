@@ -27,6 +27,7 @@ import android.content.DialogInterface;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -42,6 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -182,95 +184,56 @@ public class ImageAddFragment extends Fragment {
                     return;
                 }
 
-//                if (isOfferEditable){
-//
-//                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
-//                    query.whereEqualTo("objectId", editableItemObject.get("objectId"));
-//                    query.findInBackground(new FindCallback<ParseObject>() {
-//                        @Override
-//                        public void done(List<ParseObject> objects, com.parse.ParseException e) {
-//
-//                            if (e == null) {
-//
-//                                Bitmap bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
-//
-//                                // Convert it to byte
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                // Compress image to lower quality scale 1 - 100
-//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                                byte[] image = stream.toByteArray();
-//
-//                                // Create the ParseFile
-//                                ParseFile file = new ParseFile("image.png", image);
-//                                // Upload the image into Parse Cloud
-//                                file.saveInBackground();
-//
-//                                // Create a New Class called "ImageUpload" in Parse
-//                                ParseObject imgupload = editableItemObject;
-//
-//                                // Create a column named "ImageName" and set the string
-//                                String objectIdUser = (String)ParseUser.getCurrentUser().getObjectId();
-//                                imgupload.put("user_id", objectIdUser);
-//
-//                                imgupload.put("category_id",offerDTO.getCategoryId());
-//
-//                                imgupload.put("offer_title",offerDTO.getOfferTitle());
-//
-//                                imgupload.put("offer_description",offerDTO.getOfferDescription());
-//
-//                                imgupload.put("price",offerDTO.getPrice());
-//
-//                                imgupload.put("condition",offerDTO.getCondition());
-//
-//                                imgupload.put("zipcode",offerDTO.getZip());
-//
-//                                imgupload.put("offeror",offerDTO.getOfferorName());
-//
-//                                imgupload.put("city",offerDTO.getCityId());
-//
-//                                // Create a column named "ImageFile" and insert the image
-//                                imgupload.put("image_one", file);
-//
-//                                // Create the class and the columns
-//                                imgupload.saveInBackground();
-//
-//                                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
-//                                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
-//
-//                                //After removing fragment in above line, we popBackStack() to remove from stack.
-//                                getFragmentManager().popBackStack();
-//
-//                                HomeFragment nextFrag= new HomeFragment();
-//
-//                                ImageAddFragment.this.getFragmentManager().beginTransaction()
-//                                        .replace(R.id.container_body, nextFrag)
-//                                        .commit();
-//
-//                                isOfferEditable=false;
-//
-//                                return;
-//                            } else {
-//                                Log.d("Post retrieval", "Error: " + e.getMessage());
-//                            }
-//
-//                        }
-//                    });
-//
-//
-//                }
+                int checkImages=0;
+                ArrayList<ParseFile> itemImages =new ArrayList<>();
 
-                Bitmap bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
+                Bitmap bitmap = null;
 
-                // Convert it to byte
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                // Compress image to lower quality scale 1 - 100
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] image = stream.toByteArray();
+                while(checkImages < 5){
 
-                // Create the ParseFile
-                ParseFile file = new ParseFile("image.png", image);
-                // Upload the image into Parse Cloud
-                file.saveInBackground();
+                    switch (checkImages)
+                    {
+                        case 0:
+                             bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
+                            break;
+                        case 1:
+                             bitmap = ((BitmapDrawable)imageViewTwo.getDrawable()).getBitmap();
+
+                            break;
+                        case 2:
+                             bitmap = ((BitmapDrawable)imageViewThree.getDrawable()).getBitmap();
+
+                            break;
+                        case 3:
+                             bitmap = ((BitmapDrawable)imageViewFour.getDrawable()).getBitmap();
+                            break;
+                        case 4:
+                             bitmap = ((BitmapDrawable)imageViewFive.getDrawable()).getBitmap();
+                            break;
+
+                    }
+
+                    // Convert it to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    // Compress image to lower quality scale 1 - 100
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] image = stream.toByteArray();
+
+                    // Create the ParseFile
+                    ParseFile file = new ParseFile("image.png", image);
+                    // Upload the image into Parse Cloud
+
+                    if (file.isDataAvailable()) {
+                        file.saveInBackground();
+                        itemImages.add(file);
+                    }
+
+                    checkImages++;
+                }
+
+
+
+
 
                 // Create a New Class called "ImageUpload" in Parse
                 ParseObject imgupload = new ParseObject("Offers");
@@ -293,13 +256,58 @@ public class ImageAddFragment extends Fragment {
 
                 imgupload.put("offeror",offerDTO.getOfferorName());
 
-                imgupload.put("city",offerDTO.getCityId());
+                imgupload.put("city", offerDTO.getCityId());
 
-                // Create a column named "ImageFile" and insert the image
-                imgupload.put("image_one", file);
+
+                int readItem = 0;
+                while(readItem<5){
+                    if (itemImages.get(readItem)!=null){
+
+                        switch (readItem){
+
+                            case 0:
+                                // Create a column named "ImageFile" and insert the image
+                                imgupload.put("image_one", itemImages.get(readItem));
+                                // Create the class and the columns
+
+                                break;
+                            case 1:
+                                // Create a column named "ImageFile" and insert the image
+                                imgupload.put("image_two", itemImages.get(readItem));
+                                // Create the class and the columns
+
+
+                                break;
+                            case 2:
+                                // Create a column named "ImageFile" and insert the image
+                                imgupload.put("image_three", itemImages.get(readItem));
+                                // Create the class and the columns
+
+
+                                break;
+                            case 3:
+                                // Create a column named "ImageFile" and insert the image
+                                imgupload.put("image_four", itemImages.get(readItem));
+                                // Create the class and the columns
+
+                                break;
+                            case 4:
+                                // Create a column named "ImageFile" and insert the image
+                                imgupload.put("image_five", itemImages.get(readItem));
+
+                                break;
+
+                        }
+
+                        readItem++;
+
+                    }
+
+                }
 
                 // Create the class and the columns
                 imgupload.saveInBackground();
+
 
                 Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
                 getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();

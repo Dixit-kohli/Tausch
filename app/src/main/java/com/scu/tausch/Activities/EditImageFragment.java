@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ public class EditImageFragment extends Fragment {
     private OfferDTO offerDTO;
     public static HomePage context;
     private boolean isOfferEditable=false;
-    private Bitmap bitmapImageOne;
+    private Bitmap bitmapImageOne,bitmapImageTwo,bitmapImageThree,bitmapImageFour,bitmapImageFive;
     private ParseObject editableItemObject;
 
     public EditImageFragment() {
@@ -92,6 +93,24 @@ public class EditImageFragment extends Fragment {
             ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
             byte[] file = bum.getData();
             bitmapImageOne = BitmapFactory.decodeByteArray(file, 0, file.length);
+
+            ParseFile bumTwo = (ParseFile) itemObject.get(Constants.DB_Image_TWO);
+            byte[] fileTwo = bumTwo.getData();
+            bitmapImageTwo = BitmapFactory.decodeByteArray(fileTwo, 0, fileTwo.length);
+
+            ParseFile bumThree = (ParseFile) itemObject.get(Constants.DB_Image_THREE);
+            byte[] fileThree = bumThree.getData();
+            bitmapImageThree = BitmapFactory.decodeByteArray(fileThree, 0, fileThree.length);
+
+            ParseFile bumFour = (ParseFile) itemObject.get(Constants.DB_Image_FOUR);
+            byte[] fileFour = bumFour.getData();
+            bitmapImageFour = BitmapFactory.decodeByteArray(fileFour, 0, fileFour.length);
+
+            ParseFile bumFive = (ParseFile) itemObject.get(Constants.DB_Image_FIVE);
+            byte[] fileFive = bumFive.getData();
+            bitmapImageFive = BitmapFactory.decodeByteArray(fileFive, 0, fileFive.length);
+
+
 
         }
         catch (ParseException e){
@@ -146,6 +165,10 @@ public class EditImageFragment extends Fragment {
             if (isOfferEditable){
 //                imageViewOne.setImageBitmap(Bitmap.createScaledBitmap(bitmapImageOne, 120, 120, false));
                 imageViewOne.setImageBitmap(bitmapImageOne);
+                imageViewTwo.setImageBitmap(bitmapImageTwo);
+                imageViewThree.setImageBitmap(bitmapImageThree);
+                imageViewFour.setImageBitmap(bitmapImageFour);
+                imageViewFive.setImageBitmap(bitmapImageFive);
 
             }
 
@@ -221,15 +244,54 @@ public class EditImageFragment extends Fragment {
                                  //   Bitmap bitmap = bitmapImageOne;
 
                                         // Convert it to byte
+
+                                    int checkImages=0;
+                                    ArrayList<ParseFile> itemImages =new ArrayList<>();
+
+                                    Bitmap bitmap = null;
+
+                                    while(checkImages < 5){
+
+                                        switch (checkImages)
+                                        {
+                                            case 0:
+                                                bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
+                                                break;
+                                            case 1:
+                                                bitmap = ((BitmapDrawable)imageViewTwo.getDrawable()).getBitmap();
+
+                                                break;
+                                            case 2:
+                                                bitmap = ((BitmapDrawable)imageViewThree.getDrawable()).getBitmap();
+
+                                                break;
+                                            case 3:
+                                                bitmap = ((BitmapDrawable)imageViewFour.getDrawable()).getBitmap();
+                                                break;
+                                            case 4:
+                                                bitmap = ((BitmapDrawable)imageViewFive.getDrawable()).getBitmap();
+                                                break;
+
+                                        }
+
+                                        // Convert it to byte
                                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                         // Compress image to lower quality scale 1 - 100
-                                        //      bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                         byte[] image = stream.toByteArray();
 
                                         // Create the ParseFile
                                         ParseFile file = new ParseFile("image.png", image);
                                         // Upload the image into Parse Cloud
-                                        file.saveInBackground();
+
+                                        if (file.isDataAvailable()) {
+                                            file.saveInBackground();
+                                            itemImages.add(file);
+                                        }
+
+                                        checkImages++;
+                                    }
+
 
                                     // Create a New Class called "ImageUpload" in Parse
                                     ParseObject imgupload = editableItemObject;
@@ -254,8 +316,50 @@ public class EditImageFragment extends Fragment {
 
                                     imgupload.put("city", offerDTO.getCityId());
 
-                                    // Create a column named "ImageFile" and insert the image
-                                    imgupload.put("image_one", file);
+                                    int readItem = 0;
+                                    while(readItem<5){
+                                        if (itemImages.get(readItem)!=null) {
+
+                                            switch (readItem) {
+
+                                                case 0:
+                                                    // Create a column named "ImageFile" and insert the image
+                                                    imgupload.put("image_one", itemImages.get(readItem));
+                                                    // Create the class and the columns
+
+                                                    break;
+                                                case 1:
+                                                    // Create a column named "ImageFile" and insert the image
+                                                    imgupload.put("image_two", itemImages.get(readItem));
+                                                    // Create the class and the columns
+
+
+                                                    break;
+                                                case 2:
+                                                    // Create a column named "ImageFile" and insert the image
+                                                    imgupload.put("image_three", itemImages.get(readItem));
+                                                    // Create the class and the columns
+
+
+                                                    break;
+                                                case 3:
+                                                    // Create a column named "ImageFile" and insert the image
+                                                    imgupload.put("image_four", itemImages.get(readItem));
+                                                    // Create the class and the columns
+
+                                                    break;
+                                                case 4:
+                                                    // Create a column named "ImageFile" and insert the image
+                                                    imgupload.put("image_five", itemImages.get(readItem));
+
+                                                    break;
+
+                                            }
+
+                                            readItem++;
+
+                                        }
+                                    }
 
                                     // Create the class and the columns
                                     imgupload.saveInBackground();

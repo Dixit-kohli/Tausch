@@ -45,6 +45,10 @@ public class Constants {
     public static final String DB_Offer_Title = "offer_title";
     public static final String DB_Price = "price";
     public static final String DB_Image_ONE = "image_one";
+    public static final String DB_Image_TWO = "image_two";
+    public static final String DB_Image_THREE = "image_three";
+    public static final String DB_Image_FOUR = "image_four";
+    public static final String DB_Image_FIVE = "image_five";
 
     public static final String HOMEPAGE_HOME = "Home";
     public static final String HOMEPAGE_MY_OFFERS = "My Offers";
