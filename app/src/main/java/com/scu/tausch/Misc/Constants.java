@@ -82,5 +82,11 @@ public class Constants {
     public static final String USER_ID_KEY = "userId";
     public static final String BODY_KEY = "body";
     public static String RECEIVER_ID_KEY = "receiverId";
+    public static final String SORT_CRITERIA_DEFAULT="Sort";
+    public static final String SORT_PRICE_LOW_TO_HIGH="Price: Low to High";
+    public static final String SORT_PRICE_HIGH_TO_LOW="Price: High to Low";
+    public static final String SORT_DATE_OLD_TO_NEW="Newest Items";
+    public static final String SORT_DATE_NEW_TO_OLD="Oldest Items";
+
 
 }

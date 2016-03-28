@@ -24,6 +24,7 @@ public class OfferDTO {
     private Bitmap image_five;
     private String offeror;
     private boolean offerStatus;
+    private String sortCriteriaSelected;
 
     public OfferDTO(){
 
@@ -179,5 +180,13 @@ public class OfferDTO {
 
     public void setRentalType(String rentalType) {
         this.rentalType = rentalType;
+    }
+
+    public String getSortCriteriaSelected() {
+        return sortCriteriaSelected;
+    }
+
+    public void setSortCriteriaSelected(String sortCriteriaSelected) {
+        this.sortCriteriaSelected = sortCriteriaSelected;
     }
 }
