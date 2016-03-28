@@ -1,8 +1,10 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -46,11 +49,17 @@ public class MyOfferFragment extends Fragment implements DBListener{
     private boolean isSearchActive=false;
     private TextView emptyListTextView;
     private List<ParseObject> retainItemObjects;
-
+    private CustomListAdapter customListAdapter;
     public MyOfferFragment() {
         // Required empty public constructor
     }
 
+    public CustomListAdapter getAdapter() {
+        return customListAdapter;
+    }
+    public void setAdapter(CustomListAdapter customListAdapter) {
+        this.customListAdapter = customListAdapter;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +168,7 @@ public class MyOfferFragment extends Fragment implements DBListener{
     public void fetchedDataFromServer(){
 
         CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
+        setAdapter(customListAdapter);
         listViewItems.setAdapter(customListAdapter);
 
         if (itemObjects.size() == 0) {
@@ -169,8 +179,6 @@ public class MyOfferFragment extends Fragment implements DBListener{
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
                 EditOfferFragment nextFrag = new EditOfferFragment();
 
                 nextFrag.setArgumentsForUpdate(itemObjects.get(position));
@@ -179,12 +187,45 @@ public class MyOfferFragment extends Fragment implements DBListener{
                         .replace(R.id.myOfferItemFragment, nextFrag,Constants.TAG_Edit_Offer_Fragment)
                         .addToBackStack(null)
                         .commit();
-
-
             }
         });
 
+        // remove items
+        // Create the listener for long item clicks
+        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long rowid) {
+
+                // Store selected item in global variable
+                final String selectedItem = parent.getItemAtPosition(position).toString();
+                final String objectToBeDeleted = itemObjects.get(position).getObjectId();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Do you want to remove " + selectedItem + "?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(getAdapter() != null) {
+                            DBAccessor.getInstance().deleteOffer(objectToBeDeleted);
+                            getAdapter().remove(selectedItem);
+                            getAdapter().notifyDataSetChanged();
+                        }
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                // Create and show the dialog
+                builder.show();
+                // Signal OK to avoid further processing of the long click
+                return true;
+            }
+        });
     }
 
     @Override
