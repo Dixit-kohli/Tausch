@@ -15,7 +15,6 @@ import com.scu.tausch.Activities.HomePage;
 import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.Activities.SearchListener;
-import com.scu.tausch.Activities.Sort;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.DTO.RegistrationDTO;
@@ -294,39 +293,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
     parseUser.saveInBackground();
 }
 
-    /**
-     * Sort the search results using the criteria applied by user
-     * @param offerDTO
-     */
-    /*public List<ParseObject> sortOffersInCategory(OfferDTO offerDTO){
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
-        query.whereEqualTo("category_id", offerDTO.getCategoryId());
-        if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_PRICE_LOW_TO_HIGH)) {
-            query.orderByAscending("price");
-        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_PRICE_HIGH_TO_LOW)) {
-            query.orderByDescending("price");
-        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_NEW_TO_OLD)) {
-            query.orderByDescending("createdAt");
-        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_OLD_TO_NEW)) {
-            query.orderByAscending("createdAt");
-        }
-        final List<ParseObject> results = new ArrayList<ParseObject>();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                //Getting the fragment already created using tag.
-                //    OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
-                //  setDBListener(offerListFragment);
-
-                if (dbListener != null) {
-                    results.addAll(objects);
-                    dbListener.callback(objects);
-                }
-            }
-        });
-        return results;
-    }*/
 
     public void deleteOffer(String objectToBeDeleted) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
