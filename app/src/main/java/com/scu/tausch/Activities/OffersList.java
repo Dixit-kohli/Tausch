@@ -17,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -257,6 +259,23 @@ public class OffersList extends Fragment implements DBListener{
         Toolbar toolbarBottom = (Toolbar)rootView.findViewById(R.id.toolbarBottom);
         emptyListTextView=(TextView)rootView.findViewById(android.R.id.empty);
 
+
+        /*Spinner spinnerSort = new Spinner(getActivity());
+        //adding sort criteria
+        List<String> sortCriteria = new ArrayList<>();
+        sortCriteria.add(Constants.SORT_PRICE_LOW_TO_HIGH);
+        sortCriteria.add(Constants.SORT_PRICE_HIGH_TO_LOW);
+        sortCriteria.add(Constants.SORT_DATE_OLD_TO_NEW);
+        sortCriteria.add(Constants.SORT_DATE_NEW_TO_OLD);
+        //Creating and setting adapter to array of sort criteria required in spinner.
+        ArrayAdapter<String> adapterSortCriteria = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, sortCriteria);
+        adapterSortCriteria.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinnerSort.setAdapter(adapterSortCriteria);
+
+        int spinnerSort_X = 20;
+        spinnerSort.setX(spinnerSort_X);
+        spinnerSort.setBackgroundColor(Color.TRANSPARENT);*/
+
         Button buttonFilter = new Button(getActivity());
         int buttonFilter_X = 20;
         buttonFilter.setX(buttonFilter_X);
@@ -266,6 +285,7 @@ public class OffersList extends Fragment implements DBListener{
         buttonFilter.setBackgroundColor(Color.TRANSPARENT);
         buttonFilter.setBackgroundColor(Color.TRANSPARENT);
         toolbarBottom.addView(buttonFilter);
+        //toolbarBottom.addView(spinnerSort);
 
         buttonFilter.setOnClickListener(new View.OnClickListener() {
 
@@ -278,12 +298,12 @@ public class OffersList extends Fragment implements DBListener{
                 title = getString(R.string.app_name);
 
                 fragment = new FilterFragment();
-                if (itemObjects==null){
+                if (itemObjects == null) {
                     progress.dismiss();
                     return;
                 }
-                if (itemObjects.size()==0 || itemObjects==null){
-                    itemObjects=retainItemObjects;
+                if (itemObjects.size() == 0 || itemObjects == null) {
+                    itemObjects = retainItemObjects;
                 }
                 fragment.fetchedItemObjects(itemObjects);
 
@@ -291,10 +311,10 @@ public class OffersList extends Fragment implements DBListener{
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_body, fragment);
                 fragmentTransaction.commit();
-
-
             }
         });
+
+        //spinnerSort.getSelectedItem().toString()
 
         if (isFilterActive) {
             fetchedDataFromServer();
@@ -308,6 +328,22 @@ public class OffersList extends Fragment implements DBListener{
             progress.dismiss();
         }
 
+        /*String categoryId = null;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            categoryId = extras.getString("CATEGORY_ID");
+        }
+
+        //Put data in OfferDTO object
+        OfferDTO offerDTO = new OfferDTO();
+        offerDTO.setCategoryId(categoryId);
+        String selectedValue = String.valueOf(spinnerSort.getSelectedItem());
+        if(selectedValue != null && (!selectedValue.equals(""))) {
+            offerDTO.setSortCriteriaSelected(selectedValue);
+        }
+        //getting shared instance
+        DBAccessor dbAccessor = DBAccessor.getInstance();
+        List<ParseObject> sortResults = dbAccessor.sortOffersInCategory(offerDTO);*/
 
         // Inflate the layout for this fragment
         return rootView;
