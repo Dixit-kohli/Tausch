@@ -269,6 +269,8 @@ public class MyOfferFragment extends Fragment implements DBListener{
                     public void onClick(DialogInterface dialog, int which) {
                         if(getAdapter() != null) {
                             DBAccessor.getInstance().deleteOffer(objectToBeDeleted);
+                            DBAccessor.getInstance().getItemsPostedByUser(context);
+
                             // TODO refresh the list or change arrays to lists and uncomment the next two lines
                             //getAdapter().remove(selectedItem);
                             //getAdapter().notifyDataSetChanged();
