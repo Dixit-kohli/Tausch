@@ -284,6 +284,8 @@ public class EditImageFragment extends Fragment {
 
                                     imgupload.put("city", offerDTO.getCityId());
 
+                                    imgupload.put("status","true");
+
                                     int readItem = 0;
                                     while(readItem<5){
                                         if (itemImages.get(readItem)!=null) {

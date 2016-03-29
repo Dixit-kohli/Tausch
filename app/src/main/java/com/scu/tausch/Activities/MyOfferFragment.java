@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,9 +23,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.scu.tausch.Adapters.CustomListAdapter;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
@@ -176,6 +180,62 @@ public class MyOfferFragment extends Fragment implements DBListener{
             listViewItems.setEmptyView(emptyListTextView);
         }
 
+        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final int pos = position;
+
+                ParseObject object = itemObjects.get(pos);
+                String objectIDToDeleteItem = object.getObjectId();
+
+                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+                query.whereEqualTo("objectId", objectIDToDeleteItem);
+
+                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setMessage("Do you really want to delete?");
+
+                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            public void done(List<ParseObject> list, ParseException e) {
+                                if (e == null) {
+                                    ParseObject itemToDelete = list.get(0);
+                                    itemToDelete.put("status", "false");
+                                    itemToDelete.saveInBackground();
+
+                                    HomeFragment nextFrag = new HomeFragment();
+
+                                    MyOfferFragment.this.getFragmentManager().beginTransaction()
+                                            .replace(R.id.container_body, nextFrag)
+                                            .commit();
+
+
+
+                                } else {
+                                    Log.d("test", "Error: " + e.getMessage());
+                                }
+                            }
+                        });
+
+
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton("Cancel", null);
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
+                return false;
+            }
+        });
+
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,7 +244,7 @@ public class MyOfferFragment extends Fragment implements DBListener{
                 nextFrag.setArgumentsForUpdate(itemObjects.get(position));
 
                 MyOfferFragment.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.myOfferItemFragment, nextFrag,Constants.TAG_Edit_Offer_Fragment)
+                        .replace(R.id.myOfferItemFragment, nextFrag, Constants.TAG_Edit_Offer_Fragment)
                         .addToBackStack(null)
                         .commit();
             }

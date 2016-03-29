@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class ChatFragment extends Fragment {
     private EditText etMessage;
     private Button btSend;
     private View rootView;
+    static LinearLayout layout;
 
     ListView lvChat;
     ArrayList<Message> mMessages;
@@ -70,6 +72,10 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+
+        layout = (LinearLayout)rootView.findViewById(R.id.layoutMessage);
+
+
 
         rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -108,14 +114,14 @@ public class ChatFragment extends Fragment {
 
         etMessage = (EditText) rootView.findViewById(R.id.etMessage);
         btSend = (Button) rootView.findViewById(R.id.btSend);
-        lvChat = (ListView) rootView.findViewById(R.id.lvChat);
+      //  lvChat = (ListView) rootView.findViewById(R.id.lvChat);
         mMessages = new ArrayList<>();
         // Automatically scroll to the bottom when a data set change notification is received and only if the last item is already visible on screen. Don't scroll to the bottom otherwise.
-        lvChat.setTranscriptMode(1);
+      //  lvChat.setTranscriptMode(1);
         mFirstLoad = true;
         final String userId = ParseUser.getCurrentUser().getObjectId();
-        mAdapter = new ChatListAdapter(getActivity(), userId, mMessages);
-        lvChat.setAdapter(mAdapter);
+       // mAdapter = new ChatListAdapter(getActivity(), userId, mMessages);
+      //  lvChat.setAdapter(mAdapter);
         // When send button is clicked, create message object on Parse
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override

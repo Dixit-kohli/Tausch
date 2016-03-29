@@ -57,7 +57,7 @@ public class Constants {
     public static final String HOMEPAGE_HELP = "Help";
     public static final String HOMEPAGE_ABOUT = "About";
     public static final String HOMEPAGE_SIGNOUT = "Sign out";
-
+    public static final String DB_STATUS = "status";
 
     public static final String DB_USER_ID = "user_id";
     public static final String Array_Category_Automobiles = "Automobiles";

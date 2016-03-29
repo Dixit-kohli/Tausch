@@ -258,6 +258,8 @@ public class ImageAddFragment extends Fragment {
 
                 imgupload.put("city", offerDTO.getCityId());
 
+                imgupload.put("status","true");
+
 
                 int readItem = 0;
                 while(readItem<5){

@@ -134,6 +134,7 @@ public class DBAccessor {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
         query.whereEqualTo(Constants.DB_CATEGORY_ID, categoryID);
+        query.whereEqualTo(Constants.DB_STATUS, "true");
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -157,6 +158,7 @@ public class DBAccessor {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
         query.whereEqualTo(Constants.DB_USER_ID, ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo(Constants.DB_STATUS, "true");
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
