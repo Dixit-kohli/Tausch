@@ -304,7 +304,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
         query.getInBackground(objectToBeDeleted, new GetCallback<ParseObject>() {
             public void done(ParseObject offer, ParseException e) {
                 if (e == null) {
-                    offer.put("status", "true");
+                    offer.put("status", "false");
                     offer.saveInBackground();
                 }
             }
