@@ -180,61 +180,61 @@ public class MyOfferFragment extends Fragment implements DBListener{
             listViewItems.setEmptyView(emptyListTextView);
         }
 
-        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                final int pos = position;
-
-                ParseObject object = itemObjects.get(pos);
-                String objectIDToDeleteItem = object.getObjectId();
-
-                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
-                query.whereEqualTo("objectId", objectIDToDeleteItem);
-
-                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setMessage("Do you really want to delete?");
-
-                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                        query.findInBackground(new FindCallback<ParseObject>() {
-                            public void done(List<ParseObject> list, ParseException e) {
-                                if (e == null) {
-                                    ParseObject itemToDelete = list.get(0);
-                                    itemToDelete.put("status", "false");
-                                    itemToDelete.saveInBackground();
-
-                                    HomeFragment nextFrag = new HomeFragment();
-
-                                    MyOfferFragment.this.getFragmentManager().beginTransaction()
-                                            .replace(R.id.container_body, nextFrag)
-                                            .commit();
-
-
-
-                                } else {
-                                    Log.d("test", "Error: " + e.getMessage());
-                                }
-                            }
-                        });
-
-
-                    }
-                });
-
-                alertDialogBuilder.setNegativeButton("Cancel", null);
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-
-                return false;
-            }
-        });
+//        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                final int pos = position;
+//
+//                ParseObject object = itemObjects.get(pos);
+//                String objectIDToDeleteItem = object.getObjectId();
+//
+//                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+//                query.whereEqualTo("objectId", objectIDToDeleteItem);
+//
+//                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+//                alertDialogBuilder.setMessage("Do you really want to delete?");
+//
+//                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        dialog.dismiss();
+//
+//                        query.findInBackground(new FindCallback<ParseObject>() {
+//                            public void done(List<ParseObject> list, ParseException e) {
+//                                if (e == null) {
+//                                    ParseObject itemToDelete = list.get(0);
+//                                    itemToDelete.put("status", "false");
+//                                    itemToDelete.saveInBackground();
+//
+//                                    HomeFragment nextFrag = new HomeFragment();
+//
+//                                    MyOfferFragment.this.getFragmentManager().beginTransaction()
+//                                            .replace(R.id.container_body, nextFrag)
+//                                            .commit();
+//
+//
+//
+//                                } else {
+//                                    Log.d("test", "Error: " + e.getMessage());
+//                                }
+//                            }
+//                        });
+//
+//
+//                    }
+//                });
+//
+//                alertDialogBuilder.setNegativeButton("Cancel", null);
+//
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//
+//
+//                return false;
+//            }
+//        });
 
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

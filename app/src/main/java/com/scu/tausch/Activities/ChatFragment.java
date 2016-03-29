@@ -160,10 +160,6 @@ public class ChatFragment extends Fragment {
                                         pQuery.whereEqualTo("username", "pjain3@scu.edu"); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
                                         parsePush.sendMessageInBackground("Only for special people", pQuery);
 
-
-
-
-
                                          //  refreshMessages();
                                     }
                                 });
