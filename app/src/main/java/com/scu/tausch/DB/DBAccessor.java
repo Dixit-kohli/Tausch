@@ -310,4 +310,36 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
             }
         });
     }
+
+    public List<ParseObject> sortOffersInCategory(OfferDTO offerDTO){
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
+        query.whereEqualTo("category_id", offerDTO.getCategoryId());
+        query.whereEqualTo(Constants.DB_STATUS,"true");
+        if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_PRICE_LOW_TO_HIGH)) {
+            query.orderByAscending("price");
+        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_PRICE_HIGH_TO_LOW)) {
+            query.orderByDescending("price");
+        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_NEW_TO_OLD)) {
+            query.orderByDescending("createdAt");
+        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_OLD_TO_NEW)) {
+            query.orderByAscending("createdAt");
+        }
+        final List<ParseObject> results = new ArrayList<ParseObject>();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                //Getting the fragment already created using tag.
+                //    OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
+                //  setDBListener(offerListFragment);
+
+                if (dbListener != null) {
+                    results.addAll(objects);
+                    dbListener.callback(objects);
+                }
+            }
+        });
+        return results;
+    }
+
 }

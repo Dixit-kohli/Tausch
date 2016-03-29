@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -63,6 +64,10 @@ public class OffersList extends Fragment implements DBListener{
     private boolean isSearchActive=false;
     private TextView emptyListTextView;
     static List<ParseObject> retainItemObjects;
+    static String currentCategoryId;
+    private DBAccessor dbAccessor;
+    private String selectedValue;
+
 
     public OffersList() {
         // Required empty public constructor
@@ -284,8 +289,9 @@ public class OffersList extends Fragment implements DBListener{
         spinnerSort.setBackgroundColor(Color.TRANSPARENT);*/
 
         Button buttonFilter = new Button(getActivity());
-        int buttonFilter_X = 20;
+        float buttonFilter_X = 20;
         buttonFilter.setX(buttonFilter_X);
+        buttonFilter.setWidth(80);
 
         buttonFilter.setText("Filter");
         buttonFilter.setTextColor(Color.WHITE);
@@ -293,6 +299,24 @@ public class OffersList extends Fragment implements DBListener{
         buttonFilter.setBackgroundColor(Color.TRANSPARENT);
         toolbarBottom.addView(buttonFilter);
         //toolbarBottom.addView(spinnerSort);
+
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
+        Button buttonSort = new Button((getActivity()));
+        buttonSort.setWidth(80);
+        float buttonSort_X = dpWidth-20;
+
+        buttonSort.setX(buttonSort_X);
+        buttonSort.setText("Sort");
+        buttonSort.setTextColor(Color.WHITE);
+        buttonSort.setBackgroundColor(Color.TRANSPARENT);
+        toolbarBottom.addView(buttonSort);
+
+
+
+
+
 
         buttonFilter.setOnClickListener(new View.OnClickListener() {
 
@@ -320,6 +344,32 @@ public class OffersList extends Fragment implements DBListener{
                 fragmentTransaction.commit();
             }
         });
+
+
+        buttonSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String[] items = {Constants.SORT_PRICE_LOW_TO_HIGH, Constants.SORT_PRICE_HIGH_TO_LOW, Constants.SORT_DATE_OLD_TO_NEW, Constants.SORT_DATE_NEW_TO_OLD};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Select sort type");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        // Do something with the selection
+                        //mDoneButton.setText(items[item]);
+                        selectedValue = items[item];
+                        onSortSubmitClicked();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+            }
+        });
+
+
 
         //spinnerSort.getSelectedItem().toString()
 
@@ -384,6 +434,38 @@ public class OffersList extends Fragment implements DBListener{
 
             }
         });
+
+    }
+
+
+    public void onSortSubmitClicked(){
+
+        String categoryId = null;
+        OfferDTO offerDTO;
+        //Bundle extras = getIntent().getExtras();
+       // if (extras != null) {
+            categoryId = currentCategoryId;
+        //}
+
+        //Put data in OfferDTO object
+        offerDTO = new OfferDTO();
+        offerDTO.setCategoryId(categoryId);
+        offerDTO.setSortCriteriaSelected(selectedValue);
+       // selectedValue = String.valueOf(sortCriteria.getSelectedItem());
+//        if(!selectedValue.equals("Sort")) {
+//            offerDTO.setSortCriteriaSelected(selectedValue);
+//        }
+        //getting shared instance
+        dbAccessor = DBAccessor.getInstance();
+
+        //show progress dialog while findInBackground would start working
+//        progress = new ProgressDialog(getActivity());
+//        progress.setMessage("Loading...");
+//        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progress.setIndeterminate(true);
+//        progress.show();
+
+        dbAccessor.sortOffersInCategory(offerDTO);
 
     }
 

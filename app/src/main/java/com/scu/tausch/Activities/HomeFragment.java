@@ -102,6 +102,7 @@ public class HomeFragment extends Fragment {
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_AUTOMOBILES_OBJECT_ID,context);
 
                      DBAccessor.searchCode = Constants.SEARCH_CODE_AUTOMOBILES;
+                    OffersList.currentCategoryId = Constants.CATEGORY_AUTOMOBILES_OBJECT_ID;
 
 
                 } else if (position == Constants.CATEGORY_BOOKS) {
@@ -109,6 +110,7 @@ public class HomeFragment extends Fragment {
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_BOOKS_OBJECT_ID,context);
 
                     DBAccessor.searchCode = Constants.SEARCH_CODE_BOOKS;
+                    OffersList.currentCategoryId = Constants.CATEGORY_BOOKS_OBJECT_ID;
 
 
                 } else if (position == Constants.CATEGORY_LAPTOPS) {
@@ -116,6 +118,8 @@ public class HomeFragment extends Fragment {
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_LAPTOPS_OBJECT_ID,context);
 
                     DBAccessor.searchCode = Constants.SEARCH_CODE_LAPTOPS;
+                    OffersList.currentCategoryId = Constants.CATEGORY_LAPTOPS_OBJECT_ID;
+
 
 
                 } else if (position == Constants.CATEGORY_FURNITURE) {
@@ -123,12 +127,16 @@ public class HomeFragment extends Fragment {
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_FURNITURE_OBJECT_ID,context);
 
                     DBAccessor.searchCode = Constants.SEARCH_CODE_FURNITURE;
+                    OffersList.currentCategoryId = Constants.CATEGORY_FURNITURE_OBJECT_ID;
+
 
                 } else if (position == Constants.CATEGORY_RENTALS) {
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_RENTALS_OBJECT_ID,context);
 
                     DBAccessor.searchCode = Constants.SEARCH_CODE_RENTALS;
+                    OffersList.currentCategoryId = Constants.CATEGORY_RENTALS_OBJECT_ID;
+
 
 
                 }
@@ -142,7 +150,7 @@ public class HomeFragment extends Fragment {
 
                 HomeFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.myFragmentMenuWindow, nextFrag,"tagOfferList")
-                        .addToBackStack(null)
+                        //.addToBackStack(null)
                         .commit();
 
 
