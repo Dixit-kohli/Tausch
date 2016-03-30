@@ -99,38 +99,6 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
         listViewItems=(ListView)rootView.findViewById(R.id.list_items_in_category);
         emptyListTextView=(TextView)rootView.findViewById(android.R.id.empty);
 
-//        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-////WE NEED TO SHOW ENTIRE OFFER ADD PAGE, WITH ALL THE FIELDS ENTERED.
-//
-//                Fragment fragment = null;
-//              //  String title;
-//
-//                fragment = new AddOfferFragment();
-//              //  title = getString(R.string.title_filter);
-//
-//                FragmentManager fragmentManager = getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Add_Offer_Fragment);
-//                fragmentTransaction.commit();
-//
-//
-////                DetailedItemFragment nextFrag = new DetailedItemFragment();
-////
-////                nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
-////
-////                OffersList.this.getFragmentManager().beginTransaction()
-////                        .replace(R.id.myItemsInCategoryWindow, nextFrag)
-////                        .addToBackStack(null)
-////                        .commit();
-//
-//
-//            }
-//        });
-
-
 
         DBAccessor.getInstance().getItemsPostedByUser(context);
        // setArraysForNamesImagesCost();
@@ -183,61 +151,6 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
             listViewItems.setEmptyView(emptyListTextView);
         }
 
-//        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                final int pos = position;
-//
-//                ParseObject object = itemObjects.get(pos);
-//                String objectIDToDeleteItem = object.getObjectId();
-//
-//                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
-//                query.whereEqualTo("objectId", objectIDToDeleteItem);
-//
-//                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-//                alertDialogBuilder.setMessage("Do you really want to delete?");
-//
-//                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        dialog.dismiss();
-//
-//                        query.findInBackground(new FindCallback<ParseObject>() {
-//                            public void done(List<ParseObject> list, ParseException e) {
-//                                if (e == null) {
-//                                    ParseObject itemToDelete = list.get(0);
-//                                    itemToDelete.put("status", "false");
-//                                    itemToDelete.saveInBackground();
-//
-//                                    HomeFragment nextFrag = new HomeFragment();
-//
-//                                    MyOfferFragment.this.getFragmentManager().beginTransaction()
-//                                            .replace(R.id.container_body, nextFrag)
-//                                            .commit();
-//
-//
-//
-//                                } else {
-//                                    Log.d("test", "Error: " + e.getMessage());
-//                                }
-//                            }
-//                        });
-//
-//
-//                    }
-//                });
-//
-//                alertDialogBuilder.setNegativeButton("Cancel", null);
-//
-//                AlertDialog alertDialog = alertDialogBuilder.create();
-//                alertDialog.show();
-//
-//
-//                return false;
-//            }
-//        });
 
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -325,24 +238,11 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                // Start your app main activity
-
-                //Decision based on current status - login or logout.
 
                 DBAccessor.getInstance().getItemsPostedByUser(context);
                 customListAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
 
-//                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-//                if (sharedPreferences.getString("isLogin","false").equals("true")){
-//                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
-//                    startActivity(i);
-//                }
-//                else {
-
-                // }
-
-                // close this activity
             }
         }, Constants.DELETE_ITEM_TIME_TO_REFRESH);
 

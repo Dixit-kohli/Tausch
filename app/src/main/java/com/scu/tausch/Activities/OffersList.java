@@ -359,7 +359,7 @@ public class OffersList extends Fragment implements DBListener{
                         // Do something with the selection
                         //mDoneButton.setText(items[item]);
                         selectedValue = items[item];
-                        onSortSubmitClicked();
+                        performSortAsOptionSelected();
                     }
                 });
                 AlertDialog alert = builder.create();
@@ -384,23 +384,6 @@ public class OffersList extends Fragment implements DBListener{
             isSearchActive=false;
             progress.dismiss();
         }
-
-        /*String categoryId = null;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            categoryId = extras.getString("CATEGORY_ID");
-        }
-
-        //Put data in OfferDTO object
-        OfferDTO offerDTO = new OfferDTO();
-        offerDTO.setCategoryId(categoryId);
-        String selectedValue = String.valueOf(spinnerSort.getSelectedItem());
-        if(selectedValue != null && (!selectedValue.equals(""))) {
-            offerDTO.setSortCriteriaSelected(selectedValue);
-        }
-        //getting shared instance
-        DBAccessor dbAccessor = DBAccessor.getInstance();
-        List<ParseObject> sortResults = dbAccessor.sortOffersInCategory(offerDTO);*/
 
         // Inflate the layout for this fragment
         return rootView;
@@ -438,7 +421,7 @@ public class OffersList extends Fragment implements DBListener{
     }
 
 
-    public void onSortSubmitClicked(){
+    public void performSortAsOptionSelected(){
 
         String categoryId = null;
         OfferDTO offerDTO;
