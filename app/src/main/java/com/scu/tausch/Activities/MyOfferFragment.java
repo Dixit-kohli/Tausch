@@ -171,7 +171,7 @@ public class MyOfferFragment extends Fragment implements DBListener{
 
     public void fetchedDataFromServer(){
 
-        CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
+        final CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
         setAdapter(customListAdapter);
         listViewItems.setAdapter(customListAdapter);
 
@@ -270,7 +270,7 @@ public class MyOfferFragment extends Fragment implements DBListener{
                         if(getAdapter() != null) {
                             DBAccessor.getInstance().deleteOffer(objectToBeDeleted);
                             DBAccessor.getInstance().getItemsPostedByUser(context);
-
+                            customListAdapter.notifyDataSetChanged();
                             // TODO refresh the list or change arrays to lists and uncomment the next two lines
                             //getAdapter().remove(selectedItem);
                             //getAdapter().notifyDataSetChanged();

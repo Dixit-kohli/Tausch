@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.content.DialogInterface;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseFile;
@@ -174,154 +175,179 @@ public class ImageAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ParseUser user = ParseUser.getCurrentUser();
-                boolean isUserVerified = user.getBoolean("emailVerified");
-
-
-                if(isUserVerified==false){
-
-                    showDialogBoxForUnverfiedUser();
-                    return;
-                }
-
-                int checkImages=0;
-                ArrayList<ParseFile> itemImages =new ArrayList<>();
-
-                Bitmap bitmap = null;
-
-                while(checkImages < 5){
-
-                    switch (checkImages)
-                    {
-                        case 0:
-                             bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
-                            break;
-                        case 1:
-                             bitmap = ((BitmapDrawable)imageViewTwo.getDrawable()).getBitmap();
-
-                            break;
-                        case 2:
-                             bitmap = ((BitmapDrawable)imageViewThree.getDrawable()).getBitmap();
-
-                            break;
-                        case 3:
-                             bitmap = ((BitmapDrawable)imageViewFour.getDrawable()).getBitmap();
-                            break;
-                        case 4:
-                             bitmap = ((BitmapDrawable)imageViewFive.getDrawable()).getBitmap();
-                            break;
-
-                    }
-
-                    // Convert it to byte
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    // Compress image to lower quality scale 1 - 100
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] image = stream.toByteArray();
-
-                    // Create the ParseFile
-                    ParseFile file = new ParseFile("image.png", image);
-                    // Upload the image into Parse Cloud
-
-                    if (file.isDataAvailable()) {
-                        file.saveInBackground();
-                        itemImages.add(file);
-                    }
-
-                    checkImages++;
-                }
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                currentUser.fetchInBackground(new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject parseObject, com.parse.ParseException e) {
+                        if (e == null) {
+                            boolean isUserVerified = parseObject.getBoolean("emailVerified");
+                            Log.i("test", "The Value is :"+isUserVerified);
 
 
 
 
+                            if(isUserVerified==false){
+                            //user is not verified
+                                showDialogBoxForUnverfiedUser();
+                                return;
+                            }
+                            else{
+                                //user is verified
 
-                // Create a New Class called "ImageUpload" in Parse
-                ParseObject imgupload = new ParseObject("Offers");
+                                int checkImages=0;
+                                ArrayList<ParseFile> itemImages =new ArrayList<>();
 
-                // Create a column named "ImageName" and set the string
-                String objectIdUser = (String)ParseUser.getCurrentUser().getObjectId();
-                imgupload.put("user_id", objectIdUser);
+                                Bitmap bitmap = null;
 
-                imgupload.put("category_id",offerDTO.getCategoryId());
+                                while(checkImages < 5){
 
-                imgupload.put("offer_title",offerDTO.getOfferTitle());
+                                    switch (checkImages)
+                                    {
+                                        case 0:
+                                            bitmap = ((BitmapDrawable)imageViewOne.getDrawable()).getBitmap();
+                                            break;
+                                        case 1:
+                                            bitmap = ((BitmapDrawable)imageViewTwo.getDrawable()).getBitmap();
 
-                imgupload.put("offer_description",offerDTO.getOfferDescription());
+                                            break;
+                                        case 2:
+                                            bitmap = ((BitmapDrawable)imageViewThree.getDrawable()).getBitmap();
 
-                imgupload.put("price",offerDTO.getPrice());
+                                            break;
+                                        case 3:
+                                            bitmap = ((BitmapDrawable)imageViewFour.getDrawable()).getBitmap();
+                                            break;
+                                        case 4:
+                                            bitmap = ((BitmapDrawable)imageViewFive.getDrawable()).getBitmap();
+                                            break;
 
-                imgupload.put("condition",offerDTO.getCondition());
+                                    }
 
-                imgupload.put("zipcode",offerDTO.getZip());
+                                    // Convert it to byte
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    // Compress image to lower quality scale 1 - 100
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] image = stream.toByteArray();
 
-                imgupload.put("offeror",offerDTO.getOfferorName());
+                                    // Create the ParseFile
+                                    ParseFile file = new ParseFile("image.png", image);
+                                    // Upload the image into Parse Cloud
 
-                imgupload.put("city", offerDTO.getCityId());
+                                    if (file.isDataAvailable()) {
+                                        file.saveInBackground();
+                                        itemImages.add(file);
+                                    }
 
-                imgupload.put("status","true");
+                                    checkImages++;
+                                }
 
 
-                int readItem = 0;
-                while(readItem<5){
-                    if (itemImages.get(readItem)!=null){
 
-                        switch (readItem){
 
-                            case 0:
-                                // Create a column named "ImageFile" and insert the image
-                                imgupload.put("image_one", itemImages.get(readItem));
+
+                                // Create a New Class called "ImageUpload" in Parse
+                                ParseObject imgupload = new ParseObject("Offers");
+
+                                // Create a column named "ImageName" and set the string
+                                String objectIdUser = (String)ParseUser.getCurrentUser().getObjectId();
+                                imgupload.put("user_id", objectIdUser);
+
+                                imgupload.put("category_id",offerDTO.getCategoryId());
+
+                                imgupload.put("offer_title",offerDTO.getOfferTitle());
+
+                                imgupload.put("offer_description",offerDTO.getOfferDescription());
+
+                                imgupload.put("price",offerDTO.getPrice());
+
+                                imgupload.put("condition",offerDTO.getCondition());
+
+                                imgupload.put("zipcode",offerDTO.getZip());
+
+                                imgupload.put("offeror",offerDTO.getOfferorName());
+
+                                imgupload.put("city", offerDTO.getCityId());
+
+                                imgupload.put("status","true");
+
+
+                                int readItem = 0;
+                                while(readItem<5){
+                                    if (itemImages.get(readItem)!=null){
+
+                                        switch (readItem){
+
+                                            case 0:
+                                                // Create a column named "ImageFile" and insert the image
+                                                imgupload.put("image_one", itemImages.get(readItem));
+                                                // Create the class and the columns
+
+                                                break;
+                                            case 1:
+                                                // Create a column named "ImageFile" and insert the image
+                                                imgupload.put("image_two", itemImages.get(readItem));
+                                                // Create the class and the columns
+
+
+                                                break;
+                                            case 2:
+                                                // Create a column named "ImageFile" and insert the image
+                                                imgupload.put("image_three", itemImages.get(readItem));
+                                                // Create the class and the columns
+
+
+                                                break;
+                                            case 3:
+                                                // Create a column named "ImageFile" and insert the image
+                                                imgupload.put("image_four", itemImages.get(readItem));
+                                                // Create the class and the columns
+
+                                                break;
+                                            case 4:
+                                                // Create a column named "ImageFile" and insert the image
+                                                imgupload.put("image_five", itemImages.get(readItem));
+
+                                                break;
+
+                                        }
+
+                                        readItem++;
+
+                                    }
+
+                                }
+
                                 // Create the class and the columns
-
-                                break;
-                            case 1:
-                                // Create a column named "ImageFile" and insert the image
-                                imgupload.put("image_two", itemImages.get(readItem));
-                                // Create the class and the columns
+                                imgupload.saveInBackground();
 
 
-                                break;
-                            case 2:
-                                // Create a column named "ImageFile" and insert the image
-                                imgupload.put("image_three", itemImages.get(readItem));
-                                // Create the class and the columns
+                                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
+                                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
+
+                                //After removing fragment in above line, we popBackStack() to remove from stack.
+                                getFragmentManager().popBackStack();
+
+                                HomeFragment nextFrag= new HomeFragment();
+
+                                ImageAddFragment.this.getFragmentManager().beginTransaction()
+                                        .replace(R.id.container_body, nextFrag)
+                                        .commit();
+
+                            }
 
 
-                                break;
-                            case 3:
-                                // Create a column named "ImageFile" and insert the image
-                                imgupload.put("image_four", itemImages.get(readItem));
-                                // Create the class and the columns
 
-                                break;
-                            case 4:
-                                // Create a column named "ImageFile" and insert the image
-                                imgupload.put("image_five", itemImages.get(readItem));
 
-                                break;
 
+
+                        } else {
+                            // Failure!
                         }
-
-                        readItem++;
-
                     }
-
-                }
-
-                // Create the class and the columns
-                imgupload.saveInBackground();
+                });
 
 
-                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
-                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
 
-                //After removing fragment in above line, we popBackStack() to remove from stack.
-                getFragmentManager().popBackStack();
-
-                HomeFragment nextFrag= new HomeFragment();
-
-                ImageAddFragment.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_body, nextFrag)
-                        .commit();
 
             }
         });
