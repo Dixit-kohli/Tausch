@@ -10,25 +10,115 @@
     tools:context="com.scu.tausch.Activities.SettingsFragment">
 
 
-    <TextView
-        android:id="@+id/label"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="@dimen/image_upload_w_h"
+        android:layout_height="@dimen/image_upload_w_h"
+        android:src="@mipmap/item_placeholder"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/label"
+        android:layout_centerHorizontal="true" />
+
+
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="45dp"
-        android:text="Hello"
-        android:textStyle="bold"/>
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        android:background="@color/colorAccent" />
+
+
+
+    <EditText
+        android:id="@+id/first_name"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="205dp"
+        android:background="#00FFFFFF"
+        android:hint="First Name"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:singleLine="true"/>
+
+
+
+    <EditText
+        android:id="@+id/last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="240dp"
+        android:background="#00FFFFFF"
+        android:hint="Last Name"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:singleLine="true"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="300dp"
+        android:background="@color/colorAccent" />
+
+
+
+    <EditText
+        android:id="@+id/phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="355dp"
+        android:background="#FFFFFF"
+        android:hint="Phone Number"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:inputType="number"/>
+
 
     <TextView
-        android:layout_below="@id/label"
-        android:layout_centerInParent="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Settings Page" />
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:id="@+id/email"
+        android:layout_marginTop="405dp"
+        android:hint="Email"
+        android:layout_gravity="center_vertical"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="445dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:onClick="onChangeClicked"
+        android:text="Update Information"
+        android:textStyle="italic"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/change_label"/>
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:onClick="onForgotClicked"
+        android:text="CHANGE PASSWORD"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF" />
+
+
 
 </RelativeLayout>

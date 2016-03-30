@@ -15,7 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
@@ -39,6 +43,9 @@ public class DetailedItemFragment extends Fragment{
     private String offeror;
     private String condition;
     private String city;
+    String receiverEmail;
+
+private String receiverObjectId;
 
     public DetailedItemFragment() {
         // Required empty public constructor
@@ -52,7 +59,7 @@ public class DetailedItemFragment extends Fragment{
 
     }
 
-            public void setArguments(ParseObject itemObject, Bitmap[] images,int positionInList,String[] titles, String[] prices){
+            public void setArguments(final ParseObject itemObject, Bitmap[] images,int positionInList,String[] titles, String[] prices){
 
                 title = titles[positionInList];
                 description = (String)itemObject.get(Constants.DB_OFFER_DESCRIPTION);
@@ -62,6 +69,18 @@ public class DetailedItemFragment extends Fragment{
                 condition = (String)itemObject.get(Constants.DB_CONDITION);
                 city = (String)itemObject.get(Constants.DB_CITY);
 
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+               query.whereEqualTo("objectId", itemObject.get("user_id"));
+// Retrieve the object by id
+
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        receiverEmail = (String) (objects.get(0).get("email"));
+                        receiverObjectId = (String)itemObject.get("user_id");
+
+                    }
+                });
             }
 
     @Override
@@ -112,6 +131,8 @@ public class DetailedItemFragment extends Fragment{
                 *
                 * */
                 ChatFragment nextFrag= new ChatFragment();
+                nextFrag.setArgumentsForMessageSending(receiverEmail,receiverObjectId);
+
 
                 DetailedItemFragment.this.getFragmentManager().beginTransaction()
                         .replace(R.id.myDetailedItemFragment, nextFrag)

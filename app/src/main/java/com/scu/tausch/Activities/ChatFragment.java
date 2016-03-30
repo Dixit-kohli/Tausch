@@ -43,6 +43,8 @@ public class ChatFragment extends Fragment {
     private Button btSend;
     private View rootView;
     static LinearLayout layout;
+    private String receiverEmail;
+    private String receiverObjectId;
 
     ListView lvChat;
     ArrayList<Message> mMessages;
@@ -56,6 +58,10 @@ public class ChatFragment extends Fragment {
 
    }
 
+public void setArgumentsForMessageSending(String receiverEmail,String receiverObjectId){
+    this.receiverEmail = receiverEmail;
+    this.receiverObjectId = receiverObjectId;
+}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,27 +134,27 @@ public class ChatFragment extends Fragment {
             public void onClick(View v) {
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-                query.whereEqualTo("username", "Adhuri@scu.edu");
+                query.whereEqualTo("username", ParseUser.getCurrentUser().getEmail());
                 query.findInBackground(new FindCallback<ParseObject>() {
                     public void done(List<ParseObject> objects, ParseException e) {
                         if (e == null) {
-                           //  row of Object Id "U8mCwTHOaC"
+                            //  row of Object Id "U8mCwTHOaC"
 
                             for (final ParseObject dealsObject : objects) {
                                 // use dealsObject.get('columnName') to access the properties of the Deals object.
                                 dealObj = dealsObject.getObjectId();
 
-                                String data = etMessage.getText().toString();
+                                final String data = etMessage.getText().toString();
                                 ParseObject message = ParseObject.create("Message");
-                              //  message.put(Message.USER_ID_KEY, userId);
+                                //  message.put(Message.USER_ID_KEY, userId);
 
                                 //object id for Adhuri@scu.edu
-                                message.put(Message.USER_ID_KEY, "xX9N1EXVa9");
+                                message.put(Message.USER_ID_KEY, userId);
 
                                 message.put(Message.BODY_KEY, data);
 
-                                //currently its for pjain3@scu.edu, it should be receiver dealObj
-                                message.put(Message.RECEIVER_ID_KEY, "I1l9L8XiYC");
+                                //currently its for pjain3@scu.edu, it should be receiver Obj
+                                message.put(Message.RECEIVER_ID_KEY, receiverObjectId);
                                 message.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(com.parse.ParseException e) {
@@ -157,10 +163,10 @@ public class ChatFragment extends Fragment {
 
                                         ParsePush parsePush = new ParsePush();
                                         ParseQuery pQuery = ParseInstallation.getQuery(); // <-- Installation query
-                                        pQuery.whereEqualTo("username", "pjain3@scu.edu"); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
-                                        parsePush.sendMessageInBackground("Only for special people", pQuery);
+                                        pQuery.whereEqualTo("username", receiverEmail); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
+                                        parsePush.sendMessageInBackground(data, pQuery);
 
-                                         //  refreshMessages();
+                                        //  refreshMessages();
                                     }
                                 });
                                 etMessage.setText(null);
