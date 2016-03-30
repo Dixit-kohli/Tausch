@@ -6,6 +6,7 @@ package com.scu.tausch.Misc;
 public class Constants {
 
     public static final int LAUNCH_SCREEN_TIMEOUT = 0;
+    public static final int DELETE_ITEM_TIME_TO_REFRESH = 2000;
     public static final String FIRST_NAME = "firstname";
     public static final String LAST_NAME = "lastname";
     public static final String NUMBER = "number";

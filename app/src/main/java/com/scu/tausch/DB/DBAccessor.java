@@ -14,6 +14,7 @@ import com.scu.tausch.Activities.EditOfferFragment;
 import com.scu.tausch.Activities.HomePage;
 import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
+import com.scu.tausch.Activities.RefreshInterface;
 import com.scu.tausch.Activities.SearchListener;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.OfferDTO;
@@ -36,6 +37,7 @@ public class DBAccessor {
     private static DBAccessor instance = null;
     private DBListener dbListener;
     private SearchListener searchListener;
+    private RefreshInterface refreshInterface;
     public static int searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
     protected DBAccessor() {
@@ -53,6 +55,10 @@ public class DBAccessor {
     //setting the reference for callback.
     private void setDBListener(DBListener dbListener){
         this.dbListener=dbListener;
+    }
+
+    private void setRefreshInterface(RefreshInterface refreshInterface){
+        this.refreshInterface = refreshInterface;
     }
 
     //setting the reference for callback.
@@ -297,15 +303,20 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
 
 
-    public void deleteOffer(String objectToBeDeleted) {
+    public void deleteOffer(String objectToBeDeleted, final HomePage homePage) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
 
 // Retrieve the object by id
         query.getInBackground(objectToBeDeleted, new GetCallback<ParseObject>() {
             public void done(ParseObject offer, ParseException e) {
                 if (e == null) {
+
+                    MyOfferFragment myOfferFragment = (MyOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_My_Offer_Fragment);
+                    setRefreshInterface(myOfferFragment);
+
                     offer.put("status", "false");
                     offer.saveInBackground();
+                    refreshInterface.refreshAfterStatusChangeForDelete();
                 }
             }
         });

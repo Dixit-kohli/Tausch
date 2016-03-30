@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,7 +42,7 @@ import java.util.List;
 /**
  * Created by Praneet on 1/29/16.
  */
-public class MyOfferFragment extends Fragment implements DBListener{
+public class MyOfferFragment extends Fragment implements DBListener,RefreshInterface{
 
     private List<ParseObject> itemObjects;
     public static HomePage context;
@@ -54,6 +56,7 @@ public class MyOfferFragment extends Fragment implements DBListener{
     private TextView emptyListTextView;
     private List<ParseObject> retainItemObjects;
     private CustomListAdapter customListAdapter;
+    private ProgressDialog progressDialog;
     public MyOfferFragment() {
         // Required empty public constructor
     }
@@ -268,10 +271,15 @@ public class MyOfferFragment extends Fragment implements DBListener{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(getAdapter() != null) {
-                            DBAccessor.getInstance().deleteOffer(objectToBeDeleted);
-                            DBAccessor.getInstance().getItemsPostedByUser(context);
-                            customListAdapter.notifyDataSetChanged();
-                            // TODO refresh the list or change arrays to lists and uncomment the next two lines
+
+                            progressDialog = new ProgressDialog(getActivity());
+                            progressDialog.setMessage("Deleting...");
+                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            progressDialog.setIndeterminate(true);
+                            progressDialog.show();
+
+                            DBAccessor.getInstance().deleteOffer(objectToBeDeleted,context);
+                          // TODO refresh the list or change arrays to lists and uncomment the next two lines
                             //getAdapter().remove(selectedItem);
                             //getAdapter().notifyDataSetChanged();
                         }
@@ -300,6 +308,45 @@ public class MyOfferFragment extends Fragment implements DBListener{
         setArraysForNamesImagesCost(objects);
 
         fetchedDataFromServer();
+
+
+    }
+
+    @Override
+    public void refreshAfterStatusChangeForDelete() {
+
+        new Handler().postDelayed(new Runnable() {
+
+            /*
+             * Showing splash screen with a timer. This will be useful when you
+             * want to show case your app logo / company
+             */
+
+            @Override
+            public void run() {
+                // This method will be executed once the timer is over
+                // Start your app main activity
+
+                //Decision based on current status - login or logout.
+
+                DBAccessor.getInstance().getItemsPostedByUser(context);
+                customListAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+
+//                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+//                if (sharedPreferences.getString("isLogin","false").equals("true")){
+//                    Intent i = new Intent(LaunchScreen.this, HomePage.class);
+//                    startActivity(i);
+//                }
+//                else {
+
+                // }
+
+                // close this activity
+            }
+        }, Constants.DELETE_ITEM_TIME_TO_REFRESH);
+
+
 
 
     }
