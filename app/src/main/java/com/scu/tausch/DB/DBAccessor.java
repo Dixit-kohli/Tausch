@@ -316,6 +316,8 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
                     offer.put("status", "false");
                     offer.saveInBackground();
+
+                    //callback method once, item has been deleted from server.
                     refreshInterface.refreshAfterStatusChangeForDelete();
                 }
             }

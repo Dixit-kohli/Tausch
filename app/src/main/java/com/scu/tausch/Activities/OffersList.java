@@ -199,14 +199,9 @@ public class OffersList extends Fragment implements DBListener{
                 int count = 0;
                 for (OfferDTO o : searchedOffers) {
                     count++;
-                 //   Toast.makeText(this, "Offer " + count + ": " + o.getOfferId()+" , "+o.getOfferTitle() + " , " + o.getOfferDescription(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
-        //else
-       //     Toast.makeText(this, "No records found", Toast.LENGTH_SHORT).show();
-
-        //finish();
         return searchedOffers;
     }
 
@@ -425,29 +420,15 @@ public class OffersList extends Fragment implements DBListener{
 
         String categoryId = null;
         OfferDTO offerDTO;
-        //Bundle extras = getIntent().getExtras();
-       // if (extras != null) {
-            categoryId = currentCategoryId;
-        //}
+        categoryId = currentCategoryId;
 
         //Put data in OfferDTO object
         offerDTO = new OfferDTO();
         offerDTO.setCategoryId(categoryId);
         offerDTO.setSortCriteriaSelected(selectedValue);
-       // selectedValue = String.valueOf(sortCriteria.getSelectedItem());
-//        if(!selectedValue.equals("Sort")) {
-//            offerDTO.setSortCriteriaSelected(selectedValue);
-//        }
+
         //getting shared instance
         dbAccessor = DBAccessor.getInstance();
-
-        //show progress dialog while findInBackground would start working
-//        progress = new ProgressDialog(getActivity());
-//        progress.setMessage("Loading...");
-//        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        progress.setIndeterminate(true);
-//        progress.show();
-
         dbAccessor.sortOffersInCategory(offerDTO);
 
     }

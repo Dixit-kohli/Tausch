@@ -101,8 +101,6 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
 
 
         DBAccessor.getInstance().getItemsPostedByUser(context);
-       // setArraysForNamesImagesCost();
-       // fetchedDataFromServer();
 
         // Inflate the layout for this fragment
         return rootView;
@@ -228,12 +226,9 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
     @Override
     public void refreshAfterStatusChangeForDelete() {
 
+        //adding time lag so that item gets refreshed on device after data has been deleted and status
+        //has changed from true to false.
         new Handler().postDelayed(new Runnable() {
-
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
 
             @Override
             public void run() {
