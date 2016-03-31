@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +23,7 @@ import org.json.JSONObject;
 public class MessageReceiver extends ParsePushBroadcastReceiver {
 
     String message;
-    static Context context;
+    static HomePage context;
 
     @Override
     protected void onPushReceive(Context context, Intent intent) {
@@ -34,9 +36,16 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
             jsonObject = new JSONObject(jsonData);
              message = jsonObject.getString("alert");
 
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            float dpWidth = displayMetrics.widthPixels;
+
+
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             TextView textView = (TextView)inflater.inflate(R.layout.textview_bubble, null);
+            textView.setWidth((int)dpWidth);
+            textView.setBackgroundColor(Color.parseColor("#4edacf"));
             textView.setText(message);
+
             LinearLayout layout = ChatFragment.layout;
 
             layout.addView(textView);

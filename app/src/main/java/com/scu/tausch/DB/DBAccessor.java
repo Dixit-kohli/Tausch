@@ -2,6 +2,7 @@ package com.scu.tausch.DB;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -9,9 +10,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.scu.tausch.Activities.AddOfferFragment;
+import com.scu.tausch.Activities.ChatFragment;
 import com.scu.tausch.Activities.DBListener;
 import com.scu.tausch.Activities.EditOfferFragment;
 import com.scu.tausch.Activities.HomePage;
+import com.scu.tausch.Activities.MessageThreadListener;
+import com.scu.tausch.Activities.MessagesListener;
+import com.scu.tausch.Activities.MyMessagesFragment;
 import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.Activities.RefreshInterface;
@@ -38,6 +43,8 @@ public class DBAccessor {
     private DBListener dbListener;
     private SearchListener searchListener;
     private RefreshInterface refreshInterface;
+    private MessagesListener messagesListener;
+    private MessageThreadListener messageThreadListener;
     public static int searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
     protected DBAccessor() {
@@ -52,9 +59,17 @@ public class DBAccessor {
         return instance;
     }
 
+    private void setMessageThreadListener(MessageThreadListener messageThreadListener){
+        this.messageThreadListener = messageThreadListener;
+    }
+
     //setting the reference for callback.
     private void setDBListener(DBListener dbListener){
         this.dbListener=dbListener;
+    }
+
+    private void setMessagesListener(MessagesListener messagesListener){
+        this.messagesListener = messagesListener;
     }
 
     private void setRefreshInterface(RefreshInterface refreshInterface){
@@ -354,5 +369,141 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
         });
         return results;
     }
+
+    public void messagesBetweenSenderAndReceiver(final String receiverId, final HomePage homePage){
+
+        final ArrayList<String> messagesSender = new ArrayList<>();
+        final ArrayList<String> messagesReceiver = new ArrayList<>();
+        final ArrayList<String> messagesAll = new ArrayList<>();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo("receiverId", receiverId);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                int messageSenderCount = 0;
+
+                while(messageSenderCount < objects.size()){
+
+                    String messageSend = (String)objects.get(messageSenderCount).get("body");
+                    messagesSender.add(messageSend);
+
+                    messageSenderCount++;
+                }
+
+                ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
+                queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
+                queryTwo.whereEqualTo("userId", receiverId);
+
+                queryTwo.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+
+                        int messageReceiverCount = 0;
+                        while(messageReceiverCount < objects.size()){
+
+                            String messageReceive = (String)objects.get(messageReceiverCount).get("body");
+
+                            messagesReceiver.add(messageReceive);
+                            messageReceiverCount++;
+
+                        }
+
+                        //Getting the fragment already created using tag.
+                        ChatFragment chatFragment = (ChatFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Chat_Fragment);
+                        setMessagesListener(chatFragment);
+
+                        if (chatFragment != null) {
+                            chatFragment.callbackForAllMessages(messagesSender,messagesReceiver);
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+
+    }
+
+//    public void getAllMessageThreadValuesfinal HomePage homePage){
+//
+//       // final ArrayList<String> messagesSender = new ArrayList<>();
+//        //final ArrayList<String> messagesReceiver = new ArrayList<>();
+//        final ArrayList<String> uniqueIds = new ArrayList<>();
+//
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+//        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+//
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> objects, ParseException e) {
+//
+//                int counter = 0;
+//
+//                while(counter < objects.size()){
+//
+//                    String receiver_id = (String)objects.get(counter).get("receiver_id");
+//
+//                    if (!uniqueIds.contains(receiver_id) && !receiver_id.equals(ParseUser.getCurrentUser().getObjectId())) {
+//
+//                        uniqueIds.add(receiver_id);
+//                    }
+//
+//                    counter++;
+//                }
+//
+//                ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
+//                queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
+//
+//                queryTwo.findInBackground(new FindCallback<ParseObject>() {
+//                    @Override
+//                    public void done(List<ParseObject> objects, ParseException e) {
+//
+//                        int counterTwo = 0;
+//                        while(counterTwo < objects.size()){
+//
+//                            String sender_id = (String)objects.get(counterTwo).get("user_id");
+//
+//                            if (!uniqueIds.contains(sender_id) && !receiverId.equals(ParseUser.getCurrentUser().getObjectId())) {
+//
+//                                uniqueIds.add(sender_id);
+//                            }
+//
+//                            counterTwo++;
+//
+//                        }
+//
+//                        ArrayList<String> myMessageThreadPeopleNames = new ArrayList<>();
+//
+//                        int namesCount = 0;
+//
+//                        while (namesCount < uniqueIds.size()){
+//
+//                           String firstName = (String)objects.get(namesCount).get("other_person");
+//                            myMessageThreadPeopleNames.add(firstName);
+//
+//                            namesCount++;
+//                        }
+//
+//                        //Getting the fragment already created using tag.
+//                        MyMessagesFragment myMessagesFragment = (MyMessagesFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.Tag_My_Messages_Fragment);
+//                        setMessageThreadListener(myMessagesFragment);
+//
+//                        if (myMessagesFragment != null) {
+//                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds,myMessageThreadPeopleNames);
+//                        }
+//
+//                    }
+//                });
+//
+//            }
+//        });
+//
+//
+//    }
 
 }

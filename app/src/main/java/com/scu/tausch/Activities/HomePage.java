@@ -73,6 +73,8 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         MyOfferFragment.context=this;
         EditOfferFragment.context=this;
         EditImageFragment.context=this;
+        ChatFragment.context = this;
+        MyMessagesFragment.context = this;
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -186,7 +188,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
                 break;
             case MY_MESSAGES:
                 fragment = new MyMessagesFragment();
-                Tag_Name=null;
+                Tag_Name=Constants.Tag_My_Messages_Fragment;
                 break;
             case SETTINGS:
                 fragment = new SettingsFragment();

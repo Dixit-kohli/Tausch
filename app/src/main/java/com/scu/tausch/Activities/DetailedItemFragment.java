@@ -44,6 +44,7 @@ public class DetailedItemFragment extends Fragment{
     private String condition;
     private String city;
     String receiverEmail;
+    String receiverName;
 
 private String receiverObjectId;
 
@@ -78,6 +79,7 @@ private String receiverObjectId;
                     public void done(List<ParseObject> objects, ParseException e) {
                         receiverEmail = (String) (objects.get(0).get("email"));
                         receiverObjectId = (String)itemObject.get("user_id");
+                        receiverName = (String)(objects.get(0).get("firstname"));
 
                     }
                 });
@@ -131,11 +133,11 @@ private String receiverObjectId;
                 *
                 * */
                 ChatFragment nextFrag= new ChatFragment();
-                nextFrag.setArgumentsForMessageSending(receiverEmail,receiverObjectId);
+                nextFrag.setArgumentsForMessageSending(receiverEmail,receiverObjectId, receiverName);
 
 
                 DetailedItemFragment.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.myDetailedItemFragment, nextFrag)
+                        .replace(R.id.myDetailedItemFragment, nextFrag,Constants.TAG_Chat_Fragment)
                         .addToBackStack(null)
                         .commit();
 

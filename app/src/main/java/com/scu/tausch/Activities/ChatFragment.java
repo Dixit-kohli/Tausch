@@ -1,8 +1,11 @@
 package com.scu.tausch.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -34,17 +38,20 @@ import android.os.Handler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements MessagesListener{
 
     static final String TAG = ChatFragment.class.getSimpleName();
     static String dealObj="";
 
+    private ProgressDialog progress;
     private EditText etMessage;
     private Button btSend;
     private View rootView;
     static LinearLayout layout;
     private String receiverEmail;
     private String receiverObjectId;
+    private String receiverName;
+    public static HomePage context;
 
     ListView lvChat;
     ArrayList<Message> mMessages;
@@ -58,9 +65,10 @@ public class ChatFragment extends Fragment {
 
    }
 
-public void setArgumentsForMessageSending(String receiverEmail,String receiverObjectId){
+public void setArgumentsForMessageSending(String receiverEmail,String receiverObjectId, String receiverName){
     this.receiverEmail = receiverEmail;
     this.receiverObjectId = receiverObjectId;
+    this.receiverName = receiverName;
 }
 
     @Override
@@ -94,6 +102,7 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
             }
         });
 
+        loadAndDisplayOldMessages();
 
 
         ParseUser myCurrentUser = ParseUser.getCurrentUser();
@@ -153,6 +162,8 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
 
                                 message.put(Message.BODY_KEY, data);
 
+                                message.put(Message.OTHER_PERSON_NAME, receiverName);
+
                                 //currently its for pjain3@scu.edu, it should be receiver Obj
                                 message.put(Message.RECEIVER_ID_KEY, receiverObjectId);
                                 message.saveInBackground(new SaveCallback() {
@@ -160,6 +171,20 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
                                     public void done(com.parse.ParseException e) {
                                         Toast.makeText(getActivity(), "Successfully created message on Parse",
                                                 Toast.LENGTH_SHORT).show();
+
+                                        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+                                        float dpWidth = displayMetrics.widthPixels;
+
+                                        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        TextView textView = (TextView)inflater.inflate(R.layout.textview_bubble, null);
+                                        textView.setText(data);
+                                        textView.setTextColor(Color.WHITE);
+                                        textView.setWidth((int)dpWidth);
+                                        textView.setBackgroundColor(Color.parseColor("#808080"));
+                                        LinearLayout layout = ChatFragment.layout;
+
+                                        layout.addView(textView);
+
 
                                         ParsePush parsePush = new ParsePush();
                                         ParseQuery pQuery = ParseInstallation.getQuery(); // <-- Installation query
@@ -242,4 +267,119 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
 
     }
 
+
+
+    public void loadAndDisplayOldMessages(){
+
+        progress = new ProgressDialog(getActivity());
+        progress.setMessage("Verifying...");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+        DBAccessor.getInstance().messagesBetweenSenderAndReceiver(receiverObjectId, context);
+
+
+
+    }
+
+    @Override
+    public void callbackForAllMessages(List<String> userMessages, List<String> receiverMessages) {
+
+        String data = null;
+
+        List<ParseObject> complete = new ArrayList<>();
+
+        final ArrayList<ParseObject> messagesSender = new ArrayList<>();
+        final ArrayList<ParseObject> messagesReceiver = new ArrayList<>();
+
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels;
+        LinearLayout layout = ChatFragment.layout;
+
+
+        //int counter = 0;
+//        while (counter < allMessages.size()){
+//
+//            String messageSendId = (String)allMessages.get(counter).get("userId");
+//            String messageReceiveId = (String)allMessages.get(counter).get("ReceiverId");
+//
+//            boolean isSendIdUserIdEqual = messageSendId.equals(ParseUser.getCurrentUser().getObjectId());
+//            boolean is
+//
+//            if (messageSendId.equals(ParseUser.getCurrentUser().getObjectId()) && receiverId.equals(messageReceiveId)){
+//                complete.add(allMessages.get(counter));
+//            }
+//            else if (messageReceiveId.equals(ParseUser.getCurrentUser().getObjectId()) && messageSendId.equals(receiverId)){
+//                complete.add(allMessages.get(counter));
+//            }
+//
+//            counter++;
+//        }
+
+//        int displayCounter = 0;
+//          while (displayCounter < complete.size()){
+//
+//              ParseObject messageObject = complete.get(displayCounter);
+//
+//              if (messageObject.get("userId").equals(ParseUser.getCurrentUser().getObjectId())) {
+//
+//                  LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                  TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
+//                  textView.setText(data);
+//                  textView.setTextColor(Color.WHITE);
+//                  textView.setWidth((int) dpWidth);
+//                  textView.setBackgroundColor(Color.parseColor("#808080"));
+//              }
+//              else{
+//                  LayoutInflater inflaterTwo = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                  TextView textViewTwo = (TextView) inflaterTwo.inflate(R.layout.textview_bubble, null);
+//                  textViewTwo.setText(data);
+//                  textViewTwo.setTextColor(Color.WHITE);
+//                  textViewTwo.setWidth((int) dpWidth);
+//                  textViewTwo.setBackgroundColor(Color.parseColor("#4edacf"));
+//
+//              }
+//
+//
+//              displayCounter++;
+//         }
+
+
+
+        int messageNumber = 0;
+
+
+
+        while (messageNumber < userMessages.size()){
+
+            data = (String)userMessages.get(messageNumber);
+
+          //  if () {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
+                textView.setText(data);
+                textView.setTextColor(Color.WHITE);
+                textView.setWidth((int) dpWidth);
+                textView.setBackgroundColor(Color.parseColor("#808080"));
+
+                layout.addView(textView);
+        //    }
+          //  else {
+                data = (String)receiverMessages.get(messageNumber);
+
+                LayoutInflater inflaterTwo = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                TextView textViewTwo = (TextView) inflaterTwo.inflate(R.layout.textview_bubble, null);
+                textViewTwo.setText(data);
+                textViewTwo.setTextColor(Color.WHITE);
+                textViewTwo.setWidth((int) dpWidth);
+                textViewTwo.setBackgroundColor(Color.parseColor("#4edacf"));
+
+                layout.addView(textViewTwo);
+         //   }
+            messageNumber++;
+        }
+
+          progress.dismiss();
+
+    }
 }

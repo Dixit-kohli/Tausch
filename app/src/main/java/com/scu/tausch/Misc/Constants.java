@@ -41,6 +41,9 @@ public class Constants {
     public static final String TAG_Offer_List = "tagOfferList";
     public static final String TAG_Add_Offer_Fragment = "tagAddOfferFragment";
     public static final String TAG_My_Offer_Fragment = "tagMyOfferFragment";
+    public static final String TAG_Chat_Fragment = "tagChatFragment";
+    public static final String Tag_My_Messages_Fragment = "tagMyMessageFragment";
+
 
     public static final String DB_Offers = "Offers";
     public static final String DB_Offer_Title = "offer_title";

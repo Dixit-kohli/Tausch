@@ -9,8 +9,17 @@ import com.parse.ParseClassName;
 @ParseClassName("Message")
 public class Message extends ParseObject {
     public static final String USER_ID_KEY = "userId";
+    public static final String OTHER_PERSON_NAME = "other_person";
     public static final String BODY_KEY = "body";
     public static final String RECEIVER_ID_KEY = "receiverId";
+
+    public String getOtherPersonName(){
+        return getString(OTHER_PERSON_NAME);
+    }
+
+    public void setOtherPersonName(String otherPersonName){
+        put(OTHER_PERSON_NAME,otherPersonName);
+    }
 
     public String getUserId() {
         return getString(USER_ID_KEY);

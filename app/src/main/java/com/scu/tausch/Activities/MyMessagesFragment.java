@@ -1,7 +1,12 @@
 package com.scu.tausch.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,24 +14,68 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.scu.tausch.Adapters.MyMessagesAdapter;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Praneet on 1/29/16.
  */
-public class MyMessagesFragment extends Fragment{
+public class MyMessagesFragment extends Fragment implements MessageThreadListener{
+
+    private MyMessagesAdapter myMessagesAdapter;
+    private ListView listViewItems;
+    private TextView emptyListTextView;
+    private List<String> itemObjects;
+    private  String[] arrayUniqueNames;
+    private  String[] arrayUniqueIds;
+    private  String[] arrayItemCosts;
+
+    public static HomePage context;
 
     public MyMessagesFragment() {
         // Required empty public constructor
     }
+
+    public MyMessagesAdapter getAdapter() {
+        return myMessagesAdapter;
+    }
+    public void setAdapter(MyMessagesAdapter customListAdapter) {
+        this.myMessagesAdapter = customListAdapter;
+    }
+
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+
+      // DBAccessor.getInstance().getAllMessageThreadValues(context);
+
+
+
+
+
+
+
+
+
+
 
         //DO NOT DELETE FOLLOWING CODE
         //ChatFragment nextFrag= new ChatFragment();
@@ -57,9 +106,98 @@ public class MyMessagesFragment extends Fragment{
             }
         });
 
+        listViewItems=(ListView)rootView.findViewById(R.id.list_items_in_category);
+        emptyListTextView=(TextView)rootView.findViewById(android.R.id.empty);
+
+
         // Inflate the layout for this fragment
         return rootView;
     }
+
+    @Override
+    public void callbackForAllMessagesThreads(List<String> uniqueIds, List<String> peopleNames) {
+
+        itemObjects=peopleNames;
+
+        arrayUniqueNames = peopleNames.toArray(new String[itemObjects.size()]);
+        arrayUniqueIds = uniqueIds.toArray(new String[itemObjects.size()]);
+
+        fetchedDataFromServer();
+    }
+
+
+    public void fetchedDataFromServer(){
+
+        final MyMessagesAdapter myMessagesAdapter = new MyMessagesAdapter(getActivity(),arrayUniqueNames);
+        setAdapter(myMessagesAdapter);
+        listViewItems.setAdapter(myMessagesAdapter);
+
+        if (itemObjects.size() == 0) {
+            emptyListTextView.setText("No items found.");
+            listViewItems.setEmptyView(emptyListTextView);
+        }
+
+
+        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                EditOfferFragment nextFrag = new EditOfferFragment();
+//
+//                nextFrag.setArgumentsForUpdate(itemObjects.get(position));
+//
+//                MyOfferFragment.this.getFragmentManager().beginTransaction()
+//                        .replace(R.id.myOfferItemFragment, nextFrag, Constants.TAG_Edit_Offer_Fragment)
+//                        .addToBackStack(null)
+//                        .commit();
+            }
+        });
+
+        // remove items
+        // Create the listener for long item clicks
+//        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long rowid) {
+//
+//                // Store selected item in global variable
+//                final String selectedItem = parent.getItemAtPosition(position).toString();
+//                final String objectToBeDeleted = itemObjects.get(position).getObjectId();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("Do you want to remove " + selectedItem + "?");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        if (getAdapter() != null) {
+//
+//                            progressDialog = new ProgressDialog(getActivity());
+//                            progressDialog.setMessage("Deleting...");
+//                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                            progressDialog.setIndeterminate(true);
+//                            progressDialog.show();
+//
+//                            DBAccessor.getInstance().deleteOffer(objectToBeDeleted, context);
+//                            // TODO refresh the list or change arrays to lists and uncomment the next two lines
+//                            //getAdapter().remove(selectedItem);
+//                            //getAdapter().notifyDataSetChanged();
+//                        }
+//                    }
+//                });
+//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                });
+//                // Create and show the dialog
+//                builder.show();
+//                // Signal OK to avoid further processing of the long click
+//                return true;
+//            }
+//        });
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
