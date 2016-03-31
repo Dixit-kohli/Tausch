@@ -283,78 +283,31 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
     }
 
     @Override
-    public void callbackForAllMessages(List<String> userMessages, List<String> receiverMessages) {
+    public void callbackForAllMessages(List<ParseObject>messagesAll, String receiverId) {
 
         String data = null;
 
         List<ParseObject> complete = new ArrayList<>();
 
-        final ArrayList<ParseObject> messagesSender = new ArrayList<>();
-        final ArrayList<ParseObject> messagesReceiver = new ArrayList<>();
+//        final ArrayList<ParseObject> messagesSender = new ArrayList<>();
+//        final ArrayList<ParseObject> messagesReceiver = new ArrayList<>();
+
 
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
         LinearLayout layout = ChatFragment.layout;
 
 
-        //int counter = 0;
-//        while (counter < allMessages.size()){
-//
-//            String messageSendId = (String)allMessages.get(counter).get("userId");
-//            String messageReceiveId = (String)allMessages.get(counter).get("ReceiverId");
-//
-//            boolean isSendIdUserIdEqual = messageSendId.equals(ParseUser.getCurrentUser().getObjectId());
-//            boolean is
-//
-//            if (messageSendId.equals(ParseUser.getCurrentUser().getObjectId()) && receiverId.equals(messageReceiveId)){
-//                complete.add(allMessages.get(counter));
-//            }
-//            else if (messageReceiveId.equals(ParseUser.getCurrentUser().getObjectId()) && messageSendId.equals(receiverId)){
-//                complete.add(allMessages.get(counter));
-//            }
-//
-//            counter++;
-//        }
-
-//        int displayCounter = 0;
-//          while (displayCounter < complete.size()){
-//
-//              ParseObject messageObject = complete.get(displayCounter);
-//
-//              if (messageObject.get("userId").equals(ParseUser.getCurrentUser().getObjectId())) {
-//
-//                  LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                  TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
-//                  textView.setText(data);
-//                  textView.setTextColor(Color.WHITE);
-//                  textView.setWidth((int) dpWidth);
-//                  textView.setBackgroundColor(Color.parseColor("#808080"));
-//              }
-//              else{
-//                  LayoutInflater inflaterTwo = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                  TextView textViewTwo = (TextView) inflaterTwo.inflate(R.layout.textview_bubble, null);
-//                  textViewTwo.setText(data);
-//                  textViewTwo.setTextColor(Color.WHITE);
-//                  textViewTwo.setWidth((int) dpWidth);
-//                  textViewTwo.setBackgroundColor(Color.parseColor("#4edacf"));
-//
-//              }
-//
-//
-//              displayCounter++;
-//         }
-
-
-
         int messageNumber = 0;
 
 
 
-        while (messageNumber < userMessages.size()){
+        while (messageNumber < messagesAll.size()) {
 
-            data = (String)userMessages.get(messageNumber);
+            data = (String) messagesAll.get(messageNumber).get("body");
 
-          //  if () {
+            if ((messagesAll.get(messageNumber).get("userId")).equals(ParseUser.getCurrentUser().getObjectId())) {
+
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
                 textView.setText(data);
@@ -363,9 +316,9 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
                 textView.setBackgroundColor(Color.parseColor("#808080"));
 
                 layout.addView(textView);
-        //    }
-          //  else {
-                data = (String)receiverMessages.get(messageNumber);
+
+            }
+            if((messagesAll.get(messageNumber).get("receiverId")).equals(ParseUser.getCurrentUser().getObjectId())) {
 
                 LayoutInflater inflaterTwo = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 TextView textViewTwo = (TextView) inflaterTwo.inflate(R.layout.textview_bubble, null);
@@ -375,10 +328,11 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
                 textViewTwo.setBackgroundColor(Color.parseColor("#4edacf"));
 
                 layout.addView(textViewTwo);
-         //   }
-            messageNumber++;
-        }
 
+            }
+            messageNumber++;
+
+        }
           progress.dismiss();
 
     }

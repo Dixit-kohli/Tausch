@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface MessagesListener {
 
-    void callbackForAllMessages(List<String> userMessages, List<String> receiverMessages);
+    void callbackForAllMessages(List<ParseObject> messagesAll, String receiverId);
 
 
 }

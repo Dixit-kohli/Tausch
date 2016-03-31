@@ -31,6 +31,7 @@ import com.parse.SignUpCallback;
 import com.parse.LogInCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -157,16 +158,29 @@ public class DBAccessor {
         query.whereEqualTo(Constants.DB_CATEGORY_ID, categoryID);
         query.whereEqualTo(Constants.DB_STATUS, "true");
 
+        final List<ParseObject> objectOtherThanUser = new ArrayList<>();
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
+
+                int counter = 0;
+                while (counter < objects.size()){
+
+                    if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))){
+                        objectOtherThanUser.add(objects.get(counter));
+                    }
+
+                    counter++;
+                }
+
 
                 //Getting the fragment already created using tag.
                 OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Offer_List);
                 setDBListener(offerListFragment);
 
                 if (dbListener != null) {
-                    dbListener.callback(objects);
+                    dbListener.callback(objectOtherThanUser);
                 }
 
             }
@@ -372,9 +386,13 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
     public void messagesBetweenSenderAndReceiver(final String receiverId, final HomePage homePage){
 
-        final ArrayList<String> messagesSender = new ArrayList<>();
-        final ArrayList<String> messagesReceiver = new ArrayList<>();
-        final ArrayList<String> messagesAll = new ArrayList<>();
+   //     final ArrayList<ParseObject> messagesSender = new ArrayList<>();
+    //    final ArrayList<ParseObject> messagesReceiver = new ArrayList<>();
+        final ArrayList<ParseObject> messagesAll = new ArrayList<>();
+     //   final ArrayList<Date> messagesDate = new ArrayList<>();
+    //    final ArrayList<Date> messagesSenderDate = new ArrayList<>();
+     //   final ArrayList<Date> messagesReceiverDate = new ArrayList<>();
+        final ArrayList<ParseObject> sortedObjectsAsPerDate = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
         query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
@@ -384,15 +402,20 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
 
-                int messageSenderCount = 0;
+                    messagesAll.addAll(objects);
 
-                while(messageSenderCount < objects.size()){
+             //   int messageSenderCount = 0;
 
-                    String messageSend = (String)objects.get(messageSenderCount).get("body");
-                    messagesSender.add(messageSend);
-
-                    messageSenderCount++;
-                }
+//                while(messageSenderCount < objects.size()){
+//
+////                    String messageSend = (String)objects.get(messageSenderCount).get("body");
+////                    Date messageDate = objects.get(messageSenderCount).getCreatedAt();
+//////                    messagesSender.add(objects.get(messageSenderCount));
+////                    messagesSenderDate.add(objects.get(messageSenderCount).getCreatedAt());
+////                    messagesDate.add(messageDate);
+//
+//                    messageSenderCount++;
+//                }
 
                 ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
                 queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
@@ -402,22 +425,49 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
 
-                        int messageReceiverCount = 0;
-                        while(messageReceiverCount < objects.size()){
+                        messagesAll.addAll(objects);
 
-                            String messageReceive = (String)objects.get(messageReceiverCount).get("body");
+                  //      int messageReceiverCount = 0;
+//                        while(messageReceiverCount < objects.size()){
+//
+//                         //   String messageReceive = (String)objects.get(messageReceiverCount).get("body");
+//                          //  Date messageDate = objects.get(messageReceiverCount).getCreatedAt();
+////                            messagesReceiver.add(objects.get(messageReceiverCount));
+////                            messagesReceiverDate.add(objects.get(messageReceiverCount).getCreatedAt());
+////                         //   messagesDate.add(messageDate);
+//
+//                            messageReceiverCount++;
+//
+//                        }
 
-                            messagesReceiver.add(messageReceive);
-                            messageReceiverCount++;
 
-                        }
+
+                       for(int i=0; i<messagesAll.size()-1;i++){
+
+                           int j;
+
+                           for(j=i+1;j<messagesAll.size();j++){
+
+
+                               if ((messagesAll.get(i).getCreatedAt()).compareTo(messagesAll.get(j).getCreatedAt())==1){
+
+                                   ParseObject temp = messagesAll.get(i);
+
+                                   messagesAll.set(i, messagesAll.get(j));
+
+                                   messagesAll.set(j, temp);
+
+                               }
+                       }
+
+                       }
 
                         //Getting the fragment already created using tag.
                         ChatFragment chatFragment = (ChatFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Chat_Fragment);
                         setMessagesListener(chatFragment);
 
                         if (chatFragment != null) {
-                            chatFragment.callbackForAllMessages(messagesSender,messagesReceiver);
+                            chatFragment.callbackForAllMessages(messagesAll,receiverId);
                         }
 
                     }
@@ -505,5 +555,40 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 //
 //
 //    }
+
+
+//    public ArrayList<ParseObject> merge(ArrayList<ParseObject> a, ArrayList<ParseObject> b) {
+//
+//        ArrayList<ParseObject> answer = new ArrayList<>();
+//        int i = 0, j = 0, k = 0;
+//
+//        while (i < a.size() && j < b.size())
+//        {
+//
+//            if (a.get(i).getCreatedAt().compareTo(b.get(j).getCreatedAt()) == -1){
+//                answer.set(k++,a.get(i++));
+//            }
+//            else {
+//                answer.set(k++,b.get(j++));
+//            }
+//
+//
+//
+//
+//        }
+//
+//
+//        while (i<a.size()){
+//            answer.set(k++,a.get(i++));
+//        }
+//
+//        while (j < b.size()){
+//            answer.set(k++,b.get(j++));
+//        }
+//
+//
+//        return answer;
+//    }
+//
 
 }
