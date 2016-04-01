@@ -511,34 +511,58 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                         while (namesCount < messagesObjects.size()){
 
 
-                            if (messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId())){
+                            String receiverId = (String)messagesObjects.get(namesCount).get("receiverId");
+                            String senderId = (String)messagesObjects.get(namesCount).get("userId");
+                            String userId = ParseUser.getCurrentUser().getObjectId();
 
-                                if (!(messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId()))){
 
-                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("receiverId")))) {
-                                        uniqueIds.add((String) messagesObjects.get(namesCount).get("receiverId"));
-                                    }
-                                    if(!(myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))){
-                                        myMessageThreadPeopleNames.add((String)messagesObjects.get(namesCount).get("other_person"));
 
-                                    }
-                                }
+//                            if (messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId())){
+//
+//                                if (!(messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId()))){
+//
+//                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("receiverId")))) {
+//                                    }
+//                                    if((myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))){
+                                     //   myMessageThreadPeopleNames.add();
 
+                       //     uniqueIds.add((String) messagesObjects.get(namesCount).get("receiverId"));
+
+
+                            if (uniqueIds.contains(receiverId)==false){
+                                if (!receiverId.equals(userId)){
+                                uniqueIds.add(receiverId);
+                                myMessageThreadPeopleNames.add((String)messagesObjects.get(namesCount).get("other_person"));
+                            }
                             }
 
-                            else if (messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId())) {
 
-                                if (!(messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId()))){
-
-                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("userId")))) {
-                                        uniqueIds.add((String) messagesObjects.get(namesCount).get("userId"));
-                                    }
-                                    if (!(myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))) {
-                                        myMessageThreadPeopleNames.add((String) messagesObjects.get(namesCount).get("other_person"));
-                                    }
-                                }
-
+                            if (uniqueIds.contains(senderId)==false){
+                                if(!senderId.equals(userId)){
+                                uniqueIds.add(senderId);
+                                myMessageThreadPeopleNames.add((String)messagesObjects.get(namesCount).get("other_person"));
                             }
+                            }
+
+
+//                                    }
+//                                }
+//
+//                            }
+//
+//                            else if (messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId())) {
+//
+//                                if (!(messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId()))){
+//
+//                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("userId")))) {
+//                                        uniqueIds.add((String) messagesObjects.get(namesCount).get("userId"));
+//                                    }
+//                                    if (!(myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))) {
+//                                        myMessageThreadPeopleNames.add((String) messagesObjects.get(namesCount).get("other_person"));
+//                                    }
+//                                }
+//
+//                            }
 
                             namesCount++;
                         }
