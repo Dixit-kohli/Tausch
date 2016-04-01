@@ -479,116 +479,88 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
     }
 
-//    public void getAllMessageThreadValuesfinal HomePage homePage){
-//
-//       // final ArrayList<String> messagesSender = new ArrayList<>();
-//        //final ArrayList<String> messagesReceiver = new ArrayList<>();
-//        final ArrayList<String> uniqueIds = new ArrayList<>();
-//
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-//        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
-//
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            @Override
-//            public void done(List<ParseObject> objects, ParseException e) {
-//
-//                int counter = 0;
-//
-//                while(counter < objects.size()){
-//
-//                    String receiver_id = (String)objects.get(counter).get("receiver_id");
-//
-//                    if (!uniqueIds.contains(receiver_id) && !receiver_id.equals(ParseUser.getCurrentUser().getObjectId())) {
-//
-//                        uniqueIds.add(receiver_id);
-//                    }
-//
-//                    counter++;
-//                }
-//
-//                ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
-//                queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
-//
-//                queryTwo.findInBackground(new FindCallback<ParseObject>() {
-//                    @Override
-//                    public void done(List<ParseObject> objects, ParseException e) {
-//
-//                        int counterTwo = 0;
-//                        while(counterTwo < objects.size()){
-//
-//                            String sender_id = (String)objects.get(counterTwo).get("user_id");
-//
-//                            if (!uniqueIds.contains(sender_id) && !receiverId.equals(ParseUser.getCurrentUser().getObjectId())) {
-//
-//                                uniqueIds.add(sender_id);
-//                            }
-//
-//                            counterTwo++;
-//
-//                        }
-//
-//                        ArrayList<String> myMessageThreadPeopleNames = new ArrayList<>();
-//
-//                        int namesCount = 0;
-//
-//                        while (namesCount < uniqueIds.size()){
-//
-//                           String firstName = (String)objects.get(namesCount).get("other_person");
-//                            myMessageThreadPeopleNames.add(firstName);
-//
-//                            namesCount++;
-//                        }
-//
-//                        //Getting the fragment already created using tag.
-//                        MyMessagesFragment myMessagesFragment = (MyMessagesFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.Tag_My_Messages_Fragment);
-//                        setMessageThreadListener(myMessagesFragment);
-//
-//                        if (myMessagesFragment != null) {
-//                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds,myMessageThreadPeopleNames);
-//                        }
-//
-//                    }
-//                });
-//
-//            }
-//        });
-//
-//
-//    }
+    public void getAllMessageThreadValuesfinal(final HomePage homePage){
+
+        final ArrayList<ParseObject> messagesObjects = new ArrayList<>();
+        final ArrayList<String> uniqueIds = new ArrayList<>();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
 
 
-//    public ArrayList<ParseObject> merge(ArrayList<ParseObject> a, ArrayList<ParseObject> b) {
-//
-//        ArrayList<ParseObject> answer = new ArrayList<>();
-//        int i = 0, j = 0, k = 0;
-//
-//        while (i < a.size() && j < b.size())
-//        {
-//
-//            if (a.get(i).getCreatedAt().compareTo(b.get(j).getCreatedAt()) == -1){
-//                answer.set(k++,a.get(i++));
-//            }
-//            else {
-//                answer.set(k++,b.get(j++));
-//            }
-//
-//
-//
-//
-//        }
-//
-//
-//        while (i<a.size()){
-//            answer.set(k++,a.get(i++));
-//        }
-//
-//        while (j < b.size()){
-//            answer.set(k++,b.get(j++));
-//        }
-//
-//
-//        return answer;
-//    }
-//
+                messagesObjects.addAll(objects);
+
+
+                ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
+                queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
+
+                queryTwo.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+
+                        messagesObjects.addAll(objects);
+
+                        ArrayList<String> myMessageThreadPeopleNames = new ArrayList<>();
+
+                        int namesCount = 0;
+
+                        while (namesCount < messagesObjects.size()){
+
+
+                            if (messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId())){
+
+                                if (!(messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId()))){
+
+                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("receiverId")))) {
+                                        uniqueIds.add((String) messagesObjects.get(namesCount).get("receiverId"));
+                                    }
+                                    if(!(myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))){
+                                        myMessageThreadPeopleNames.add((String)messagesObjects.get(namesCount).get("other_person"));
+
+                                    }
+                                }
+
+                            }
+
+                            else if (messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId())) {
+
+                                if (!(messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId()))){
+
+                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("userId")))) {
+                                        uniqueIds.add((String) messagesObjects.get(namesCount).get("userId"));
+                                    }
+                                    if (!(myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))) {
+                                        myMessageThreadPeopleNames.add((String) messagesObjects.get(namesCount).get("other_person"));
+                                    }
+                                }
+
+                            }
+
+                            namesCount++;
+                        }
+
+
+
+
+                        //Getting the fragment already created using tag.
+                        MyMessagesFragment myMessagesFragment = (MyMessagesFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.Tag_My_Messages_Fragment);
+                        setMessageThreadListener(myMessagesFragment);
+
+                        if (myMessagesFragment != null) {
+                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds,myMessageThreadPeopleNames);
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+
+    }
 
 }

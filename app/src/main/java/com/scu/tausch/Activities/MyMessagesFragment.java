@@ -18,9 +18,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.scu.tausch.Adapters.MyMessagesAdapter;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
@@ -41,6 +43,11 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
     private  String[] arrayUniqueNames;
     private  String[] arrayUniqueIds;
     private  String[] arrayItemCosts;
+    private ProgressDialog progress;
+
+    private String receiverEmail;
+    private String receiverObjectId;
+    private String receiverName;
 
     public static HomePage context;
 
@@ -65,7 +72,11 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
-      // DBAccessor.getInstance().getAllMessageThreadValues(context);
+        progress = new ProgressDialog(getActivity());
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+       DBAccessor.getInstance().getAllMessageThreadValuesfinal(context);
 
 
 
@@ -117,6 +128,7 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
     @Override
     public void callbackForAllMessagesThreads(List<String> uniqueIds, List<String> peopleNames) {
 
+        progress.dismiss();
         itemObjects=peopleNames;
 
         arrayUniqueNames = peopleNames.toArray(new String[itemObjects.size()]);
@@ -140,15 +152,32 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
 
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                EditOfferFragment nextFrag = new EditOfferFragment();
-//
-//                nextFrag.setArgumentsForUpdate(itemObjects.get(position));
-//
-//                MyOfferFragment.this.getFragmentManager().beginTransaction()
-//                        .replace(R.id.myOfferItemFragment, nextFrag, Constants.TAG_Edit_Offer_Fragment)
-//                        .addToBackStack(null)
-//                        .commit();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final ChatFragment nextFrag = new ChatFragment();
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+                query.whereEqualTo("objectId", arrayUniqueIds[position]);
+                // Retrieve the object by id
+
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        receiverEmail = (String) (objects.get(0).get("email"));
+                        receiverObjectId = arrayUniqueIds[position];
+                        receiverName = (String) (objects.get(0).get("firstname"));
+
+                        nextFrag.setArgumentsForMessageSending(receiverEmail, receiverObjectId, receiverName);
+
+                        MyMessagesFragment.this.getFragmentManager().beginTransaction()
+                                .replace(R.id.myMessagesWindow, nextFrag, Constants.TAG_Chat_Fragment)
+                                .addToBackStack(null)
+                                .commit();
+
+                    }
+                });
+
+
+
             }
         });
 
