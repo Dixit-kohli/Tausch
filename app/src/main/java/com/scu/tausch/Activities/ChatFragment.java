@@ -1,7 +1,9 @@
 package com.scu.tausch.Activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -33,15 +36,16 @@ import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.Message;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
+
 import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatFragment extends Fragment implements MessagesListener{
+public class ChatFragment extends Fragment implements MessagesListener {
 
     static final String TAG = ChatFragment.class.getSimpleName();
-    static String dealObj="";
+    static String dealObj = "";
 
     private ProgressDialog progress;
     private EditText etMessage;
@@ -60,22 +64,22 @@ public class ChatFragment extends Fragment implements MessagesListener{
     boolean mFirstLoad;
 
 
-    public ChatFragment(){
-     // Required empty public constructor
+    public ChatFragment() {
+        // Required empty public constructor
 
-   }
+    }
 
-public void setArgumentsForMessageSending(String receiverEmail,String receiverObjectId, String receiverName){
-    this.receiverEmail = receiverEmail;
-    this.receiverObjectId = receiverObjectId;
-    this.receiverName = receiverName;
-}
+    public void setArgumentsForMessageSending(String receiverEmail, String receiverObjectId, String receiverName) {
+        this.receiverEmail = receiverEmail;
+        this.receiverObjectId = receiverObjectId;
+        this.receiverName = receiverName;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-     //   mHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
+        //   mHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
@@ -87,8 +91,7 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
 
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        layout = (LinearLayout)rootView.findViewById(R.id.layoutMessage);
-
+        layout = (LinearLayout) rootView.findViewById(R.id.layoutMessage);
 
 
         rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -126,83 +129,113 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
         // Find the text field and button
 
 
-
         etMessage = (EditText) rootView.findViewById(R.id.etMessage);
         btSend = (Button) rootView.findViewById(R.id.btSend);
-      //  lvChat = (ListView) rootView.findViewById(R.id.lvChat);
+        //  lvChat = (ListView) rootView.findViewById(R.id.lvChat);
         mMessages = new ArrayList<>();
         // Automatically scroll to the bottom when a data set change notification is received and only if the last item is already visible on screen. Don't scroll to the bottom otherwise.
-      //  lvChat.setTranscriptMode(1);
+        //  lvChat.setTranscriptMode(1);
         mFirstLoad = true;
         final String userId = ParseUser.getCurrentUser().getObjectId();
-       // mAdapter = new ChatListAdapter(getActivity(), userId, mMessages);
-      //  lvChat.setAdapter(mAdapter);
+        // mAdapter = new ChatListAdapter(getActivity(), userId, mMessages);
+        //  lvChat.setAdapter(mAdapter);
         // When send button is clicked, create message object on Parse
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-                query.whereEqualTo("username", ParseUser.getCurrentUser().getEmail());
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> objects, ParseException e) {
-                        if (e == null) {
-                            //  row of Object Id "U8mCwTHOaC"
 
-                            for (final ParseObject dealsObject : objects) {
-                                // use dealsObject.get('columnName') to access the properties of the Deals object.
-                                dealObj = dealsObject.getObjectId();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                currentUser.fetchInBackground(new GetCallback<ParseObject>() {
+                                                  @Override
+                                                  public void done(ParseObject object, ParseException e) {
 
-                                final String data = etMessage.getText().toString();
-                                ParseObject message = ParseObject.create("Message");
-                                //  message.put(Message.USER_ID_KEY, userId);
+                                                      if (etMessage.getText().toString().trim().length()==0){
+                                                          return;
+                                                      }
 
-                                //object id for Adhuri@scu.edu
-                                message.put(Message.USER_ID_KEY, userId);
+                                                      if (e == null) {
+                                                          boolean isUserVerified = object.getBoolean("emailVerified");
+                                                          Log.i("test", "The Value is :" + isUserVerified);
 
-                                message.put(Message.BODY_KEY, data);
+                                                          if (!isUserVerified) {
+                                                              showDialogBoxForUnverfiedUser();
+                                                              return;
+                                                          } else {
+                                                              //user is verified.
+                                                              ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+                                                              query.whereEqualTo("username", ParseUser.getCurrentUser().getEmail());
+                                                              query.findInBackground(new FindCallback<ParseObject>()
 
-                                message.put(Message.OTHER_PERSON_NAME, receiverName);
+                                                                                     {
+                                                                                         public void done(List<ParseObject> objects, ParseException e) {
+                                                                                             if (e == null) {
+                                                                                                 //  row of Object Id "U8mCwTHOaC"
 
-                                //currently its for pjain3@scu.edu, it should be receiver Obj
-                                message.put(Message.RECEIVER_ID_KEY, receiverObjectId);
-                                message.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(com.parse.ParseException e) {
-                                        Toast.makeText(getActivity(), "Successfully created message on Parse",
-                                                Toast.LENGTH_SHORT).show();
+                                                                                                 for (final ParseObject dealsObject : objects) {
+                                                                                                     // use dealsObject.get('columnName') to access the properties of the Deals object.
+                                                                                                     dealObj = dealsObject.getObjectId();
 
-                                        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-                                        float dpWidth = displayMetrics.widthPixels;
+                                                                                                     final String data = etMessage.getText().toString();
+                                                                                                     ParseObject message = ParseObject.create("Message");
+                                                                                                     //  message.put(Message.USER_ID_KEY, userId);
 
-                                        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        TextView textView = (TextView)inflater.inflate(R.layout.textview_bubble, null);
-                                        textView.setText(data);
-                                        textView.setTextColor(Color.WHITE);
-                                        textView.setWidth((int)dpWidth);
-                                        textView.setBackgroundColor(Color.parseColor("#808080"));
-                                        LinearLayout layout = ChatFragment.layout;
+                                                                                                     //object id for Adhuri@scu.edu
+                                                                                                     message.put(Message.USER_ID_KEY, userId);
 
-                                        layout.addView(textView);
+                                                                                                     message.put(Message.BODY_KEY, data);
+
+                                                                                                     message.put(Message.OTHER_PERSON_NAME, receiverName);
+
+                                                                                                     //currently its for pjain3@scu.edu, it should be receiver Obj
+                                                                                                     message.put(Message.RECEIVER_ID_KEY, receiverObjectId);
+                                                                                                     message.saveInBackground(new SaveCallback() {
+                                                                                                         @Override
+                                                                                                         public void done(com.parse.ParseException e) {
+                                                                                                             Toast.makeText(getActivity(), "Successfully created message on Parse",
+                                                                                                                     Toast.LENGTH_SHORT).show();
+
+                                                                                                             DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+                                                                                                             float dpWidth = displayMetrics.widthPixels;
+
+                                                                                                             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                                                                             TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
+                                                                                                             textView.setText(data);
+                                                                                                             textView.setTextColor(Color.WHITE);
+                                                                                                             textView.setWidth((int) dpWidth);
+                                                                                                             textView.setBackgroundColor(Color.parseColor("#808080"));
+                                                                                                             LinearLayout layout = ChatFragment.layout;
+
+                                                                                                             layout.addView(textView);
 
 
-                                        ParsePush parsePush = new ParsePush();
-                                        ParseQuery pQuery = ParseInstallation.getQuery(); // <-- Installation query
-                                        pQuery.whereEqualTo("username", receiverEmail); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
-                                        parsePush.sendMessageInBackground(data, pQuery);
+                                                                                                             ParsePush parsePush = new ParsePush();
+                                                                                                             ParseQuery pQuery = ParseInstallation.getQuery(); // <-- Installation query
+                                                                                                             pQuery.whereEqualTo("username", receiverEmail); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
+                                                                                                             parsePush.sendMessageInBackground(data, pQuery);
 
-                                        //  refreshMessages();
-                                    }
-                                });
-                                etMessage.setText(null);
+                                                                                                             //  refreshMessages();
+                                                                                                         }
+                                                                                                     });
+                                                                                                     etMessage.setText(null);
 
-                            }
-                        } else {
-                            // error
-                        }
-                    }
-                });
+                                                                                                 }
+                                                                                             } else {
+                                                                                                 // error
+                                                                                             }
+                                                                                         }
+                                                                                     }
 
+                                                              );
+
+                                                          }
+                                                      }
+
+
+                                                  }
+                                              }
+
+                );
 
 
 
@@ -216,7 +249,7 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
         // Construct query to execute
         ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
         // Configure limit and sort order
-       // query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
+        // query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
         query.orderByAscending("createdAt");
         // Execute query to fetch all messages from Parse asynchronously
         // This is equivalent to a SELECT query with SQL
@@ -268,8 +301,7 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
     }
 
 
-
-    public void loadAndDisplayOldMessages(){
+    public void loadAndDisplayOldMessages() {
 
         progress = new ProgressDialog(getActivity());
         progress.setMessage("Verifying...");
@@ -279,11 +311,10 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
         DBAccessor.getInstance().messagesBetweenSenderAndReceiver(receiverObjectId, context);
 
 
-
     }
 
     @Override
-    public void callbackForAllMessages(List<ParseObject>messagesAll, String receiverId) {
+    public void callbackForAllMessages(List<ParseObject> messagesAll, String receiverId) {
 
         String data = null;
 
@@ -299,7 +330,6 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
 
 
         int messageNumber = 0;
-
 
 
         while (messageNumber < messagesAll.size()) {
@@ -318,7 +348,7 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
                 layout.addView(textView);
 
             }
-            if((messagesAll.get(messageNumber).get("receiverId")).equals(ParseUser.getCurrentUser().getObjectId())) {
+            if ((messagesAll.get(messageNumber).get("receiverId")).equals(ParseUser.getCurrentUser().getObjectId())) {
 
                 LayoutInflater inflaterTwo = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 TextView textViewTwo = (TextView) inflaterTwo.inflate(R.layout.textview_bubble, null);
@@ -333,7 +363,31 @@ public void setArgumentsForMessageSending(String receiverEmail,String receiverOb
             messageNumber++;
 
         }
-          progress.dismiss();
+        progress.dismiss();
 
     }
+
+    private void showDialogBoxForUnverfiedUser() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage("You must verify your Email!");
+
+        alertDialogBuilder.setPositiveButton("Resend Email", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+                DBAccessor.getInstance().updateEmailForVerificationAgain(context);
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", null);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
 }
