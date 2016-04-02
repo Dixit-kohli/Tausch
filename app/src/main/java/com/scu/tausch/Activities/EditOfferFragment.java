@@ -342,6 +342,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_EDIT_OFFERS_1;
     }
 
     @Override

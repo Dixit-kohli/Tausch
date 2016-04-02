@@ -196,6 +196,7 @@ private String receiverObjectId;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_OFFER_DETAILS_CHAT_WINDOW;
     }
 
     @Override

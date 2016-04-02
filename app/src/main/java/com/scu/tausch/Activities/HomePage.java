@@ -1,5 +1,6 @@
 package com.scu.tausch.Activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -106,7 +108,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 showProgressForSearch();
                 DBAccessor.getInstance().getSearchResults(query, HomePage.this);
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.
                         INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
@@ -277,12 +279,19 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Check if the key event was the Back button
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
-//if (DBAccessor.searchCode == Constants.SEARCH_CODE_AUTOMOBILES || DBAccessor.searchCode==Constants.SEARCH_CODE_BOOKS || DBAccessor.searchCode==Constants.SEARCH_CODE_FURNITURE || DBAccessor.searchCode==Constants.SEARCH_CODE_RENTALS|| DBAccessor.searchCode==Constants.SEARCH_CODE_LAPTOPS){
-//    DBAccessor.searchCode=Constants.SEARCH_CODE_HOME_PAGE;
-//}
+            //Move to previous activity
 
+            return true;
+        }
+
+        // If it wasn't the Back key, bubble up to the default
+        // system behavior
+        return super.onKeyDown(keyCode, event);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.scu.tausch.Activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -389,5 +390,9 @@ public class ChatFragment extends Fragment implements MessagesListener {
         alertDialog.show();
     }
 
-
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_MY_MESSAGES_CHAT;
+    }
 }

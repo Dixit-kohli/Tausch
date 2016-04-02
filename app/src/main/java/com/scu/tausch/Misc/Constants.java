@@ -5,6 +5,24 @@ package com.scu.tausch.Misc;
  */
 public class Constants {
 
+    public static final int SCREEN_HOME_PAGE = 0;
+    public static final int SCREEN_OFFERS_LIST = 1;
+    public static final int SCREEN_FILTER_PAGE = 2;
+    public static final int SCREEN_OFFER_POST_1 = 4;
+    public static final int SCREEN_OFFER_POST_2 = 5;
+    public static final int SCREEN_MY_OFFERS_LIST = 6;
+    public static final int SCREEN_EDIT_OFFERS_1 = 7;
+    public static final int SCREEN_EDIT_OFFERS_2 = 8;
+    public static final int SCREEN_MY_MESSAGES_LIST = 9;
+    public static final int SCREEN_MY_MESSAGES_CHAT = 10;
+    public static final int SCREEN_OFFER_DETAILS_CHAT_WINDOW = 11;
+    public static final int SCREEN_SETTINGS = 12;
+    public static final int SCREEN_ABOUT = 13;
+    public static final int SCREEN_HELP = 14;
+
+    public static int CURRENT_SCREEN = SCREEN_HOME_PAGE;
+
+
     public static final int LAUNCH_SCREEN_TIMEOUT = 0;
     public static final int DELETE_ITEM_TIME_TO_REFRESH = 2000;
     public static final String FIRST_NAME = "firstname";

@@ -386,6 +386,7 @@ public class EditImageFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_EDIT_OFFERS_2;
     }
 
     @Override

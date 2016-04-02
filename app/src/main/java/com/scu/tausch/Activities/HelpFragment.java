@@ -79,6 +79,7 @@ public class HelpFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_HELP;
     }
 
     @Override

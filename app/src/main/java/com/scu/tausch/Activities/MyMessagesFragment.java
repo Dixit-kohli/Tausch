@@ -231,6 +231,7 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_MY_MESSAGES_LIST;
     }
 
     @Override

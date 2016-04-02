@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 /**
@@ -56,6 +57,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_ABOUT;
     }
 
     @Override

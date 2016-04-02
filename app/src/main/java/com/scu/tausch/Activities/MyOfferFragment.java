@@ -249,6 +249,7 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Constants.CURRENT_SCREEN = Constants.SCREEN_MY_OFFERS_LIST;
     }
 
     @Override

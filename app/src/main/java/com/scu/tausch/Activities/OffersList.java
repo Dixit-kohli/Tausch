@@ -477,7 +477,7 @@ public class OffersList extends Fragment implements DBListener{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
+        Constants.CURRENT_SCREEN = Constants.SCREEN_OFFERS_LIST;
     }
 
     @Override
