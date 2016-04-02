@@ -244,64 +244,6 @@ public class ChatFragment extends Fragment implements MessagesListener {
         });
     }
 
-    // Query messages from Parse so we can load them into the chat adapter
-    void refreshMessages() {
-
-        // Construct query to execute
-        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
-        // Configure limit and sort order
-        // query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
-        query.orderByAscending("createdAt");
-        // Execute query to fetch all messages from Parse asynchronously
-        // This is equivalent to a SELECT query with SQL
-
-        query.findInBackground(new FindCallback<Message>() {
-            @Override
-            public void done(List<Message> messages, com.parse.ParseException e) {
-                if (e == null) {
-                    mMessages.clear();
-                    mMessages.addAll(messages);
-                    mAdapter.notifyDataSetChanged(); // update adapter
-                    // Scroll to the bottom of the list on initial load
-                    if (mFirstLoad) {
-                        lvChat.setSelection(mAdapter.getCount() - 1);
-                        mFirstLoad = false;
-                    }
-                } else {
-                    Log.e("message", "Error Loading Messages" + e);
-                }
-            }
-        });
-
-    }
-
-
-    // Create an anonymous user using ParseAnonymousUtils and set sUserId
-    void login() {
-//        ParseAnonymousUtils.logIn(new LogInCallback() {
-//            @Override
-//            public void done(ParseUser user, ParseException e) {
-//                if (e != null) {
-//                    Log.e(TAG, "Anonymous login failed: ", e);
-//                } else {
-//                    startWithCurrentUser();
-//                }
-//            }
-//        });
-
-//        ParseUser.logInInBackground("pjain3@scu.edu", "111", new LogInCallback() {
-//            public void done(ParseUser user, ParseException e) {
-//                if (user != null) {
-//                    // Hooray! The user is logged in.
-//                } else {
-//                    // Signup failed. Look at the ParseException to see what happened.
-//                }
-//            }
-//        });
-
-    }
-
-
     public void loadAndDisplayOldMessages() {
 
         progress = new ProgressDialog(getActivity());
@@ -320,10 +262,6 @@ public class ChatFragment extends Fragment implements MessagesListener {
         String data = null;
 
         List<ParseObject> complete = new ArrayList<>();
-
-//        final ArrayList<ParseObject> messagesSender = new ArrayList<>();
-//        final ArrayList<ParseObject> messagesReceiver = new ArrayList<>();
-
 
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;

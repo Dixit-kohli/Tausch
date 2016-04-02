@@ -371,9 +371,6 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                //Getting the fragment already created using tag.
-                //    OffersList offerListFragment = (OffersList) homePage.getSupportFragmentManager().findFragmentByTag("tagOfferList");
-                //  setDBListener(offerListFragment);
 
                 if (dbListener != null) {
                     results.addAll(objects);
@@ -386,13 +383,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
     public void messagesBetweenSenderAndReceiver(final String receiverId, final HomePage homePage){
 
-   //     final ArrayList<ParseObject> messagesSender = new ArrayList<>();
-    //    final ArrayList<ParseObject> messagesReceiver = new ArrayList<>();
         final ArrayList<ParseObject> messagesAll = new ArrayList<>();
-     //   final ArrayList<Date> messagesDate = new ArrayList<>();
-    //    final ArrayList<Date> messagesSenderDate = new ArrayList<>();
-     //   final ArrayList<Date> messagesReceiverDate = new ArrayList<>();
-        final ArrayList<ParseObject> sortedObjectsAsPerDate = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
         query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
@@ -404,19 +395,6 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
                     messagesAll.addAll(objects);
 
-             //   int messageSenderCount = 0;
-
-//                while(messageSenderCount < objects.size()){
-//
-////                    String messageSend = (String)objects.get(messageSenderCount).get("body");
-////                    Date messageDate = objects.get(messageSenderCount).getCreatedAt();
-//////                    messagesSender.add(objects.get(messageSenderCount));
-////                    messagesSenderDate.add(objects.get(messageSenderCount).getCreatedAt());
-////                    messagesDate.add(messageDate);
-//
-//                    messageSenderCount++;
-//                }
-
                 ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
                 queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
                 queryTwo.whereEqualTo("userId", receiverId);
@@ -426,21 +404,6 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                     public void done(List<ParseObject> objects, ParseException e) {
 
                         messagesAll.addAll(objects);
-
-                  //      int messageReceiverCount = 0;
-//                        while(messageReceiverCount < objects.size()){
-//
-//                         //   String messageReceive = (String)objects.get(messageReceiverCount).get("body");
-//                          //  Date messageDate = objects.get(messageReceiverCount).getCreatedAt();
-////                            messagesReceiver.add(objects.get(messageReceiverCount));
-////                            messagesReceiverDate.add(objects.get(messageReceiverCount).getCreatedAt());
-////                         //   messagesDate.add(messageDate);
-//
-//                            messageReceiverCount++;
-//
-//                        }
-
-
 
                        for(int i=0; i<messagesAll.size()-1;i++){
 
@@ -516,19 +479,6 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                             String userId = ParseUser.getCurrentUser().getObjectId();
 
 
-
-//                            if (messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId())){
-//
-//                                if (!(messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId()))){
-//
-//                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("receiverId")))) {
-//                                    }
-//                                    if((myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))){
-                                     //   myMessageThreadPeopleNames.add();
-
-                       //     uniqueIds.add((String) messagesObjects.get(namesCount).get("receiverId"));
-
-
                             if (uniqueIds.contains(receiverId)==false){
                                 if (!receiverId.equals(userId)){
                                 uniqueIds.add(receiverId);
@@ -543,26 +493,6 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                                 myMessageThreadPeopleNames.add((String)messagesObjects.get(namesCount).get("other_person"));
                             }
                             }
-
-
-//                                    }
-//                                }
-//
-//                            }
-//
-//                            else if (messagesObjects.get(namesCount).get("receiverId").equals(ParseUser.getCurrentUser().getObjectId())) {
-//
-//                                if (!(messagesObjects.get(namesCount).get("userId").equals(ParseUser.getCurrentUser().getObjectId()))){
-//
-//                                    if (!(uniqueIds.contains(messagesObjects.get(namesCount).get("userId")))) {
-//                                        uniqueIds.add((String) messagesObjects.get(namesCount).get("userId"));
-//                                    }
-//                                    if (!(myMessageThreadPeopleNames.contains(messagesObjects.get(namesCount).get("other_person")))) {
-//                                        myMessageThreadPeopleNames.add((String) messagesObjects.get(namesCount).get("other_person"));
-//                                    }
-//                                }
-//
-//                            }
 
                             namesCount++;
                         }
