@@ -63,8 +63,7 @@ public class SettingsFragment extends Fragment {
     private OfferDTO offerDTO;
     public static HomePage context;
     private boolean isOfferEditable=false;
-    private Bitmap bitmapImageOne,bitmapImageTwo,bitmapImageThree,bitmapImageFour,bitmapImageFive;
-    private ParseObject editableItemObject;
+    private Bitmap userImage;
     private ParseFile myImageFile;
 
 
@@ -109,6 +108,15 @@ public class SettingsFragment extends Fragment {
         email.setText((String) myCurrentUser.get("email"));
 
 
+        try {
+            ParseFile bum = (ParseFile) ParseUser.getCurrentUser().get("picture");
+            byte[] file = bum.getData();
+            userImage = BitmapFactory.decodeByteArray(file, 0, file.length);
+            picture.setImageBitmap(userImage);
+        } catch (ParseException pe) {
+
+        }
+
 
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +159,8 @@ public class SettingsFragment extends Fragment {
                 if (myImageFile!=null) {
                   //  myCurrentUser.put("picture", file);
                 }
+                myCurrentUser.put("picture", file);
+
                 myCurrentUser.saveInBackground();
                 Toast.makeText(getActivity(), "Profile Information Updated",
                         Toast.LENGTH_LONG).show();

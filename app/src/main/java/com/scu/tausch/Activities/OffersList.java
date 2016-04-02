@@ -313,7 +313,7 @@ public class OffersList extends Fragment implements DBListener{
         Button buttonFilter = new Button(getActivity());
         float buttonFilter_X = 20;
         buttonFilter.setX(buttonFilter_X);
-        buttonFilter.setWidth(80);
+        buttonFilter.setWidth(100);
 
         buttonFilter.setText("Filter");
         buttonFilter.setTextColor(Color.WHITE);
@@ -326,7 +326,7 @@ public class OffersList extends Fragment implements DBListener{
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
         Button buttonSort = new Button((getActivity()));
-        buttonSort.setWidth(80);
+        buttonSort.setWidth(100);
         float buttonSort_X = dpWidth-20;
 
         buttonSort.setX(buttonSort_X);
