@@ -90,7 +90,7 @@ public class DBAccessor {
         currentUser.logOut();
 
         ParseUser user = new ParseUser();
-        user.setUsername(regDTO.getEmail());
+        user.setUsername(regDTO.getEmail().toLowerCase());
         user.setPassword(regDTO.getPassword());
         user.setEmail(regDTO.getEmail());
 

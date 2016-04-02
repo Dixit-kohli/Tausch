@@ -192,7 +192,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                      message.saveInBackground(new SaveCallback() {
                                                                                                          @Override
                                                                                                          public void done(com.parse.ParseException e) {
-                                                                                                             Toast.makeText(getActivity(), "Successfully created message on Parse",
+                                                                                                             Toast.makeText(getActivity(), "Message Sent",
                                                                                                                      Toast.LENGTH_SHORT).show();
 
                                                                                                              DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();

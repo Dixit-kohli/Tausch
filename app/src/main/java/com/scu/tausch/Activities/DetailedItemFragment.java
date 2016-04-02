@@ -3,6 +3,7 @@ package com.scu.tausch.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,13 +39,17 @@ public class DetailedItemFragment extends Fragment{
     private ImageButton messageButton;
     private String title;
     private String description;
-    private Bitmap image_one;
+    private Bitmap image_one, image_two, image_three, image_four, image_five;
     private String item_price;
     private String offeror;
     private String condition;
     private String city;
     String receiverEmail;
     String receiverName;
+    List<Bitmap> itemFiveImages;
+    private int imageNumberToDisplay = 0;
+    private ImageView leftArrow;
+    private ImageView rightArrow;
 
 private String receiverObjectId;
 
@@ -69,6 +74,8 @@ private String receiverObjectId;
                 offeror = (String)itemObject.get(Constants.DB_OFFEROR);
                 condition = (String)itemObject.get(Constants.DB_CONDITION);
                 city = (String)itemObject.get(Constants.DB_CITY);
+
+                itemFiveImages = OffersList.listOfImageLists.get(positionInList);
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
                query.whereEqualTo("objectId", itemObject.get("user_id"));
@@ -105,21 +112,58 @@ private String receiverObjectId;
         messageButton = (ImageButton)rootView.findViewById(R.id.icon_message_box);
         TextView textTitle = (TextView)rootView.findViewById(R.id.item_title);
         TextView textDescription=(TextView)rootView.findViewById(R.id.item_description);
-        ImageView imageItem = (ImageView)rootView.findViewById(R.id.item_image);
+        final ImageView imageItem = (ImageView) rootView.findViewById(R.id.item_image);
         TextView textOfferor = (TextView)rootView.findViewById(R.id.value_name);
         TextView textPrice = (TextView)rootView.findViewById(R.id.value_price);
         TextView textCondition = (TextView)rootView.findViewById(R.id.value_condition);
         TextView textCity = (TextView)rootView.findViewById(R.id.value_city);
+        leftArrow = (ImageView) rootView.findViewById(R.id.arrow_left);
+        rightArrow = (ImageView) rootView.findViewById(R.id.arrow_right);
 
 
         textTitle.setText(title);
         textDescription.setText(description);
         imageItem.setImageBitmap(image_one);
         textOfferor.setText(offeror);
-        textPrice.setText("$"+item_price);
+        textPrice.setText("$" + item_price);
         textCondition.setText(condition);
         textCity.setText(city);
+        leftArrow.setVisibility(View.INVISIBLE);
 
+
+        leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (imageNumberToDisplay > 0) {
+                    rightArrow.setVisibility(View.VISIBLE);
+                    imageNumberToDisplay--;
+                    imageItem.setImageBitmap(itemFiveImages.get(imageNumberToDisplay));
+                    if (imageNumberToDisplay == 0) {
+                        leftArrow.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+
+            }
+        });
+
+        rightArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (imageNumberToDisplay < 4) {
+                    leftArrow.setVisibility(View.VISIBLE);
+                    imageNumberToDisplay++;
+                    imageItem.setImageBitmap(itemFiveImages.get(imageNumberToDisplay));
+                    if (imageNumberToDisplay == 4) {
+                        rightArrow.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+
+            }
+        });
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override

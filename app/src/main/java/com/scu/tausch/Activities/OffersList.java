@@ -67,6 +67,7 @@ public class OffersList extends Fragment implements DBListener{
     static String currentCategoryId;
     private DBAccessor dbAccessor;
     private String selectedValue;
+    static List<List<Bitmap>> listOfImageLists;
 
 
     public OffersList() {
@@ -78,6 +79,7 @@ public class OffersList extends Fragment implements DBListener{
         super.onCreate(savedInstanceState);
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+        listOfImageLists = new ArrayList<>();
 
         progress = new ProgressDialog(getActivity());
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -97,6 +99,8 @@ public class OffersList extends Fragment implements DBListener{
 
         for(ParseObject itemObject:arrayOfItemObjects){
 
+            List<Bitmap> arrayItemFiveImages = new ArrayList<>();
+
             String itemTitle = (String)itemObject.get(Constants.DB_Offer_Title);
             arrayTitles.add(itemTitle);
             String itemPrice = (String)itemObject.get(Constants.DB_Price);
@@ -107,6 +111,29 @@ public class OffersList extends Fragment implements DBListener{
                 byte[] file = bum.getData();
                 Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
                 arrayImages.add(image);
+                arrayItemFiveImages.add(image);
+
+                ParseFile bumTwo = (ParseFile) itemObject.get(Constants.DB_Image_TWO);
+                byte[] fileTwo = bumTwo.getData();
+                Bitmap imageTwo = BitmapFactory.decodeByteArray(fileTwo, 0, fileTwo.length);
+                arrayItemFiveImages.add(imageTwo);
+
+                ParseFile bumThree = (ParseFile) itemObject.get(Constants.DB_Image_THREE);
+                byte[] fileThree = bumThree.getData();
+                Bitmap imageThree = BitmapFactory.decodeByteArray(fileThree, 0, fileThree.length);
+                arrayItemFiveImages.add(imageThree);
+
+                ParseFile bumFour = (ParseFile) itemObject.get(Constants.DB_Image_FOUR);
+                byte[] fileFour = bumFour.getData();
+                Bitmap imageFour = BitmapFactory.decodeByteArray(fileFour, 0, fileFour.length);
+                arrayItemFiveImages.add(imageFour);
+
+                ParseFile bumFive = (ParseFile) itemObject.get(Constants.DB_Image_FIVE);
+                byte[] fileFive = bumFive.getData();
+                Bitmap imageFive = BitmapFactory.decodeByteArray(fileFive, 0, fileFive.length);
+                arrayItemFiveImages.add(imageFive);
+
+                listOfImageLists.add(arrayItemFiveImages);
 
             }
             catch (ParseException e){
