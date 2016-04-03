@@ -26,7 +26,7 @@
         android:id="@+id/layoutMessage"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/dialogBoxBackground"
         android:layout_height="wrap_content">
 
 
