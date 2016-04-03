@@ -41,6 +41,7 @@ import com.scu.tausch.R;
 import android.os.Handler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ChatFragment extends Fragment implements MessagesListener {
@@ -196,18 +197,37 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                              Toast.makeText(getActivity(), "Message Sent",
                                                                                                                      Toast.LENGTH_SHORT).show();
 
+
+                                                                                                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                                                                             params.setMargins(0, 0, 0, 20);
+
+
                                                                                                              DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
                                                                                                              float dpWidth = displayMetrics.widthPixels;
+                                                                                                           //  float dpHeight = displayMetrics.heightPixels;
 
                                                                                                              LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                                                                                              TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
                                                                                                              textView.setText(data);
                                                                                                              textView.setTextColor(Color.WHITE);
                                                                                                              textView.setWidth((int) dpWidth);
+                                                                                                             //textView.setHeight((int) dpHeight);
                                                                                                              textView.setBackgroundColor(Color.parseColor("#808080"));
+                                                                                                            // textView.setLayoutParams(params);
                                                                                                              LinearLayout layout = ChatFragment.layout;
 
                                                                                                              layout.addView(textView);
+
+
+
+                                                                                                             TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
+                                                                                                             Date d  = new Date();
+                                                                                                             textViewTS.setText(d.toString());
+                                                                                                             textViewTS.setTextColor(Color.WHITE);
+                                                                                                             textViewTS.setWidth((int) dpWidth);
+                                                                                                             textViewTS.setBackgroundColor(Color.parseColor("#808080"));
+                                                                                                             textViewTS.setLayoutParams(params);
+                                                                                                             layout.addView(textViewTS);
 
 
                                                                                                              ParsePush parsePush = new ParsePush();
@@ -260,6 +280,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
     public void callbackForAllMessages(List<ParseObject> messagesAll, String receiverId) {
 
         String data = null;
+        String msgTimestamp = null;
 
         List<ParseObject> complete = new ArrayList<>();
 
@@ -270,22 +291,30 @@ public class ChatFragment extends Fragment implements MessagesListener {
 
         int messageNumber = 0;
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+        params.setMargins(0, 0, 0, 20);
 
         while (messageNumber < messagesAll.size()) {
 
             data = (String) messagesAll.get(messageNumber).get("body");
+            msgTimestamp = String.valueOf(messagesAll.get(messageNumber).getCreatedAt());
 
             if ((messagesAll.get(messageNumber).get("userId")).equals(ParseUser.getCurrentUser().getObjectId())) {
-
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
                 textView.setText(data);
                 textView.setTextColor(Color.WHITE);
                 textView.setWidth((int) dpWidth);
                 textView.setBackgroundColor(Color.parseColor("#808080"));
-
                 layout.addView(textView);
 
+                TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
+                textViewTS.setText(msgTimestamp);
+                textViewTS.setTextColor(Color.WHITE);
+                textViewTS.setWidth((int) dpWidth);
+                textViewTS.setBackgroundColor(Color.parseColor("#808080"));
+                textViewTS.setLayoutParams(params);
+                layout.addView(textViewTS);
             }
             if ((messagesAll.get(messageNumber).get("receiverId")).equals(ParseUser.getCurrentUser().getObjectId())) {
 
@@ -295,12 +324,17 @@ public class ChatFragment extends Fragment implements MessagesListener {
                 textViewTwo.setTextColor(Color.WHITE);
                 textViewTwo.setWidth((int) dpWidth);
                 textViewTwo.setBackgroundColor(Color.parseColor("#4edacf"));
-
                 layout.addView(textViewTwo);
 
+                TextView textViewTwoTS = (TextView) inflaterTwo.inflate(R.layout.textview_bubble_timestamp, null);
+                textViewTwoTS.setText(msgTimestamp);
+                textViewTwoTS.setTextColor(Color.WHITE);
+                textViewTwoTS.setWidth((int) dpWidth);
+                textViewTwoTS.setBackgroundColor(Color.parseColor("#4edacf"));
+                textViewTwoTS.setLayoutParams(params);
+                layout.addView(textViewTwoTS);
             }
             messageNumber++;
-
         }
         progress.dismiss();
 
