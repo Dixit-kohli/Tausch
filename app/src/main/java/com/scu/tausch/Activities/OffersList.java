@@ -432,7 +432,7 @@ public class OffersList extends Fragment implements DBListener{
                 nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
 
                 OffersList.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.myItemsInCategoryWindow, nextFrag)
+                        .replace(R.id.myItemsInCategoryWindow, nextFrag, Constants.TAG_Item_Details_Fragment)
                         .addToBackStack(null)
                         .commit();
 

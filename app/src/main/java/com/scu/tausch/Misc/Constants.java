@@ -21,6 +21,7 @@ public class Constants {
     public static final int SCREEN_HELP = 14;
 
     public static int CURRENT_SCREEN = SCREEN_HOME_PAGE;
+    public static boolean WAS_LAST_SCREEN_ITEM_DESCRIPTION = false;
 
 
     public static final int LAUNCH_SCREEN_TIMEOUT = 0;
@@ -61,6 +62,9 @@ public class Constants {
     public static final String TAG_My_Offer_Fragment = "tagMyOfferFragment";
     public static final String TAG_Chat_Fragment = "tagChatFragment";
     public static final String Tag_My_Messages_Fragment = "tagMyMessageFragment";
+    public static final String TAG_Home_Fragment = "tagHomeFragment";
+    public static final String TAG_Item_Details_Fragment = "tagItemDetailsFragment";
+
 
 
     public static final String DB_Offers = "Offers";

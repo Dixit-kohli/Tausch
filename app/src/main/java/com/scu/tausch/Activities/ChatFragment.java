@@ -179,6 +179,11 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                      dealObj = dealsObject.getObjectId();
 
                                                                                                      final String data = etMessage.getText().toString();
+
+                                                                                                     if (etMessage.getText().toString().trim().length() == 0) {
+                                                                                                         return;
+                                                                                                     }
+
                                                                                                      ParseObject message = ParseObject.create("Message");
                                                                                                      //  message.put(Message.USER_ID_KEY, userId);
 
@@ -198,8 +203,8 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                                      Toast.LENGTH_SHORT).show();
 
 
-                                                                                                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                                                                                                             params.setMargins(0, 0, 0, 20);
+                                                                                                             //     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                                                                             //     params.setMargins(0, 0, 0, 20);
 
 
                                                                                                              DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
@@ -226,7 +231,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                              textViewTS.setTextColor(Color.WHITE);
                                                                                                              textViewTS.setWidth((int) dpWidth);
                                                                                                              textViewTS.setBackgroundColor(Color.parseColor("#808080"));
-                                                                                                             textViewTS.setLayoutParams(params);
+                                                                                                             // textViewTS.setLayoutParams(layout);
                                                                                                              layout.addView(textViewTS);
 
 
@@ -291,8 +296,8 @@ public class ChatFragment extends Fragment implements MessagesListener {
 
         int messageNumber = 0;
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-        params.setMargins(0, 0, 0, 20);
+        //  LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+        //  params.setMargins(0, 0, 0, 20);
 
         while (messageNumber < messagesAll.size()) {
 
@@ -313,7 +318,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                 textViewTS.setTextColor(Color.WHITE);
                 textViewTS.setWidth((int) dpWidth);
                 textViewTS.setBackgroundColor(Color.parseColor("#808080"));
-                textViewTS.setLayoutParams(params);
+                //   textViewTS.setLayoutParams(params);
                 layout.addView(textViewTS);
             }
             if ((messagesAll.get(messageNumber).get("receiverId")).equals(ParseUser.getCurrentUser().getObjectId())) {
@@ -331,7 +336,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                 textViewTwoTS.setTextColor(Color.WHITE);
                 textViewTwoTS.setWidth((int) dpWidth);
                 textViewTwoTS.setBackgroundColor(Color.parseColor("#4edacf"));
-                textViewTwoTS.setLayoutParams(params);
+                //   textViewTwoTS.setLayoutParams(params);
                 layout.addView(textViewTwoTS);
             }
             messageNumber++;

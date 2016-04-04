@@ -182,7 +182,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             case HOME:
                 fragment = new HomeFragment();
                 DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
-                Tag_Name=null;
+                Tag_Name = Constants.TAG_Home_Fragment;
                 break;
             case MY_OFFERS:
                 fragment = new MyOfferFragment();
@@ -191,6 +191,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             case MY_MESSAGES:
                 fragment = new MyMessagesFragment();
                 Tag_Name=Constants.Tag_My_Messages_Fragment;
+                Constants.WAS_LAST_SCREEN_ITEM_DESCRIPTION = false;
                 break;
             case SETTINGS:
                 fragment = new SettingsFragment();
@@ -284,6 +285,62 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
             //Move to previous activity
+
+
+            if (Constants.CURRENT_SCREEN == Constants.SCREEN_MY_MESSAGES_CHAT) {
+
+                if (Constants.WAS_LAST_SCREEN_ITEM_DESCRIPTION == false) {
+                    Fragment fragment = null;
+                    fragment = new MyMessagesFragment();
+
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container_body, fragment, Constants.Tag_My_Messages_Fragment);
+                    fragmentTransaction.commit();
+                } else {
+
+                    Fragment fragment = null;
+                    fragment = new HomeFragment();
+
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                    fragmentTransaction.commit();
+                }
+
+
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_MY_MESSAGES_LIST) {
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_OFFER_POST_1) {
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_MY_OFFERS_LIST) {
+
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_My_Offer_Fragment);
+                fragmentTransaction.commit();
+            }
+
+
 
             return true;
         }

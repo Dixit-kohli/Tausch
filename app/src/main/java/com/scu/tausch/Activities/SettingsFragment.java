@@ -110,9 +110,11 @@ public class SettingsFragment extends Fragment {
 
         try {
             ParseFile bum = (ParseFile) ParseUser.getCurrentUser().get("picture");
-            byte[] file = bum.getData();
-            userImage = BitmapFactory.decodeByteArray(file, 0, file.length);
-            picture.setImageBitmap(userImage);
+            if (bum != null) {
+                byte[] file = bum.getData();
+                userImage = BitmapFactory.decodeByteArray(file, 0, file.length);
+                picture.setImageBitmap(userImage);
+            }
         } catch (ParseException pe) {
 
         }

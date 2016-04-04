@@ -169,13 +169,9 @@ private String receiverObjectId;
             @Override
             public void onClick(View v) {
 
-//                Toast.makeText(getActivity().getBaseContext(),"Message button is tapped",Toast.LENGTH_SHORT).show();
 
+                Constants.WAS_LAST_SCREEN_ITEM_DESCRIPTION = true;
 
-                /*
-                * DO NOT DELETE FOLLOWING LINES OF CODE. TO BE REORGANIZED AFTER ALL OTHER VIEW ARE DONE.
-                *
-                * */
                 ChatFragment nextFrag= new ChatFragment();
                 nextFrag.setArgumentsForMessageSending(receiverEmail,receiverObjectId, receiverName);
 
