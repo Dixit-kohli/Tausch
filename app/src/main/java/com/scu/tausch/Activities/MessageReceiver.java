@@ -30,9 +30,9 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
         super.onPushReceive(context, intent);
 
         Bundle extras = intent.getExtras();
-        String jsonData = extras.getString("com.parse.Data");
-        JSONObject jsonObject;
         try {
+            String jsonData = extras.getString("com.parse.Data");
+            JSONObject jsonObject;
             jsonObject = new JSONObject(jsonData);
              message = jsonObject.getString("alert");
 

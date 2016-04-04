@@ -336,11 +336,85 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_My_Offer_Fragment);
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
                 fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_OFFERS_LIST) {
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_ABOUT) {
+
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_HELP) {
+
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_SETTINGS) {
+
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_FILTER_PAGE) {
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_EDIT_OFFERS_1) {
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_EDIT_OFFERS_2) {
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_OFFER_POST_2) {
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_HOME_PAGE) {
+                finish();
             }
-
-
 
             return true;
         }
