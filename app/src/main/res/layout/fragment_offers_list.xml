@@ -16,11 +16,11 @@
     android:layout_centerInParent="true"
     android:textSize="24dp"/>
 
-    <!--<LinearLayout-->
-    <!--android:id="@+id/container_toolbar_bottom"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical">-->
+    <RelativeLayout
+        android:id="@+id/container_toolbar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <include
         android:id="@+id/toolbarBottom"
@@ -41,11 +41,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/toolbarBottom"
         android:text="Sort" />
-    <!--</LinearLayout>-->
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/list_items_in_category"
-        android:layout_below="@+id/toolbarBottom"
+        android:layout_below="@+id/container_toolbar_bottom"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:divider="@android:color/transparent"
