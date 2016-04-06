@@ -67,6 +67,7 @@ public class OffersList extends Fragment implements DBListener{
     static String currentCategoryId;
     private DBAccessor dbAccessor;
     private String selectedValue;
+    private Button buttonSort, buttonFilter;
     static List<List<Bitmap>> listOfImageLists;
 
 
@@ -276,6 +277,8 @@ public class OffersList extends Fragment implements DBListener{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_offers_list, container, false);
 
+        buttonFilter = (Button) rootView.findViewById(R.id.button_filter);
+        buttonSort = (Button) rootView.findViewById(R.id.button_sort);
 
         rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -294,6 +297,8 @@ public class OffersList extends Fragment implements DBListener{
         emptyListTextView=(TextView)rootView.findViewById(android.R.id.empty);
 
 
+        toolbarBottom.setBackgroundColor(Color.TRANSPARENT);
+
         /*Spinner spinnerSort = new Spinner(getActivity());
         //adding sort criteria
         List<String> sortCriteria = new ArrayList<>();
@@ -309,32 +314,32 @@ public class OffersList extends Fragment implements DBListener{
         int spinnerSort_X = 20;
         spinnerSort.setX(spinnerSort_X);
         spinnerSort.setBackgroundColor(Color.TRANSPARENT);*/
-
-        Button buttonFilter = new Button(getActivity());
-        float buttonFilter_X = 20;
-        buttonFilter.setX(buttonFilter_X);
-        buttonFilter.setWidth(100);
-
-        buttonFilter.setText("Filter");
-        buttonFilter.setTextColor(Color.WHITE);
-        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
-        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
-        toolbarBottom.addView(buttonFilter);
+//
+//        Button buttonFilter = new Button(getActivity());
+//        float buttonFilter_X = 20;
+//        buttonFilter.setX(buttonFilter_X);
+//        buttonFilter.setWidth(100);
+//
+//        buttonFilter.setText("Filter");
+//        buttonFilter.setTextColor(Color.WHITE);
+//        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
+//        buttonFilter.setBackgroundColor(Color.TRANSPARENT);
+//        toolbarBottom.addView(buttonFilter);
         //toolbarBottom.addView(spinnerSort);
 
-        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+//        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+//        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
-        Button buttonSort = new Button((getActivity()));
-        buttonSort.setWidth(100);
-        float buttonSort_X = dpWidth-20;
-
-        buttonSort.setX(buttonSort_X);
-        buttonSort.setText("Sort");
-        buttonSort.setTextColor(Color.WHITE);
-        buttonSort.setBackgroundColor(Color.TRANSPARENT);
-        toolbarBottom.addView(buttonSort);
-
+//        Button buttonSort = new Button((getActivity()));
+//        buttonSort.setWidth(100);
+//        float buttonSort_X = (dpWidth-100)-20;
+//
+//        buttonSort.setX(buttonSort_X);
+//        buttonSort.setText("Sort");
+//        buttonSort.setTextColor(Color.WHITE);
+//        buttonSort.setBackgroundColor(Color.TRANSPARENT);
+//        toolbarBottom.addView(buttonSort);
+//
 
 
 

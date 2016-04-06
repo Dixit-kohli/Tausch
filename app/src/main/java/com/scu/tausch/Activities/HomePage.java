@@ -412,6 +412,16 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
                 fragmentTransaction.commit();
+            } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_OFFER_DETAILS_CHAT_WINDOW) {
+
+
+                Fragment fragment = null;
+                fragment = new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Home_Fragment);
+                fragmentTransaction.commit();
             } else if (Constants.CURRENT_SCREEN == Constants.SCREEN_HOME_PAGE) {
                 finish();
             }
