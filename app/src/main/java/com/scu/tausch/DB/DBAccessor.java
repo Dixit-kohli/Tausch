@@ -490,7 +490,12 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                             if (uniqueIds.contains(senderId)==false){
                                 if(!senderId.equals(userId)){
                                 uniqueIds.add(senderId);
-                                myMessageThreadPeopleNames.add((String)messagesObjects.get(namesCount).get("other_person"));
+                                    if ((messagesObjects.get(namesCount).get("receiverId")).equals(userId)) {
+                                        myMessageThreadPeopleNames.add((String) messagesObjects.get(namesCount).get("sender_person"));
+
+                                    } else {
+                                        myMessageThreadPeopleNames.add((String) messagesObjects.get(namesCount).get("other_person"));
+                                    }
                             }
                             }
 

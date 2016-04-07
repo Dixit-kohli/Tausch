@@ -23,6 +23,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.scu.tausch.Adapters.MyMessagesAdapter;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;

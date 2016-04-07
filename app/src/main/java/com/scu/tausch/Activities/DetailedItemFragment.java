@@ -21,6 +21,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
@@ -46,6 +47,7 @@ public class DetailedItemFragment extends Fragment{
     private String city;
     String receiverEmail;
     String receiverName;
+    String senderName;
     List<Bitmap> itemFiveImages;
     private int imageNumberToDisplay = 0;
     private ImageView leftArrow;
@@ -87,6 +89,7 @@ private String receiverObjectId;
                         receiverEmail = (String) (objects.get(0).get("email"));
                         receiverObjectId = (String)itemObject.get("user_id");
                         receiverName = (String)(objects.get(0).get("firstname"));
+                        senderName = (String) ParseUser.getCurrentUser().get("firstname");
 
                     }
                 });

@@ -57,6 +57,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
     private String receiverEmail;
     private String receiverObjectId;
     private String receiverName;
+    private String senderName;
     public static HomePage context;
 
     ListView lvChat;
@@ -75,6 +76,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
         this.receiverEmail = receiverEmail;
         this.receiverObjectId = receiverObjectId;
         this.receiverName = receiverName;
+
     }
 
     @Override
@@ -193,6 +195,10 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                      message.put(Message.BODY_KEY, data);
 
                                                                                                      message.put(Message.OTHER_PERSON_NAME, receiverName);
+
+                                                                                                     String nam = (String) ParseUser.getCurrentUser().get("firstname");
+
+                                                                                                     message.put(Message.SENDER_PERSON_NAME, nam);
 
                                                                                                      //currently its for pjain3@scu.edu, it should be receiver Obj
                                                                                                      message.put(Message.RECEIVER_ID_KEY, receiverObjectId);
