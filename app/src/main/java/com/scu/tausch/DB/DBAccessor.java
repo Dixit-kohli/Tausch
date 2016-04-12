@@ -165,9 +165,9 @@ public class DBAccessor {
             public void done(List<ParseObject> objects, ParseException e) {
 
                 int counter = 0;
-                while (counter < objects.size()){
+                while (counter < objects.size()) {
 
-                    if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))){
+                    if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))) {
                         objectOtherThanUser.add(objects.get(counter));
                     }
 
@@ -265,6 +265,7 @@ public class DBAccessor {
         final String searchStr1 = searchStr;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
+        query.whereEqualTo("status","true");
 
        // TODO: Need to add status ="Open" (true) in queries, we need to search only open offers and not closed/deleted
 
@@ -510,7 +511,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                         setMessageThreadListener(myMessagesFragment);
 
                         if (myMessagesFragment != null) {
-                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds,myMessageThreadPeopleNames);
+                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds, myMessageThreadPeopleNames);
                         }
 
                     }
@@ -522,4 +523,47 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
     }
 
+
+
+    public void deleteMessage( final String objectToBeDeleted, final HomePage homePage) {
+
+        final ArrayList<ParseObject> messagesObjects = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo("receiverId", objectToBeDeleted);
+
+        // Retrieve the object by id
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                messagesObjects.addAll(objects);
+
+                ParseQuery<ParseObject> queryTwo = ParseQuery.getQuery("Message");
+                queryTwo.whereEqualTo("receiverId", ParseUser.getCurrentUser().getObjectId());
+                queryTwo.whereEqualTo("userId", objectToBeDeleted);
+
+                queryTwo.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+
+                        messagesObjects.addAll(objects);
+
+
+                        if (e == null) {
+                            if(messagesObjects!=null && messagesObjects.size()>0) {
+                                for (ParseObject p : messagesObjects)
+                                    p.deleteInBackground();
+
+                                MyMessagesFragment myMessagesFragment = (MyMessagesFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.Tag_My_Messages_Fragment);
+                                setRefreshInterface(myMessagesFragment);
+
+                                //callback method once, item has been deleted from server.
+                                refreshInterface.refreshAfterStatusChangeForDelete();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
 }
