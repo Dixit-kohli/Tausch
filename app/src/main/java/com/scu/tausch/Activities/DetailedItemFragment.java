@@ -31,6 +31,7 @@ import org.w3c.dom.Text;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by Praneet on 1/31/16.
@@ -52,6 +53,8 @@ public class DetailedItemFragment extends Fragment{
     private int imageNumberToDisplay = 0;
     private ImageView leftArrow;
     private ImageView rightArrow;
+    private TextView textOfferor;
+    private boolean isOfferByOfferor = false;
 
 private String receiverObjectId;
 
@@ -91,6 +94,18 @@ private String receiverObjectId;
                         receiverName = (String)(objects.get(0).get("firstname"));
                         senderName = (String) ParseUser.getCurrentUser().get("firstname");
 
+
+                        if (receiverEmail.equals(ParseUser.getCurrentUser().getEmail())) {
+                            isOfferByOfferor = true;
+                            messageButton.setVisibility(View.GONE);
+                            textOfferor.setText("You");
+
+                            return;
+                        } else {
+                            isOfferByOfferor = false;
+                            messageButton.setVisibility(View.VISIBLE);
+                        }
+
                     }
                 });
             }
@@ -116,7 +131,7 @@ private String receiverObjectId;
         TextView textTitle = (TextView)rootView.findViewById(R.id.item_title);
         TextView textDescription=(TextView)rootView.findViewById(R.id.item_description);
         final ImageView imageItem = (ImageView) rootView.findViewById(R.id.item_image);
-        TextView textOfferor = (TextView)rootView.findViewById(R.id.value_name);
+        textOfferor = (TextView) rootView.findViewById(R.id.value_name);
         TextView textPrice = (TextView)rootView.findViewById(R.id.value_price);
         TextView textCondition = (TextView)rootView.findViewById(R.id.value_condition);
         TextView textCity = (TextView)rootView.findViewById(R.id.value_city);

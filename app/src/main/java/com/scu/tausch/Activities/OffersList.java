@@ -468,13 +468,13 @@ public class OffersList extends Fragment implements DBListener{
     @Override
     public void callback(List<ParseObject> objects) {
 
-        progress.dismiss();
         setRetainItemObjects(objects);
         itemObjects=objects;
 
         setArraysForNamesImagesCost(objects);
 
         fetchedDataFromServer();
+        progress.dismiss();
 
     }
 

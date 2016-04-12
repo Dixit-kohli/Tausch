@@ -167,9 +167,9 @@ public class DBAccessor {
                 int counter = 0;
                 while (counter < objects.size()){
 
-                    if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))){
+                    // if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))){
                         objectOtherThanUser.add(objects.get(counter));
-                    }
+                    // }
 
                     counter++;
                 }
