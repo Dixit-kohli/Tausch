@@ -165,11 +165,11 @@ public class DBAccessor {
             public void done(List<ParseObject> objects, ParseException e) {
 
                 int counter = 0;
-                while (counter < objects.size()) {
+                while (counter < objects.size()){
 
-                    if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))) {
+                    //if (!((objects.get(counter).get("user_id")).equals(ParseUser.getCurrentUser().getObjectId()))){
                         objectOtherThanUser.add(objects.get(counter));
-                    }
+                  //  }
 
                     counter++;
                 }
@@ -511,7 +511,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                         setMessageThreadListener(myMessagesFragment);
 
                         if (myMessagesFragment != null) {
-                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds, myMessageThreadPeopleNames);
+                            myMessagesFragment.callbackForAllMessagesThreads(uniqueIds,myMessageThreadPeopleNames);
                         }
 
                     }

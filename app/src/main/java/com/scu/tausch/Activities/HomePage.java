@@ -155,7 +155,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             String title;
 
             fragment = new AddOfferFragment();
-            title = getString(R.string.title_filter);
+//            title = getString(R.string.title_filter);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -163,7 +163,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             fragmentTransaction.commit();
 
             // set the toolbar title
-            getSupportActionBar().setTitle(title);
+//            getSupportActionBar().setTitle(title);
 
             return true;
         }
