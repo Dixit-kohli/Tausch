@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,7 +36,7 @@ import java.util.List;
 /**
  * Created by Praneet on 1/29/16.
  */
-public class MyMessagesFragment extends Fragment implements MessageThreadListener{
+public class MyMessagesFragment extends Fragment implements MessageThreadListener,RefreshInterface{
 
     private MyMessagesAdapter myMessagesAdapter;
     private ListView listViewItems;
@@ -49,6 +50,7 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
     private String receiverEmail;
     private String receiverObjectId;
     private String receiverName;
+    private ProgressDialog progressDialog;
 
     public static HomePage context;
 
@@ -184,48 +186,49 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
 
         // remove items
         // Create the listener for long item clicks
-//        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long rowid) {
-//
-//                // Store selected item in global variable
-//                final String selectedItem = parent.getItemAtPosition(position).toString();
-//                final String objectToBeDeleted = itemObjects.get(position).getObjectId();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage("Do you want to remove " + selectedItem + "?");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if (getAdapter() != null) {
-//
-//                            progressDialog = new ProgressDialog(getActivity());
-//                            progressDialog.setMessage("Deleting...");
-//                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//                            progressDialog.setIndeterminate(true);
-//                            progressDialog.show();
-//
-//                            DBAccessor.getInstance().deleteOffer(objectToBeDeleted, context);
-//                            // TODO refresh the list or change arrays to lists and uncomment the next two lines
-//                            //getAdapter().remove(selectedItem);
-//                            //getAdapter().notifyDataSetChanged();
-//                        }
-//                    }
-//                });
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
-//                    }
-//                });
-//                // Create and show the dialog
-//                builder.show();
-//                // Signal OK to avoid further processing of the long click
-//                return true;
-//            }
-//        });
+        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long rowid) {
+
+                // Store selected item in global variable
+                final String selectedItem = parent.getItemAtPosition(position).toString();
+
+                final String objectToBeDeleted = arrayUniqueIds[position];
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Do you want to remove " + selectedItem + "?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (getAdapter() != null) {
+
+                            progressDialog = new ProgressDialog(getActivity());
+                            progressDialog.setMessage("Deleting...");
+                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            progressDialog.setIndeterminate(true);
+                            progressDialog.show();
+
+                            DBAccessor.getInstance().deleteMessage(objectToBeDeleted, context);
+                            // TODO refresh the list or change arrays to lists and uncomment the next two lines
+                            //getAdapter().remove(selectedItem);
+                            //getAdapter().notifyDataSetChanged();
+                        }
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                // Create and show the dialog
+                builder.show();
+                // Signal OK to avoid further processing of the long click
+                return true;
+            }
+        });
     }
 
 
@@ -239,5 +242,29 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
     public void onDetach() {
         super.onDetach();
     }
+
+    @Override
+    public void refreshAfterStatusChangeForDelete() {
+
+        //adding time lag so that item gets refreshed on device after data has been deleted and status
+        //has changed from true to false.
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // This method will be executed once the timer is over
+
+                DBAccessor.getInstance().getAllMessageThreadValuesfinal(context);
+                myMessagesAdapter.notifyDataSetChanged();
+                progressDialog.dismiss();
+
+            }
+        }, Constants.DELETE_ITEM_TIME_TO_REFRESH);
+
+
+
+
+    }
+
 
 }
