@@ -210,11 +210,11 @@ public class OffersList extends Fragment implements DBListener{
             for (OfferDTO offer : offersList) {
                 if (
                         offer.getOfferTitle().toLowerCase().contains(searchStr.toLowerCase()) ||
-                                offer.getOfferDescription().toLowerCase().contains(searchStr.toLowerCase()) ||
-                                offer.getPrice().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                offer.getOfferDescription().toLowerCase().contains(searchStr.toLowerCase())
+                                //offer.getPrice().toLowerCase().contains(searchStr.toLowerCase()) ||
                                 //offer.getZip().toLowerCase().contains(searchStr.toLowerCase()) ||
-                                offer.getCondition().toLowerCase().contains(searchStr.toLowerCase()) ||
-                                offer.getCityId().toLowerCase().contains(searchStr.toLowerCase())
+                                //offer.getCondition().toLowerCase().contains(searchStr.toLowerCase()) ||
+                                //offer.getCityId().toLowerCase().contains(searchStr.toLowerCase())
                         )
                     searchedOffers.add(offer);
             }
