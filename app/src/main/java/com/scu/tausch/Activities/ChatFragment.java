@@ -222,14 +222,9 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                              textView.setText(data);
                                                                                                              textView.setTextColor(Color.WHITE);
                                                                                                              textView.setWidth((int) dpWidth);
-                                                                                                             textView.setHeight((int) dpHeight);
                                                                                                              textView.setBackgroundColor(Color.parseColor("#808080"));
-                                                                                                             textView.setLayoutParams(params);
                                                                                                              LinearLayout layout = ChatFragment.layout;
-
                                                                                                              layout.addView(textView);
-
-
 
                                                                                                              TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
                                                                                                              Date d  = new Date();
