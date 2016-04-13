@@ -48,7 +48,7 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
     public static HomePage context;
     private String[] arrayItemNames;
     private Bitmap[] arrayItemImages;
-    private  String[] arrayItemCosts;
+    private Double[] arrayItemCosts;
     private ListView listViewItems;
     private ProgressDialog progress;
     private boolean isFilterActive=false;
@@ -136,7 +136,7 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
         }
 
         arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
-        arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
+        arrayItemCosts = arrayPrice.toArray(new Double[itemObjects.size()]);
         arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
 
     }
@@ -195,7 +195,10 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
                             DBAccessor.getInstance().deleteOffer(objectToBeDeleted,context);
                           // TODO refresh the list or change arrays to lists and uncomment the next two lines
                             //getAdapter().remove(selectedItem);
-                            //getAdapter().notifyDataSetChanged();
+
+                            getAdapter().notifyDataSetChanged();
+                            DBAccessor.getInstance().getItemsPostedByUser(context);
+                            getAdapter().notifyDataSetChanged();
                         }
                     }
                 });

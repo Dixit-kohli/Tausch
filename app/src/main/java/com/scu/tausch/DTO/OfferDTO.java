@@ -16,7 +16,7 @@ public class OfferDTO {
     private String zip;
     private String condition;
     private String rentalType;
-    private String price;
+    private double price;
     private Bitmap image_one;
     private Bitmap image_two;
     private Bitmap image_three;
@@ -31,7 +31,7 @@ public class OfferDTO {
     }
 
     public OfferDTO(String offerId, String postedBy, String categoryId, String offerTitle, String offerDescription,
-                    String cityId, String zip, String condition, String rentalType,String price, Bitmap image_one, String offeror, boolean offerStatus) {
+                    String cityId, String zip, String condition, String rentalType, double price, Bitmap image_one, String offeror, boolean offerStatus) {
         this.offerId = offerId;
         this.postedBy = postedBy;
         this.categoryId = categoryId;
@@ -118,11 +118,11 @@ public class OfferDTO {
         this.condition = condition;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

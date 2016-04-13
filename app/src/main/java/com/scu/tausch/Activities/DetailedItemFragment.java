@@ -42,7 +42,7 @@ public class DetailedItemFragment extends Fragment{
     private String title;
     private String description;
     private Bitmap image_one, image_two, image_three, image_four, image_five;
-    private String item_price;
+    private double item_price;
     private String offeror;
     private String condition;
     private String city;
@@ -70,7 +70,7 @@ private String receiverObjectId;
 
     }
 
-            public void setArguments(final ParseObject itemObject, Bitmap[] images,int positionInList,String[] titles, String[] prices){
+            public void setArguments(final ParseObject itemObject, Bitmap[] images,int positionInList,String[] titles, Double[] prices){
 
                 title = titles[positionInList];
                 description = (String)itemObject.get(Constants.DB_OFFER_DESCRIPTION);

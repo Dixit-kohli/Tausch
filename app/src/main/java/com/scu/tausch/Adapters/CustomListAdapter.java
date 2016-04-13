@@ -19,10 +19,10 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
     private final Context context;
     private final String[] itemName;
-    private final String[] itemPrice;
+    private final Double[] itemPrice;
     private final Bitmap[] imageId;
 
-    public CustomListAdapter(Activity context, String[] itemName, String[] itemPrice, Bitmap[] imageId) {
+    public CustomListAdapter(Activity context, String[] itemName, Double[] itemPrice, Bitmap[] imageId) {
         super(context, R.layout.category_items_list_row, itemName);
 
         this.context=context;

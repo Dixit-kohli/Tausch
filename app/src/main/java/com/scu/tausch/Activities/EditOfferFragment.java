@@ -158,7 +158,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
 
                 offerDTO.setOfferTitle(editTitle.getText().toString().trim());
                 offerDTO.setOfferDescription(editDescription.getText().toString().trim());
-                offerDTO.setPrice(editPrice.getText().toString().trim());
+                offerDTO.setPrice(Double.parseDouble(editPrice.getText().toString().trim()));
                 offerDTO.setZip(editZip.getText().toString().trim());
                 offerDTO.setCategoryId(getCategoryId(spinnerCategory.getSelectedItem().toString()));
                 offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
@@ -186,7 +186,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
 
 
     //Verification if all the required fields in the form are provided by user.
-    public boolean isFormComplete(String title, String description,String price, String zip, String city){
+    public boolean isFormComplete(String title, String description, double price, String zip, String city){
 
         boolean isComplete = true;
 
@@ -198,7 +198,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
             isComplete=false;
             showDialogBox();
         }
-        else if (price.length()==0){
+        else if ((int) price==0){
             isComplete=false;
             showDialogBox();
         }

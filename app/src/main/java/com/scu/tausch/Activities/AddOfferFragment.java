@@ -15,12 +15,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.OfferDTO;
@@ -121,7 +119,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
 
                 offerDTO.setOfferTitle(editTitle.getText().toString().trim());
                 offerDTO.setOfferDescription(editDescription.getText().toString().trim());
-                offerDTO.setPrice(editPrice.getText().toString().trim());
+                offerDTO.setPrice(Integer.parseInt(editPrice.getText().toString().trim()));
                 offerDTO.setZip(editZip.getText().toString().trim());
                 offerDTO.setCategoryId(getCategoryId(spinnerCategory.getSelectedItem().toString()));
                 offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
@@ -146,7 +144,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
     }
 
     //Verification if all the required fields in the form are provided by user.
-    public boolean isFormComplete(String title, String description,String price, String zip, String city){
+    public boolean isFormComplete(String title, String description, double price, String zip, String city){
 
         boolean isComplete = true;
 
@@ -158,7 +156,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
             isComplete=false;
             showDialogBox();
         }
-        else if (price.length()==0){
+        else if ((int)price == 0){
             isComplete=false;
             showDialogBox();
         }

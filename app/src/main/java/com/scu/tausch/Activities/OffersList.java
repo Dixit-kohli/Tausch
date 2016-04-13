@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,27 +13,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.scu.tausch.Adapters.CustomListAdapter;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.OfferDTO;
@@ -42,8 +32,6 @@ import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import com.parse.ParseException;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +45,7 @@ public class OffersList extends Fragment implements DBListener{
     private List<ParseObject> itemObjects;
     private String[] arrayItemNames;
     private Bitmap[] arrayItemImages;
-    private  String[] arrayItemCosts;
+    private Double[] arrayItemCosts;
     private ListView listViewItems;
     private ProgressDialog progress;
     private boolean isFilterActive=false;
@@ -144,7 +132,7 @@ public class OffersList extends Fragment implements DBListener{
         }
 
         arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
-        arrayItemCosts = arrayPrice.toArray(new String[itemObjects.size()]);
+        arrayItemCosts = arrayPrice.toArray(new Double[itemObjects.size()]);
         arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
 
     }
@@ -194,7 +182,7 @@ public class OffersList extends Fragment implements DBListener{
                         parseOffer.getString("zipcode"),
                         parseOffer.getString("condition"),
                         parseOffer.getString("rental_type"),
-                        parseOffer.getString("price"),
+                        parseOffer.getDouble("price"),
                         image,
                         parseOffer.getString("offeror"),
                         parseOffer.getBoolean("status")
@@ -239,13 +227,13 @@ public class OffersList extends Fragment implements DBListener{
 
         List<String> arrayTitles = new ArrayList<>();
         List<Bitmap> arrayImages = new ArrayList<>();
-        List<String> arrayPrice = new ArrayList<>();
+        List<Double> arrayPrice = new ArrayList<>();
 
         for(OfferDTO offer:offers){
 
             String itemTitle = offer.getOfferTitle();
             arrayTitles.add(itemTitle);
-            String itemPrice = offer.getPrice();
+            double itemPrice = offer.getPrice();
             arrayPrice.add(itemPrice);
                 //ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
                 //byte[] file = bum.getData();
@@ -254,7 +242,7 @@ public class OffersList extends Fragment implements DBListener{
         }
 
         arrayItemNames = arrayTitles.toArray(new String[offers.size()]);
-        arrayItemCosts = arrayPrice.toArray(new String[offers.size()]);
+        arrayItemCosts = arrayPrice.toArray(new Double[offers.size()]);
         arrayItemImages = arrayImages.toArray(new Bitmap[offers.size()]);
 
     }

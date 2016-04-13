@@ -104,6 +104,7 @@ public class Constants {
     public static final String DB_OFFEROR = "offeror";
     public static final String DB_CONDITION = "condition";
     public static final String DB_CITY = "city";
+    public static final String DB_CREATEDAT = "createdAt";
 
     public static final String USER_ID_KEY = "userId";
     public static final String BODY_KEY = "body";
