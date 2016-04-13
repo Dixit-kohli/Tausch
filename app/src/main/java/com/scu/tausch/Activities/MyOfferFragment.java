@@ -84,6 +84,9 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_myoffer, container, false);
 
+        emptyListTextView=(TextView)rootView.findViewById(android.R.id.empty);
+
+
         rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -213,13 +216,18 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
     @Override
     public void callback(List<ParseObject> objects) {
 
-        progress.dismiss();
         itemObjects=objects;
+
+        if (itemObjects==null){
+            progress.dismiss();
+            return;
+        }
 
         setArraysForNamesImagesCost(objects);
 
         fetchedDataFromServer();
 
+        progress.dismiss();
 
     }
 

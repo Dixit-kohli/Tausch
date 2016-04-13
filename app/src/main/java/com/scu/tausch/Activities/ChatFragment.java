@@ -209,22 +209,27 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                                      Toast.LENGTH_SHORT).show();
 
 
-                                                                                                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                                                                                             params.setMargins(0, 0, 0, 20);
+                                                                                                         //    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                                                                          //   params.setMargins(0, 0, 0, 20);
 
 
                                                                                                              DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
                                                                                                              float dpWidth = displayMetrics.widthPixels;
-                                                                                                             float dpHeight = displayMetrics.heightPixels;
+                                                                                                           //  float dpHeight = displayMetrics.heightPixels;
 
                                                                                                              LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                                                                                              TextView textView = (TextView) inflater.inflate(R.layout.textview_bubble, null);
                                                                                                              textView.setText(data);
                                                                                                              textView.setTextColor(Color.WHITE);
                                                                                                              textView.setWidth((int) dpWidth);
+                                                                                                         //    textView.setHeight((int) dpHeight);
                                                                                                              textView.setBackgroundColor(Color.parseColor("#808080"));
+                                                                                                          //   textView.setLayoutParams(params);
                                                                                                              LinearLayout layout = ChatFragment.layout;
+
                                                                                                              layout.addView(textView);
+
+
 
                                                                                                              TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
                                                                                                              Date d  = new Date();
@@ -232,7 +237,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                              textViewTS.setTextColor(Color.WHITE);
                                                                                                              textViewTS.setWidth((int) dpWidth);
                                                                                                              textViewTS.setBackgroundColor(Color.parseColor("#808080"));
-                                                                                                             textViewTS.setLayoutParams(params);
+                                                                                                             //textViewTS.setLayoutParams(params);
                                                                                                              layout.addView(textViewTS);
 
 
@@ -297,8 +302,8 @@ public class ChatFragment extends Fragment implements MessagesListener {
 
         int messageNumber = 0;
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        params.setMargins(0, 0, 0, 20);
+    //    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+     //   params.setMargins(0, 0, 0, 20);
 
         while (messageNumber < messagesAll.size()) {
 
@@ -319,7 +324,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                 textViewTS.setTextColor(Color.WHITE);
                 textViewTS.setWidth((int) dpWidth);
                 textViewTS.setBackgroundColor(Color.parseColor("#808080"));
-                textViewTS.setLayoutParams(params);
+           //     textViewTS.setLayoutParams(params);
                 layout.addView(textViewTS);
             }
             if ((messagesAll.get(messageNumber).get("receiverId")).equals(ParseUser.getCurrentUser().getObjectId())) {
@@ -337,7 +342,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
                 textViewTwoTS.setTextColor(Color.WHITE);
                 textViewTwoTS.setWidth((int) dpWidth);
                 textViewTwoTS.setBackgroundColor(Color.parseColor("#4edacf"));
-                textViewTwoTS.setLayoutParams(params);
+            //    textViewTwoTS.setLayoutParams(params);
                 layout.addView(textViewTwoTS);
             }
             messageNumber++;

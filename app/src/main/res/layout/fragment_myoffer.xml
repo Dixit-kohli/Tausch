@@ -9,6 +9,13 @@
     android:clickable="true"
     tools:context="com.scu.tausch.Activities.MyOfferFragment">
 
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="24dp"/>
+
 
     <TextView
         android:id="@android:id/empty"
