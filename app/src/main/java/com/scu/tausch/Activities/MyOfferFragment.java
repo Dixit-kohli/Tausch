@@ -113,13 +113,13 @@ public class MyOfferFragment extends Fragment implements DBListener,RefreshInter
 
         List<String> arrayTitles = new ArrayList<>();
         List<Bitmap> arrayImages = new ArrayList<>();
-        List<String> arrayPrice = new ArrayList<>();
+        List<Double> arrayPrice = new ArrayList<>();
 
         for(ParseObject itemObject:arrayOfItemObjects){
 
             String itemTitle = (String)itemObject.get(Constants.DB_Offer_Title);
             arrayTitles.add(itemTitle);
-            String itemPrice = (String)itemObject.get(Constants.DB_Price);
+            double itemPrice = ((Number) itemObject.get(Constants.DB_Price)).doubleValue();
             arrayPrice.add(itemPrice);
 
             try {

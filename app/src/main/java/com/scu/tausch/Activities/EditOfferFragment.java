@@ -47,7 +47,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
     private String updateSpinnerCondition;
     private String updateEditTitle;
     private String updateEditDescription;
-    private String updateEditPrice;
+    private double updateEditPrice;
     private String updateEditZip;
     private String updateTextCityName;
     private int categoryPosition;
@@ -73,7 +73,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
         updateSpinnerCondition = (String)itemObject.get("condition");
         updateEditTitle = (String)itemObject.get("offer_title");
         updateEditDescription=(String)itemObject.get("offer_description");
-        updateEditPrice=(String)itemObject.get("price");
+        updateEditPrice = ((Number) itemObject.get("price")).doubleValue();
         updateEditZip=(String)itemObject.get("zipcode");
         updateTextCityName=(String)itemObject.get("city");
         editableObject=itemObject;
@@ -136,7 +136,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
             spinnerCondition.setSelection(updateSpinnerCondition.equals("New") ? 0 : 1);
             editTitle.setText(updateEditTitle);
             editDescription.setText(updateEditDescription);
-            editPrice.setText(updateEditPrice);
+            editPrice.setText("" + updateEditPrice);
             editZip.setText(updateEditZip);
             textCityName.setText(updateTextCityName);
 

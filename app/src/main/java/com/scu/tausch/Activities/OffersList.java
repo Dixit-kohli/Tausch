@@ -84,7 +84,7 @@ public class OffersList extends Fragment implements DBListener{
 
         List<String> arrayTitles = new ArrayList<>();
         List<Bitmap> arrayImages = new ArrayList<>();
-        List<String> arrayPrice = new ArrayList<>();
+        List<Double> arrayPrice = new ArrayList<>();
 
         for(ParseObject itemObject:arrayOfItemObjects){
 
@@ -92,7 +92,8 @@ public class OffersList extends Fragment implements DBListener{
 
             String itemTitle = (String)itemObject.get(Constants.DB_Offer_Title);
             arrayTitles.add(itemTitle);
-            String itemPrice = (String)itemObject.get(Constants.DB_Price);
+            //  double doubleVal =
+            Double itemPrice = ((Number) itemObject.get(Constants.DB_Price)).doubleValue();
             arrayPrice.add(itemPrice);
 
             try {
@@ -422,7 +423,10 @@ public class OffersList extends Fragment implements DBListener{
 
                 DetailedItemFragment nextFrag = new DetailedItemFragment();
 
-                nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
+                if (arrayItemImages.length > 0 && arrayItemNames.length > 0 && arrayItemCosts.length > 0) {
+                    nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
+                }
+
 
                 OffersList.this.getFragmentManager().beginTransaction()
                         .replace(R.id.myItemsInCategoryWindow, nextFrag, Constants.TAG_Item_Details_Fragment)

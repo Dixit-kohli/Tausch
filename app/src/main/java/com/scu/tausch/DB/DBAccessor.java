@@ -21,7 +21,6 @@ import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.Activities.RefreshInterface;
 import com.scu.tausch.Activities.SearchListener;
-import com.scu.tausch.Activities.Sort;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.DTO.RegistrationDTO;
