@@ -21,6 +21,7 @@ import com.scu.tausch.Activities.MyOfferFragment;
 import com.scu.tausch.Activities.OffersList;
 import com.scu.tausch.Activities.RefreshInterface;
 import com.scu.tausch.Activities.SearchListener;
+import com.scu.tausch.Activities.Sort;
 import com.scu.tausch.DTO.LoginDTO;
 import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.DTO.RegistrationDTO;
@@ -331,8 +332,6 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
     parseUser.saveInBackground();
 }
 
-
-
     public void deleteOffer(String objectToBeDeleted, final HomePage homePage) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
 
@@ -364,9 +363,9 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
         } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_PRICE_HIGH_TO_LOW)) {
             query.orderByDescending("price");
         } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_NEW_TO_OLD)) {
-            query.orderByDescending("createdAt");
-        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_OLD_TO_NEW)) {
             query.orderByAscending("createdAt");
+        } else if(offerDTO.getSortCriteriaSelected().equals(Constants.SORT_DATE_OLD_TO_NEW)) {
+            query.orderByDescending("createdAt");
         }
         final List<ParseObject> results = new ArrayList<ParseObject>();
         query.findInBackground(new FindCallback<ParseObject>() {
