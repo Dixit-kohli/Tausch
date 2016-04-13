@@ -47,9 +47,9 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
             textView.setText(message);
 
             LinearLayout layout = ChatFragment.layout;
-if (layout!=null) {
-    layout.addView(textView);
-}
+            if (layout != null) {
+                layout.addView(textView);
+            }
 
 
         } catch (JSONException e) {
