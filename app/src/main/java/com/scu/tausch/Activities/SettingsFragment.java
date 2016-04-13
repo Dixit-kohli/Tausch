@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -131,6 +133,71 @@ public class SettingsFragment extends Fragment {
 
 
         Button changeButton = (Button) rootView.findViewById(R.id.change_label);
+
+        Button passwordButton = (Button) rootView.findViewById(R.id.buttonChangePassword);
+
+
+        passwordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle("Update Password?");
+
+                final EditText newpass = new EditText(getActivity());
+                newpass.setHint("Enter new Password");
+                newpass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                final EditText newpass2 = new EditText(getActivity());
+                newpass2.setHint("Re-enter Password");
+                newpass2.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+
+                LinearLayout layout = new LinearLayout(getActivity());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.addView(newpass);
+                layout.addView(newpass2);
+                alertDialog.setView(layout);
+
+                // alertDialog.setIcon(R.drawable.key);
+                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        if (newpass.getText().toString().equals(newpass2.getText().toString()) && !newpass.getText().toString().equals("")) {
+
+                            myCurrentUser.setPassword(newpass.getText().toString());
+                            myCurrentUser.saveInBackground();
+
+                            Toast.makeText(getActivity(), "Success!!! Password changed.",
+                                    Toast.LENGTH_LONG).show();
+
+                        } else {
+                            dialog.cancel();
+                            Toast.makeText(getActivity(), "Password not changed.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+
+                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+
+                        Toast.makeText(getActivity(), "Password not changed.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                alertDialog.show();
+
+            }
+
+
+        });
+
 
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override

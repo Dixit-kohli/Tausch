@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.content.DialogInterface;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -320,6 +321,7 @@ public class ImageAddFragment extends Fragment {
                                 // Create the class and the columns
                                 imgupload.saveInBackground();
 
+                                Toast.makeText(getActivity(), "Offer Posted", Toast.LENGTH_SHORT).show();
 
                                 Fragment fragmentToRemove = getFragmentManager().findFragmentByTag("tagImageAdd");
                                 getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
