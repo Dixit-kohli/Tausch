@@ -17,6 +17,8 @@ import com.scu.tausch.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Created by Praneet on 3/20/16.
  */
@@ -50,6 +52,16 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
             if (layout != null) {
                 layout.addView(textView);
             }
+
+            // Code to add the time when message is received. I have commented the code - defect 34 from excel sheet
+            /*TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
+            Date d  = new Date();
+            textViewTS.setText(d.toString());
+            textViewTS.setTextColor(Color.WHITE);
+            textViewTS.setWidth((int) dpWidth);
+           textView.setBackgroundColor(Color.parseColor("#4edacf"));
+            //textViewTS.setLayoutParams(params);
+            layout.addView(textViewTS);*/
 
 
         } catch (JSONException e) {
