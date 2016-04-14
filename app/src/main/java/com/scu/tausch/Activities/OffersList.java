@@ -67,7 +67,7 @@ public class OffersList extends Fragment implements DBListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+    //    DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;  // defect fix - defect no. 28
         listOfImageLists = new ArrayList<>();
 
         progress = new ProgressDialog(getActivity());
@@ -86,80 +86,107 @@ public class OffersList extends Fragment implements DBListener{
         List<Bitmap> arrayImages = new ArrayList<>();
         List<Double> arrayPrice = new ArrayList<>();
 
-        for(ParseObject itemObject:arrayOfItemObjects){
+        if (arrayOfItemObjects!=null && arrayOfItemObjects.size()>0) {
 
-            List<Bitmap> arrayItemFiveImages = new ArrayList<>();
 
-            String itemTitle = (String)itemObject.get(Constants.DB_Offer_Title);
-            arrayTitles.add(itemTitle);
-            //  double doubleVal =
-            Double itemPrice = ((Number) itemObject.get(Constants.DB_Price)).doubleValue();
-            arrayPrice.add(itemPrice);
+            for (ParseObject itemObject : arrayOfItemObjects) {
 
-            try {
-                ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
-                byte[] file = bum.getData();
-                Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
-                arrayImages.add(image);
-                arrayItemFiveImages.add(image);
+                List<Bitmap> arrayItemFiveImages = new ArrayList<>();
 
-                ParseFile bumTwo = (ParseFile) itemObject.get(Constants.DB_Image_TWO);
-                byte[] fileTwo = bumTwo.getData();
-                Bitmap imageTwo = BitmapFactory.decodeByteArray(fileTwo, 0, fileTwo.length);
-                arrayItemFiveImages.add(imageTwo);
+                String itemTitle = (String) itemObject.get(Constants.DB_Offer_Title);
+                arrayTitles.add(itemTitle);
+                //  double doubleVal =
+                Double itemPrice = ((Number) itemObject.get(Constants.DB_Price)).doubleValue();
+                arrayPrice.add(itemPrice);
 
-                ParseFile bumThree = (ParseFile) itemObject.get(Constants.DB_Image_THREE);
-                byte[] fileThree = bumThree.getData();
-                Bitmap imageThree = BitmapFactory.decodeByteArray(fileThree, 0, fileThree.length);
-                arrayItemFiveImages.add(imageThree);
+                try {
+                    ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
+                    byte[] file = bum.getData();
+                    Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
+                    arrayImages.add(image);
+                    arrayItemFiveImages.add(image);
 
-                ParseFile bumFour = (ParseFile) itemObject.get(Constants.DB_Image_FOUR);
-                byte[] fileFour = bumFour.getData();
-                Bitmap imageFour = BitmapFactory.decodeByteArray(fileFour, 0, fileFour.length);
-                arrayItemFiveImages.add(imageFour);
+                    ParseFile bumTwo = (ParseFile) itemObject.get(Constants.DB_Image_TWO);
+                    byte[] fileTwo = bumTwo.getData();
+                    Bitmap imageTwo = BitmapFactory.decodeByteArray(fileTwo, 0, fileTwo.length);
+                    arrayItemFiveImages.add(imageTwo);
 
-                ParseFile bumFive = (ParseFile) itemObject.get(Constants.DB_Image_FIVE);
-                byte[] fileFive = bumFive.getData();
-                Bitmap imageFive = BitmapFactory.decodeByteArray(fileFive, 0, fileFive.length);
-                arrayItemFiveImages.add(imageFive);
+                    ParseFile bumThree = (ParseFile) itemObject.get(Constants.DB_Image_THREE);
+                    byte[] fileThree = bumThree.getData();
+                    Bitmap imageThree = BitmapFactory.decodeByteArray(fileThree, 0, fileThree.length);
+                    arrayItemFiveImages.add(imageThree);
 
-                listOfImageLists.add(arrayItemFiveImages);
+                    ParseFile bumFour = (ParseFile) itemObject.get(Constants.DB_Image_FOUR);
+                    byte[] fileFour = bumFour.getData();
+                    Bitmap imageFour = BitmapFactory.decodeByteArray(fileFour, 0, fileFour.length);
+                    arrayItemFiveImages.add(imageFour);
 
+                    ParseFile bumFive = (ParseFile) itemObject.get(Constants.DB_Image_FIVE);
+                    byte[] fileFive = bumFive.getData();
+                    Bitmap imageFive = BitmapFactory.decodeByteArray(fileFive, 0, fileFive.length);
+                    arrayItemFiveImages.add(imageFive);
+
+                    listOfImageLists.add(arrayItemFiveImages);
+
+                } catch (ParseException e) {
+
+                }
             }
-            catch (ParseException e){
-
-            }
-
         }
 
-        arrayItemNames = arrayTitles.toArray(new String[itemObjects.size()]);
-        arrayItemCosts = arrayPrice.toArray(new Double[itemObjects.size()]);
-        arrayItemImages = arrayImages.toArray(new Bitmap[itemObjects.size()]);
+        arrayItemNames = arrayTitles.toArray(new String[arrayOfItemObjects.size()]);
+        arrayItemCosts = arrayPrice.toArray(new Double[arrayOfItemObjects.size()]);
+        arrayItemImages = arrayImages.toArray(new Bitmap[arrayOfItemObjects.size()]);
 
     }
 
 
-    public void searchList(List<ParseObject> searchedObjects, String searchStr){
+    public void searchList(List<ParseObject> offers, String searchStr){
 
         isSearchActive=true;
 
         itemObjects = null;
-        itemObjects=searchedObjects;
-        List<OfferDTO> offers = new ArrayList<OfferDTO>();
+        itemObjects=offers;
+        List<ParseObject> searchResults =new ArrayList<ParseObject>();
+       // List<OfferDTO> offers = new ArrayList<OfferDTO>();
 
         // commented as we do not want this function any more
 
-        offers = searchOffersWithASearchStr(searchedObjects, offers, searchStr);
+        //offers = searchOffersWithASearchStr(searchedObjects, offers, searchStr);
+        //setArraysForSearchResults(offers);
 
-        setArraysForSearchResults(offers);
-        // setArraysForNamesImagesCost(searchedObjects);
+
+        // offers is a list of all parse objects that we fetched ( these are not searched offers)
+        // searchResults is a list of all searched parse objects ( here we search all offers with the user's input string)
+        searchResults =  searchOffersWithASearchStr(offers,searchResults, searchStr);
+        setArraysForNamesImagesCost(searchResults);
 
     }
 
+    public List<ParseObject>  searchOffersWithASearchStr(List<ParseObject> offersParseList,List<ParseObject> searchResults, String searchStr){
 
-    public List<OfferDTO>  searchOffersWithASearchStr(List<ParseObject> offersParseList, List<OfferDTO> offersList, String searchStr){
+        // till here we fetched all the offers specific to a category and which are open offers...
+       // progress.dismiss();
+        if(offersParseList.size()>0) {
+            for (ParseObject parseOffer : offersParseList) {
+                String itemTitle = (String) parseOffer.get(Constants.DB_Offer_Title);
+                if (itemTitle != null && !itemTitle.isEmpty()
+                        && itemTitle.toLowerCase().contains(searchStr.toLowerCase())) {
+                    searchResults.add(parseOffer);
+                }
+            }
+        }
+        return searchResults;
+    }
 
-        // till here we fetched all the offers specific to a category and which are open offers... not closed
+
+
+
+
+
+    /*public List<OfferDTO>  searchOffersWithASearchStr(List<ParseObject> offersParseList, List<OfferDTO> offersList, String searchStr){
+
+        // till here we fetched all the offers specific to a category and which are open offers...
         List<OfferDTO> searchedOffers = new ArrayList<OfferDTO>();
         //progress.dismiss();
         if(offersParseList.size()>0) {
@@ -220,11 +247,11 @@ public class OffersList extends Fragment implements DBListener{
             }
         }
         return searchedOffers;
-    }
+    }*/
 
 
 
-    private void setArraysForSearchResults(List<OfferDTO> offers){
+   /* private void setArraysForSearchResults(List<OfferDTO> offers){
 
         List<String> arrayTitles = new ArrayList<>();
         List<Bitmap> arrayImages = new ArrayList<>();
@@ -246,18 +273,13 @@ public class OffersList extends Fragment implements DBListener{
         arrayItemCosts = arrayPrice.toArray(new Double[offers.size()]);
         arrayItemImages = arrayImages.toArray(new Bitmap[offers.size()]);
 
-    }
+    }*/
 
  public void filterList(List<ParseObject> filteredObjects){
-
      isFilterActive=true;
-
      itemObjects = null;
      itemObjects=filteredObjects;
-
-
      setArraysForNamesImagesCost(filteredObjects);
-
  }
 
 
@@ -329,8 +351,6 @@ public class OffersList extends Fragment implements DBListener{
 //        buttonSort.setBackgroundColor(Color.TRANSPARENT);
 //        toolbarBottom.addView(buttonSort);
 //
-
-
 
 
 
