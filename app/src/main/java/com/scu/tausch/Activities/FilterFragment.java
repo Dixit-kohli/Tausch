@@ -2,12 +2,14 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,8 +28,11 @@ import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Praneet on 2/11/16.
@@ -34,6 +40,8 @@ import java.util.List;
 public class FilterFragment extends Fragment {
 
     private List<ParseObject> itemObjects;
+    private SimpleDateFormat dateFormatter;
+    private DatePickerDialog postedAfterDatePickerDialog;
 
     public FilterFragment() {
         // Required empty public constructor
@@ -71,9 +79,33 @@ public class FilterFragment extends Fragment {
         final EditText editCity = (EditText)rootView.findViewById(R.id.edit_city_of_item);
         final EditText editMin = (EditText)rootView.findViewById(R.id.edit_min_price);
         final EditText editMax = (EditText)rootView.findViewById(R.id.edit_max_price);
-
+        final EditText editPostedAfterDate = (EditText) rootView.findViewById(R.id.edit_posted_after_date);
         Button filterButton = (Button)rootView.findViewById(R.id.button_filter);
         Button cancelButton = (Button)rootView.findViewById(R.id.button_cancel);
+        editPostedAfterDate.setInputType(InputType.TYPE_NULL);
+        editPostedAfterDate.requestFocus();
+
+        editPostedAfterDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postedAfterDatePickerDialog.show();
+            }
+        });
+
+        dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+        Calendar newCalendar = Calendar.getInstance();
+
+        postedAfterDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                editPostedAfterDate.setText(dateFormatter.format(newDate.getTime()));
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+
+
 
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
