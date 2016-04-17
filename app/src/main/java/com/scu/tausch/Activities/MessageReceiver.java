@@ -54,14 +54,16 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
             }
 
             // Code to add the time when message is received. I have commented the code - defect 34 from excel sheet
-            /*TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
+            TextView textViewTS = (TextView) inflater.inflate(R.layout.textview_bubble_timestamp, null);
             Date d  = new Date();
             textViewTS.setText(d.toString());
             textViewTS.setTextColor(Color.WHITE);
             textViewTS.setWidth((int) dpWidth);
-           textView.setBackgroundColor(Color.parseColor("#4edacf"));
+            textViewTS.setBackgroundColor(Color.parseColor("#4edacf"));
             //textViewTS.setLayoutParams(params);
-            layout.addView(textViewTS);*/
+            if (layout != null) {
+                layout.addView(textViewTS);
+            }
 
 
         } catch (JSONException e) {
