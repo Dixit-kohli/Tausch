@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
@@ -21,9 +23,13 @@ import android.support.v7.widget.SearchView;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.app.AlertDialog;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.DialogInterface;
 
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.scu.tausch.DB.DBAccessor;
@@ -64,11 +70,13 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private final int ABOUT = 5;
     private final int SIGN_OUT = 6;
     private ProgressDialog progress;
+    private ImageView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
@@ -89,6 +97,35 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
 
+        profilePicture = (ImageView) findViewById(R.id.profile_picture);
+
+//        try {
+//            ParseFile bum = (ParseFile) ParseUser.getCurrentUser().get("picture");
+//            if(bum!=null) {
+//                byte[] file = bum.getData();
+//                Bitmap userImage = BitmapFactory.decodeByteArray(file, 0, file.length);
+//                profilePicture.setImageBitmap(userImage);
+//            }
+//        }catch (ParseException pe){
+//
+//        }
+
+
+        //set profile image for user.
+        ParseFile imageFile = (ParseFile) ParseUser.getCurrentUser().get("picture");
+        if (imageFile != null) {
+            imageFile.getDataInBackground(new GetDataCallback() {
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        // data has the bytes for the image
+                        Bitmap userImage = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        profilePicture.setImageBitmap(userImage);
+                    } else {
+                        // something went wrong
+                    }
+                }
+            });
+        }
         AddOfferFragment.context=this;
 
         // display the first navigation drawer view on app launch
@@ -438,6 +475,4 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         // system behavior
         return super.onKeyDown(keyCode, event);
     }
-
-
 }

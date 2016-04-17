@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Handler;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
@@ -23,6 +25,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 
 public class LaunchScreen extends Activity {
@@ -31,8 +34,6 @@ public class LaunchScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_screen);
-
-
 
         //Showing splash screen.
 
@@ -48,19 +49,16 @@ public class LaunchScreen extends Activity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
 
-               //Decision based on current status - login or logout.
+                //Decision based on current status - login or logout.
                 ParseUser currentUser = ParseUser.getCurrentUser();
 
-                if (currentUser==null){
+                if (currentUser == null) {
                     Intent i = new Intent(LaunchScreen.this, Login.class);
                     startActivity(i);
-                }
-                else{
+                } else {
                     Intent i = new Intent(LaunchScreen.this, HomePage.class);
                     startActivity(i);
                 }
-
-
 
 
 //                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFS_NAME, Context.MODE_PRIVATE);
@@ -70,7 +68,7 @@ public class LaunchScreen extends Activity {
 //                }
 //                else {
 
-               // }
+                // }
 
                 // close this activity
                 finish();
@@ -99,4 +97,5 @@ public class LaunchScreen extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

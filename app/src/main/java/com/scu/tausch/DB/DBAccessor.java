@@ -14,6 +14,7 @@ import com.scu.tausch.Activities.ChatFragment;
 import com.scu.tausch.Activities.DBListener;
 import com.scu.tausch.Activities.EditOfferFragment;
 import com.scu.tausch.Activities.HomePage;
+import com.scu.tausch.Activities.LaunchScreen;
 import com.scu.tausch.Activities.MessageThreadListener;
 import com.scu.tausch.Activities.MessagesListener;
 import com.scu.tausch.Activities.MyMessagesFragment;
@@ -265,7 +266,7 @@ public class DBAccessor {
         final String searchStr1 = searchStr;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_OFFERS);
-        query.whereEqualTo("status","true");
+        query.whereEqualTo("status", "true");
 
        // TODO: Need to add status ="Open" (true) in queries, we need to search only open offers and not closed/deleted
 
@@ -429,7 +430,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                         setMessagesListener(chatFragment);
 
                         if (chatFragment != null) {
-                            chatFragment.callbackForAllMessages(messagesAll,receiverId);
+                            chatFragment.callbackForAllMessages(messagesAll, receiverId);
                         }
 
                     }
@@ -548,7 +549,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
 
 
                         if (e == null) {
-                            if(messagesObjects!=null && messagesObjects.size()>0) {
+                            if (messagesObjects != null && messagesObjects.size() > 0) {
                                 for (ParseObject p : messagesObjects)
                                     p.deleteInBackground();
 
@@ -563,5 +564,7 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
                 });
             }
         });
+
     }
+
 }

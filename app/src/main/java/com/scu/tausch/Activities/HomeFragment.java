@@ -2,6 +2,8 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.parse.ParseFile;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
@@ -44,7 +47,6 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
-
     }
 
     @Override

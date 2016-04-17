@@ -66,7 +66,7 @@ public class Constants {
     public static final String TAG_Item_Details_Fragment = "tagItemDetailsFragment";
 
 
-
+    public static final String DB_Categories = "Categories";
     public static final String DB_Offers = "Offers";
     public static final String DB_Offer_Title = "offer_title";
     public static final String DB_Price = "price";
