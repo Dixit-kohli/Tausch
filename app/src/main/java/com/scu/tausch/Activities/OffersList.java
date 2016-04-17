@@ -146,6 +146,9 @@ public class OffersList extends Fragment implements DBListener{
 
     public void searchList(List<ParseObject> offers, String searchStr){
 
+        if (progress != null) {
+            progress.dismiss();
+        }
         isSearchActive=true;
 
         itemObjects = null;
@@ -163,6 +166,12 @@ public class OffersList extends Fragment implements DBListener{
         // searchResults is a list of all searched parse objects ( here we search all offers with the user's input string)
         searchResults =  searchOffersWithASearchStr(offers,searchResults, searchStr);
         setArraysForNamesImagesCost(searchResults);
+//        if (progress!=null){
+//            progress.dismiss();
+//        }
+//        if (HomePage.progress!=null && HomePage.progress.isShowing()){
+//            HomePage.progress.dismiss();
+//        }
 
     }
 

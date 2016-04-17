@@ -3,6 +3,7 @@ package com.scu.tausch.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -80,7 +82,51 @@ private String receiverObjectId;
                 condition = (String)itemObject.get(Constants.DB_CONDITION);
                 city = (String)itemObject.get(Constants.DB_CITY);
 
-                itemFiveImages = OffersList.listOfImageLists.get(positionInList);
+                if (OffersList.listOfImageLists.size() != 0) {
+                    itemFiveImages = OffersList.listOfImageLists.get(positionInList);
+                } else {
+                    if (itemFiveImages == null) {
+                        itemFiveImages = new ArrayList<>();
+                    }
+
+                    try {
+                        ParseFile bum = (ParseFile) itemObject.get(Constants.DB_Image_ONE);
+                        byte[] file = bum.getData();
+                        Bitmap image = BitmapFactory.decodeByteArray(file, 0, file.length);
+                        itemFiveImages.add(image);
+
+                        ParseFile bumTwo = (ParseFile) itemObject.get(Constants.DB_Image_TWO);
+                        byte[] fileTwo = bumTwo.getData();
+                        Bitmap imageTwo = BitmapFactory.decodeByteArray(fileTwo, 0, fileTwo.length);
+                        itemFiveImages.add(imageTwo);
+
+                        ParseFile bumThree = (ParseFile) itemObject.get(Constants.DB_Image_THREE);
+                        byte[] fileThree = bumThree.getData();
+                        Bitmap imageThree = BitmapFactory.decodeByteArray(fileThree, 0, fileThree.length);
+                        itemFiveImages.add(imageThree);
+
+                        ParseFile bumFour = (ParseFile) itemObject.get(Constants.DB_Image_FOUR);
+                        byte[] fileFour = bumFour.getData();
+                        Bitmap imageFour = BitmapFactory.decodeByteArray(fileFour, 0, fileFour.length);
+                        itemFiveImages.add(imageFour);
+
+                        ParseFile bumFive = (ParseFile) itemObject.get(Constants.DB_Image_FIVE);
+                        byte[] fileFive = bumFive.getData();
+                        Bitmap imageFive = BitmapFactory.decodeByteArray(fileFive, 0, fileFive.length);
+                        itemFiveImages.add(imageFive);
+
+//                        if (listOfImageLists == null) {
+//                            listOfImageLists = new ArrayList<>();
+//                        }
+//                        listOfImageLists.add(arrayItemFiveImages);
+
+                    } catch (ParseException e) {
+
+
+                    }
+
+
+                }
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
                query.whereEqualTo("objectId", itemObject.get("user_id"));

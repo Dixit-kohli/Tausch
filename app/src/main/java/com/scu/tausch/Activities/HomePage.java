@@ -46,6 +46,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private String Tag_Name;
 
     private Toolbar mToolbar,toolbarBottom;
+    private boolean isSearcing;
     private FragmentDrawer drawerFragment;
     private Fragment fragment = null;
 
@@ -106,8 +107,11 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                showProgressForSearch();
-                DBAccessor.getInstance().getSearchResults(query, HomePage.this);
+                if (isSearcing == false) {
+                    isSearcing = true;
+                    showProgressForSearch();
+                    DBAccessor.getInstance().getSearchResults(query, HomePage.this);
+                }
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.
                         INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -253,6 +257,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     public void searchResults(List<ParseObject> objects, String searchStr) {
 
         progress.dismiss();
+        isSearcing = false;
 
         OffersList fragment = new OffersList();
         fragment.searchList(objects, searchStr);
