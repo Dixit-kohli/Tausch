@@ -14,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
 
     ListView lvChat;
     ArrayList<Message> mMessages;
+    private ScrollView scrollViewForMessages;
     ChatListAdapter mAdapter;
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
@@ -134,6 +137,13 @@ public class ChatFragment extends Fragment implements MessagesListener {
 
 
         etMessage = (EditText) rootView.findViewById(R.id.etMessage);
+        scrollViewForMessages = (ScrollView) rootView.findViewById(R.id.scrollLayout);
+        //  scrollViewForMessages.scrollTo(0,scrollViewForMessages.getBottom());
+
+
+        //When the keypad opens, message send view would be pushed on top of keypad.
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         btSend = (Button) rootView.findViewById(R.id.btSend);
         //  lvChat = (ListView) rootView.findViewById(R.id.lvChat);
         mMessages = new ArrayList<>();

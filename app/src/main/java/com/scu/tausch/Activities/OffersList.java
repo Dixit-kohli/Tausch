@@ -126,6 +126,9 @@ public class OffersList extends Fragment implements DBListener{
                     Bitmap imageFive = BitmapFactory.decodeByteArray(fileFive, 0, fileFive.length);
                     arrayItemFiveImages.add(imageFive);
 
+                    if (listOfImageLists == null) {
+                        listOfImageLists = new ArrayList<>();
+                    }
                     listOfImageLists.add(arrayItemFiveImages);
 
                 } catch (ParseException e) {
@@ -147,7 +150,7 @@ public class OffersList extends Fragment implements DBListener{
 
         itemObjects = null;
         itemObjects=offers;
-        List<ParseObject> searchResults =new ArrayList<ParseObject>();
+        List<ParseObject> searchResults = new ArrayList<>();
        // List<OfferDTO> offers = new ArrayList<OfferDTO>();
 
         // commented as we do not want this function any more

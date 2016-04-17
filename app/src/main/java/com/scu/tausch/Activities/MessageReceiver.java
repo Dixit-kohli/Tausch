@@ -60,7 +60,6 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
             textViewTS.setTextColor(Color.WHITE);
             textViewTS.setWidth((int) dpWidth);
             textViewTS.setBackgroundColor(Color.parseColor("#4edacf"));
-            //textViewTS.setLayoutParams(params);
             if (layout != null) {
                 layout.addView(textViewTS);
             }

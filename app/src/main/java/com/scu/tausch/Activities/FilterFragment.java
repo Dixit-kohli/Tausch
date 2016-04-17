@@ -139,10 +139,10 @@ public class FilterFragment extends Fragment {
 
                         String pricee = "";
 
-                        if (((String) object.get(Constants.DB_Price)).length() == 0) {
+                        if ((((Number) object.get(Constants.DB_Price)).toString()).length() == 0) {
                             pricee = "0";
                         } else {
-                            pricee = (String) object.get(Constants.DB_Price);
+                            pricee = ((Number) object.get(Constants.DB_Price)).toString();
                         }
 
                         String lTitle = (String)object.get(Constants.DB_Offer_Title);

@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
     public static HomePage context;
 
     private String[] arrayCategoryNames = new String[]{"AUTOMOBILES", "BOOKS", "LAPTOPS","FURNITURE","RENTALS"};
-    private int[] arrayCategoryImages = new int[]{R.mipmap.ic_category_automobiles, R.mipmap.ic_category_books, R.mipmap.ic_category_laptops,R.mipmap.ic_furniture ,R.mipmap.ic_category_rentals};
+    private int[] arrayCategoryImages = new int[]{R.mipmap.img_automobiles_new1, R.mipmap.img_books_new1, R.mipmap.img_laptop_new1, R.mipmap.img_furniture_new1, R.mipmap.img_rental_new1};
     private ListView listViewCategories;
 
     public HomeFragment() {
@@ -86,15 +86,10 @@ public class HomeFragment extends Fragment {
         listViewCategories = (ListView) rootView.findViewById(R.id.list_categories);
         listViewCategories.setAdapter(categoryListAdapter);
 
-        //Setting Y value as 168, that is height of toolbar.
-//        listViewCategories.setY(168);
-
 
         listViewCategories.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
-
-                // Toast.makeText(getActivity().getBaseContext(), "Item clicked at" + position, Toast.LENGTH_SHORT).show();
 
 
                 if (position == Constants.CATEGORY_AUTOMOBILES) {
