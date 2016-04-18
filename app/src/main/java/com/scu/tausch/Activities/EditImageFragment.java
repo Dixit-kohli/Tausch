@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -32,6 +33,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.scu.tausch.DB.DBAccessor;
 import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.Misc.Constants;
@@ -331,22 +333,39 @@ public class EditImageFragment extends Fragment {
                                         }
                                     }
 
+
+                                    SaveCallback sc = new SaveCallback() {
+
+                                        @Override
+                                        public void done(ParseException arg0) {
+                                            Log.d("my", "after saveinbackground is done");
+                                            if (arg0 == null) {
+                                                Toast.makeText(getActivity(), "Offer posted", Toast.LENGTH_SHORT).show();
+
+                                                Fragment fragmentToRemove = getFragmentManager().findFragmentByTag(Constants.TAG_Image_Edit);
+                                                getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
+
+                                                //After removing fragment in above line, we popBackStack() to remove from stack.
+                                                getFragmentManager().popBackStack();
+
+                                                HomeFragment nextFrag = new HomeFragment();
+
+                                                EditImageFragment.this.getFragmentManager().beginTransaction()
+                                                        .replace(R.id.container_body, nextFrag)
+                                                        .commit();
+
+                                                isOfferEditable = false;
+
+                                            } else {
+                                                Toast.makeText(getActivity(), "Offer cant be posted", Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        }
+                                    };
                                     // Create the class and the columns
-                                    imgupload.saveInBackground();
+                                    imgupload.saveInBackground(sc);
 
-                                    Fragment fragmentToRemove = getFragmentManager().findFragmentByTag(Constants.TAG_Image_Edit);
-                                    getActivity().getSupportFragmentManager().beginTransaction().remove(fragmentToRemove).commit();
-
-                                    //After removing fragment in above line, we popBackStack() to remove from stack.
-                                    getFragmentManager().popBackStack();
-
-                                    HomeFragment nextFrag = new HomeFragment();
-
-                                    EditImageFragment.this.getFragmentManager().beginTransaction()
-                                            .replace(R.id.container_body, nextFrag)
-                                            .commit();
-
-                                    isOfferEditable=false;
 
                                 }
                             }

@@ -27,6 +27,7 @@
         android:layout_width="260dp"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:gravity="center_horizontal"
         android:background="#FFFFFF"
         android:hint="Title for the listing" />

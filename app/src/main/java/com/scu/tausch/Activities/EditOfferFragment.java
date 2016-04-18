@@ -52,8 +52,10 @@ public class EditOfferFragment extends Fragment implements DBListener{
     private String updateTextCityName;
     private int categoryPosition;
     private ParseObject editableObject;
+    private boolean isPriceValid;
 
-   public EditOfferFragment() {
+
+    public EditOfferFragment() {
         // Required empty public constructor
     }
 
@@ -158,7 +160,17 @@ public class EditOfferFragment extends Fragment implements DBListener{
 
                 offerDTO.setOfferTitle(editTitle.getText().toString().trim());
                 offerDTO.setOfferDescription(editDescription.getText().toString().trim());
-                offerDTO.setPrice(Double.parseDouble(editPrice.getText().toString().trim()));
+                if (editPrice.getText().toString().trim().length() > 0) {
+
+                    if (checkIfValueIsIntegerType(editPrice.getText().toString().trim())) {
+
+                        offerDTO.setPrice(Double.parseDouble(editPrice.getText().toString().trim()));
+                        isPriceValid = true;
+
+                    } else {
+                        isPriceValid = false;
+                    }
+                }
                 offerDTO.setZip(editZip.getText().toString().trim());
                 offerDTO.setCategoryId(getCategoryId(spinnerCategory.getSelectedItem().toString()));
                 offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
@@ -197,8 +209,7 @@ public class EditOfferFragment extends Fragment implements DBListener{
         else if (description.length()==0){
             isComplete=false;
             showDialogBox();
-        }
-        else if ((int) price==0){
+        } else if (("" + price).length() == 0 || checkIfValueIsIntegerType("" + price) == false || isPriceValid == false) {
             isComplete=false;
             showDialogBox();
         }
@@ -337,7 +348,16 @@ public class EditOfferFragment extends Fragment implements DBListener{
 
     }
 
+    public boolean checkIfValueIsIntegerType(String value) {
 
+        try {
+            double tempValue = Double.parseDouble(value);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+
+    }
 
     @Override
     public void onAttach(Activity activity) {

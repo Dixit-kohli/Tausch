@@ -93,6 +93,10 @@ public class Registration extends Activity {
             showDialogToEnterSamePassword();
         }
 
+        if (!checkIfPhoneNumberIsValid(regDTO.getNumber())) {
+            showDialogForIncorrectNumber();
+        }
+
         if (!isTermsConditionAccepted()){
             showDialogBoxForAcceptingTermsConditions();
             return;
@@ -215,6 +219,33 @@ public class Registration extends Activity {
         }
 
         return isFieldEmpty;
+    }
+
+    private boolean checkIfPhoneNumberIsValid(String val) {
+
+
+        if (val.toString().trim().length() != 10) {
+
+            return false;
+        }
+        return true;
+    }
+
+    private void showDialogForIncorrectNumber() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Please enter valid phone number.");
+
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void showDialogForEmptyFields(){

@@ -67,6 +67,7 @@ public class SettingsFragment extends Fragment {
     private boolean isOfferEditable=false;
     private Bitmap userImage;
     private ParseFile myImageFile;
+    private String currentPhoneNumber;
 
 
     @Override
@@ -105,6 +106,7 @@ public class SettingsFragment extends Fragment {
         lastname.setText((String) myCurrentUser.get("lastname"));
         phonenumber = (EditText) rootView.findViewById(R.id.phone_number);
         phonenumber.setText((String) myCurrentUser.get("number"));
+        currentPhoneNumber = phonenumber.getText().toString().trim();
 
         email = (TextView) rootView.findViewById(R.id.email);
         email.setText((String) myCurrentUser.get("email"));
@@ -225,6 +227,15 @@ public class SettingsFragment extends Fragment {
                 myCurrentUser.put("firstname",firstname.getText().toString());
                 myCurrentUser.put("lastname",lastname.getText().toString());
                 myCurrentUser.put("number",phonenumber.getText().toString());
+
+
+                if (!checkIfPhoneNumberIsValid(phonenumber.getText().toString().trim())) {
+                    showDialogForIncorrectNumber();
+                    phonenumber.setText(currentPhoneNumber);
+                    return;
+                }
+
+
                 if (myImageFile!=null) {
                   //  myCurrentUser.put("picture", file);
                 }
@@ -243,6 +254,35 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
+
+
+    private boolean checkIfPhoneNumberIsValid(String val) {
+
+
+        if (val.toString().trim().length() != 10) {
+
+            return false;
+        }
+        return true;
+    }
+
+    private void showDialogForIncorrectNumber() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage("Please enter valid phone number.");
+
+        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 
     private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};

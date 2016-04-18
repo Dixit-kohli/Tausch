@@ -79,6 +79,7 @@
         android:id="@+id/mobile_number"
         android:layout_width="260dp"
         android:layout_height="30dp"
+        android:phoneNumber="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:background="#FFFFFF"

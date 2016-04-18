@@ -25,6 +25,7 @@
         android:id="@+id/edit_titleListing"
         android:layout_width="260dp"
         android:layout_height="30dp"
+        android:singleLine="true"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:background="#FFFFFF"

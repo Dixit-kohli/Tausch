@@ -73,6 +73,7 @@
         android:layout_marginTop="355dp"
         android:background="#FFFFFF"
         android:hint="Phone Number"
+        android:phoneNumber="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:inputType="number"/>
