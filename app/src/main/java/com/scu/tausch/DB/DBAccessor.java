@@ -93,7 +93,7 @@ public class DBAccessor {
         ParseUser user = new ParseUser();
         user.setUsername(regDTO.getEmail().toLowerCase());
         user.setPassword(regDTO.getPassword());
-        user.setEmail(regDTO.getEmail());
+        user.setEmail(regDTO.getEmail().toLowerCase());
 
         // other fields can be set just like with ParseObject
         user.put(Constants.NUMBER, regDTO.getNumber());
@@ -104,7 +104,7 @@ public class DBAccessor {
             public void done(ParseException e) {
                 if (e == null) {
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                    installation.put(Constants.DB_USERNAME, regDTO.getEmail());
+                    installation.put(Constants.DB_USERNAME, regDTO.getEmail().toLowerCase());
                     installation.saveInBackground();
 
                     // Sign up successful.
@@ -323,12 +323,12 @@ public class DBAccessor {
 public void updateEmailForVerificationAgain(final HomePage homePage){
 
     ParseUser parseUser = ParseUser.getCurrentUser();
-    String email = parseUser.getEmail();
+    String email = parseUser.getEmail().toLowerCase();
     parseUser.setEmail("");
 
     parseUser.saveInBackground();
 
-    parseUser.setEmail(email);
+    parseUser.setEmail(email.toLowerCase());
     parseUser.saveInBackground();
 }
 
