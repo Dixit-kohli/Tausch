@@ -70,7 +70,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
     private final int ABOUT = 5;
     private final int SIGN_OUT = 6;
     private ProgressDialog progress;
-    private ImageView profilePicture;
+    static ImageView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

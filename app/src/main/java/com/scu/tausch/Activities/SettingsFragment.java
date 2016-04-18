@@ -289,6 +289,9 @@ public class SettingsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 picture.setImageBitmap(thumbnail);
+                if (HomePage.profilePicture != null) {
+                    HomePage.profilePicture.setImageBitmap(thumbnail);
+                }
             } else if (requestCode == SELECT_FILE) {
                 Uri selectedImageUri = data.getData();
                 String[] projection = {MediaStore.MediaColumns.DATA};
@@ -309,6 +312,9 @@ public class SettingsFragment extends Fragment {
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
                 picture.setImageBitmap(bm);
+                if (HomePage.profilePicture != null) {
+                    HomePage.profilePicture.setImageBitmap(bm);
+                }
             }
         }
 
