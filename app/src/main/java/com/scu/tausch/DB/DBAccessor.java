@@ -213,53 +213,53 @@ public class DBAccessor {
 
     }
 
-    //get the name of city from its zipcode.
-    public void getCityForZip(String zip,final HomePage homePage){
+//    //get the name of city from its zipcode.
+//    public void getCityForZip(String zip,final HomePage homePage){
+//
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_ZIP_CODE_DATABASE);
+//        query.whereEqualTo(Constants.DB_ZIP, zip);
+//
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> objects, ParseException e) {
+//
+//                //Getting the fragment already created using tag.
+//                AddOfferFragment addOfferFragment = (AddOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Add_Offer_Fragment);
+//                setDBListener(addOfferFragment);
+//
+//                if (dbListener != null) {
+//                    dbListener.callback(objects);
+//                }
+//
+//            }
+//        });
+//
+//
+//    }
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_ZIP_CODE_DATABASE);
-        query.whereEqualTo(Constants.DB_ZIP, zip);
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-
-                //Getting the fragment already created using tag.
-                AddOfferFragment addOfferFragment = (AddOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Add_Offer_Fragment);
-                setDBListener(addOfferFragment);
-
-                if (dbListener != null) {
-                    dbListener.callback(objects);
-                }
-
-            }
-        });
-
-
-    }
-
-    //get the name of city from its zipcode.
-    public void getUpdatedCityForZip(String zip,final HomePage homePage){
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_ZIP_CODE_DATABASE);
-        query.whereEqualTo(Constants.DB_ZIP, zip);
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-
-                //Getting the fragment already created using tag.
-                EditOfferFragment editOfferFragment = (EditOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Edit_Offer_Fragment);
-                setDBListener(editOfferFragment);
-
-                if (dbListener != null) {
-                    dbListener.callback(objects);
-                }
-
-            }
-        });
-
-
-    }
+//    //get the name of city from its zipcode.
+//    public void getUpdatedCityForZip(String zip,final HomePage homePage){
+//
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.DB_ZIP_CODE_DATABASE);
+//        query.whereEqualTo(Constants.DB_ZIP, zip);
+//
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> objects, ParseException e) {
+//
+//                //Getting the fragment already created using tag.
+//                EditOfferFragment editOfferFragment = (EditOfferFragment) homePage.getSupportFragmentManager().findFragmentByTag(Constants.TAG_Edit_Offer_Fragment);
+//                setDBListener(editOfferFragment);
+//
+//                if (dbListener != null) {
+//                    dbListener.callback(objects);
+//                }
+//
+//            }
+//        });
+//
+//
+//    }
 
 //Check search results for either category or general search.
     public void getSearchResults(String searchStr, final HomePage homePage){

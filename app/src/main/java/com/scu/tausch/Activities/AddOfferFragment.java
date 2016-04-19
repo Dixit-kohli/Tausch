@@ -5,8 +5,22 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -25,19 +40,43 @@ import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Praneet on 2/11/16.
  */
-public class AddOfferFragment extends Fragment implements DBListener{
+public class AddOfferFragment extends Fragment{
 
     public static HomePage context;
     private OfferDTO offerDTO;
     private ProgressDialog progress;
     private TextView textCityName;
     private boolean isPriceValid;
+    private boolean isFormFilled;
+    private String cityName = "";
+    private boolean hasNectButtonTapped = false;
+    EditText editTitle;
+    EditText editDescription;
+    EditText editPrice;
+    EditText editZip;
+    Spinner spinnerCategory;
+    Spinner spinnerCondition;
+
+
+    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
 
     public AddOfferFragment() {
         // Required empty public constructor
@@ -55,6 +94,8 @@ public class AddOfferFragment extends Fragment implements DBListener{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_offer, container, false);
 
+
+
         rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -66,13 +107,30 @@ public class AddOfferFragment extends Fragment implements DBListener{
             }
         });
 
-        final Spinner spinnerCategory = (Spinner)rootView.findViewById(R.id.spinner_category);
-        final Spinner spinnerCondition = (Spinner)rootView.findViewById(R.id.spinner_condition);
-        final EditText editTitle = (EditText)rootView.findViewById(R.id.edit_titleListing);
-        final EditText editDescription = (EditText)rootView.findViewById(R.id.edit_description);
-        final EditText editPrice = (EditText)rootView.findViewById(R.id.edit_price);
-        final EditText editZip = (EditText)rootView.findViewById(R.id.edit_zip);
+        spinnerCategory = (Spinner)rootView.findViewById(R.id.spinner_category);
+        spinnerCondition = (Spinner)rootView.findViewById(R.id.spinner_condition);
+        editTitle = (EditText)rootView.findViewById(R.id.edit_titleListing);
+        editDescription = (EditText)rootView.findViewById(R.id.edit_description);
+        editPrice = (EditText)rootView.findViewById(R.id.edit_price);
+        editZip = (EditText)rootView.findViewById(R.id.edit_zip);
         textCityName=(TextView)rootView.findViewById(R.id.text_city);
+
+
+        editZip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (!hasFocus) {
+
+                    //fetching value from webservice to usps server.
+                    checkIfZipCodeIsCorrect();
+                    return;
+
+                }
+
+
+            }
+        });
 
 
         //adding all categories in list.
@@ -90,7 +148,7 @@ public class AddOfferFragment extends Fragment implements DBListener{
 
 
 
-       //Creating and setting adapter to array of categories required in spinner.
+        //Creating and setting adapter to array of categories required in spinner.
         ArrayAdapter<String> adapterCategories = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapterCategories.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCategory.setAdapter(adapterCategories);
@@ -108,44 +166,24 @@ public class AddOfferFragment extends Fragment implements DBListener{
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
 
-            //  Fragment fragment = null;
-            String title;
-
             @Override
             public void onClick(View v) {
 
-                title = getString(R.string.app_name);
+                //    title = getString(R.string.app_name);
 
-                offerDTO = new OfferDTO();
+                hasNectButtonTapped = true;
 
-                offerDTO.setOfferTitle(editTitle.getText().toString().trim());
-                offerDTO.setOfferDescription(editDescription.getText().toString().trim());
-                if (editPrice.getText().toString().trim().length() > 0) {
+              boolean isComplete =  isFormComplete(editTitle.getText().toString().trim(), editDescription.getText().toString().trim(), editPrice.getText().toString(),editZip.getText().toString().trim(),"");
 
-                    if (checkIfValueIsIntegerType(editPrice.getText().toString().trim())) {
-
-                        offerDTO.setPrice(Double.parseDouble(editPrice.getText().toString().trim()));
-                        isPriceValid = true;
-
-                    } else {
-                        isPriceValid = false;
-                    }
+                if (isComplete){
+                    isFormFilled=true;
+                    checkIfZipCodeIsCorrect();
                 }
-                offerDTO.setZip(editZip.getText().toString().trim());
-                offerDTO.setCategoryId(getCategoryId(spinnerCategory.getSelectedItem().toString()));
-                offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
-                offerDTO.setOfferorName((String) ParseUser.getCurrentUser().get("firstname"));
-
-
-                //fetching the value of city from server by providing the zip code.
-                DBAccessor.getInstance().getCityForZip(editZip.getText().toString().trim(), context);
-
-                progress = new ProgressDialog(getActivity());
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
-                progress.show();
-
-
+                else{
+                    isFormFilled=false;
+                   // showDialogBox();
+                    return;
+                }
 
             }
         });
@@ -154,30 +192,6 @@ public class AddOfferFragment extends Fragment implements DBListener{
         return rootView;
     }
 
-    //Verification if all the required fields in the form are provided by user.
-    public boolean isFormComplete(String title, String description, double price, String zip, String city){
-
-        boolean isComplete = true;
-
-        if (title.length()==0){
-            isComplete=false;
-            showDialogBox();
-        }
-        else if (description.length()==0){
-            isComplete=false;
-            showDialogBox();
-        } else if (("" + price).length() == 0 || checkIfValueIsIntegerType("" + price) == false || isPriceValid == false) {
-            isComplete=false;
-            showDialogBox();
-        }
-        else if(zip.length()==0){
-            isComplete=false;
-            showDialogBox();
-        }
-
-
-        return isComplete;
-    }
 
     public void showDialogBox(){
 
@@ -234,24 +248,84 @@ public class AddOfferFragment extends Fragment implements DBListener{
         return null;
     }
 
-    @Override
-    public void callback(List<ParseObject> objects) {
 
-        progress.dismiss();
+    //Verification if all the required fields in the form are provided by user.
+    public boolean isFormComplete(String title, String description, String price, String zip, String city){
 
-        if (objects==null || objects.size()==0){
-            showDialogBoxForIncorrectZip();
-            return;
+        boolean isComplete = true;
+
+        if (title.length()==0){
+            isComplete=false;
+            showDialogBox();
         }
-        offerDTO.setCityId((String) (objects.get(0).get(Constants.DB_PRIMARY_CITY)));
-        textCityName.setText(offerDTO.getCityId());
-
-        boolean isCompleted = isFormComplete(offerDTO.getOfferTitle(),offerDTO.getOfferDescription(),offerDTO.getPrice(),offerDTO.getZip(),offerDTO.getCityId());
-
-        if (isCompleted==false){
-            return;
+        else if (description.length()==0){
+            isComplete=false;
+            showDialogBox();
+        }
+        else if(checkIfValueIsIntegerType(""+price)==false){
+         isComplete=false;
+            showDialogBox();
+        }
+        else if (("" + price).length() == 0 || isPriceValid == false) {
+            isComplete=false;
+            showDialogBox();
+        }
+        else if(zip.length()==0 ){
+            isComplete=false;
+            showDialogBox();
         }
 
+
+        return isComplete;
+    }
+
+
+    public boolean callback(String cityName) {
+
+
+        offerDTO = new OfferDTO();
+
+        offerDTO.setOfferTitle(editTitle.getText().toString().trim());
+        offerDTO.setOfferDescription(editDescription.getText().toString().trim());
+        if (editPrice.getText().toString().trim().length() > 0) {
+
+            if (checkIfValueIsIntegerType(editPrice.getText().toString().trim())) {
+
+                offerDTO.setPrice(Double.parseDouble(editPrice.getText().toString().trim()));
+                isPriceValid = true;
+
+            } else {
+                isPriceValid = false;
+            }
+        }
+        offerDTO.setZip(editZip.getText().toString().trim());
+        offerDTO.setCategoryId(getCategoryId(spinnerCategory.getSelectedItem().toString()));
+        offerDTO.setCondition(spinnerCondition.getSelectedItem().toString());
+        offerDTO.setOfferorName((String) ParseUser.getCurrentUser().get("firstname"));
+
+        if (progress!=null) {
+            progress.dismiss();
+        }
+
+        if (editZip.getText().toString().trim()==null || offerDTO.getZip().length()==0){
+
+            return false;
+        }
+        if (cityName.length()>0 && offerDTO!=null) {
+            offerDTO.setCityId(cityName);
+            textCityName.setText(offerDTO.getCityId());
+
+        }
+        else{
+
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private void goToSecondScreen(){
 
         ImageAddFragment nextFrag= new ImageAddFragment();
 
@@ -267,15 +341,113 @@ public class AddOfferFragment extends Fragment implements DBListener{
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+
+    private void checkIfZipCodeIsCorrect(){
+
+
+
+        String urll = "http://ziptasticapi.com/"+editZip.getText().toString().trim();
+
+
+        class RestTask extends AsyncTask<HttpUriRequest, Void, String> {
+            private static final String TAG = "AARestTask";
+            public static final String HTTP_RESPONSE = "httpResponse";
+
+            private Context mContext;
+            private HttpClient mClient;
+            private String mAction;
+
+            public RestTask(Context context, String action) {
+                mContext = context;
+                mAction = action;
+                mClient = new DefaultHttpClient();
+            }
+
+
+            @Override
+            protected String doInBackground(HttpUriRequest... params) {
+                try {
+                    HttpUriRequest request = params[0];
+                    HttpResponse serverResponse = mClient.execute(request);
+                    BasicResponseHandler handler = new BasicResponseHandler();
+                    return handler.handleResponse(serverResponse);
+                } catch (Exception e) {
+                    // TODO handle this properly
+                    e.printStackTrace();
+                    return "";
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                Log.i(TAG, "RESULT = " + result);
+
+                try {
+                    JSONObject reader = new JSONObject(result);
+
+                    String status = "OK";
+
+                    if (reader.has("city")) {
+
+                        String stringCityName = reader.optString("city");
+                        Log.d("CITY NAME: ",stringCityName);
+
+                        cityName = stringCityName;
+                        textCityName.setText(stringCityName);
+
+                        if (hasNectButtonTapped && isFormFilled) {
+                            goToSecondScreen();
+                            return;
+                        }
+                        callback(cityName);
+
+                    }
+                    else
+                    {
+                        status = "ERROR";
+                        editZip.setText(null);
+                        textCityName.setText(null);
+                        hasNectButtonTapped = false;
+                        showDialogBoxForIncorrectZip();
+                        return;
+                    }
+
+
+                }
+                catch (JSONException ex){
+                    ex.printStackTrace();
+
+                    return;
+                }
+
+            }
+
+        }
+
+
+        try {
+            HttpGet httpGet = new HttpGet(new URI(urll));
+            RestTask task = new RestTask(getActivity(), ACTION_FOR_INTENT_CALLBACK);
+            task.execute(httpGet);
+            //   progress = ProgressDialog.show(getActivity(), "Getting Data ...", "Waiting For Results...", true);
+        } catch (Exception e) {
+            showDialogBoxForIncorrectZip();
+            //  Log.e(TAG, e.getMessage());
+        }
 
     }
+
 
     public boolean checkIfValueIsIntegerType(String value) {
 
         try {
             double tempValue = Double.parseDouble(value);
+            isPriceValid=true;
             return true;
         } catch (NumberFormatException nfe) {
+            isPriceValid=false;
             return false;
         }
 
@@ -293,3 +465,10 @@ public class AddOfferFragment extends Fragment implements DBListener{
         super.onDetach();
     }
 }
+
+
+/**
+ * Android RestTask (REST) from the Android Recipes book.
+ */
+
+
