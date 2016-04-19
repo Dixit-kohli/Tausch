@@ -93,8 +93,9 @@ public class Registration extends Activity {
             showDialogToEnterSamePassword();
         }
 
-        if (!checkIfPhoneNumberIsValid(regDTO.getNumber())) {
+        if (checkIfPhoneNumberIsValid(regDTO.getNumber()) == false) {
             showDialogForIncorrectNumber();
+            return;
         }
 
         if (!isTermsConditionAccepted()){
