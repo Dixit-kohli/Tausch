@@ -398,10 +398,10 @@ public class AddOfferFragment extends Fragment{
                         textCityName.setText(stringCityName);
 
                         if (hasNectButtonTapped && isFormFilled) {
+                            callback(cityName);
                             goToSecondScreen();
                             return;
                         }
-                        callback(cityName);
 
                     }
                     else
