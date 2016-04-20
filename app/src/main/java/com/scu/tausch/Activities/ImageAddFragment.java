@@ -59,6 +59,7 @@ public class ImageAddFragment extends Fragment {
     private ImageView currentImageView;
     private OfferDTO offerDTO;
     public static HomePage context;
+    private ProgressDialog progress;
     //private boolean isOfferEditable=false;
 //    private Bitmap bitmapImageOne;
 //    private ParseObject editableItemObject;
@@ -176,6 +177,11 @@ public class ImageAddFragment extends Fragment {
         buttonPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                progress = new ProgressDialog(getActivity());
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
+                progress.show();
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 currentUser.fetchInBackground(new GetCallback<ParseObject>() {
@@ -325,6 +331,7 @@ public class ImageAddFragment extends Fragment {
                                     @Override
                                     public void done(com.parse.ParseException arg0) {
                                         Log.d("my", "after saveinbackground is done");
+                                        progress.dismiss();
                                         if (arg0 == null) {
                                             Toast.makeText(getActivity(), "Offer posted", Toast.LENGTH_SHORT).show();
 

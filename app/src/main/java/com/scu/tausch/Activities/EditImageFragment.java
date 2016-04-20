@@ -2,6 +2,7 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -65,6 +66,7 @@ public class EditImageFragment extends Fragment {
     private boolean isOfferEditable=false;
     private Bitmap bitmapImageOne,bitmapImageTwo,bitmapImageThree,bitmapImageFour,bitmapImageFive;
     private ParseObject editableItemObject;
+    private ProgressDialog progress;
 
     public EditImageFragment() {
         // Required empty public constructor
@@ -203,6 +205,12 @@ public class EditImageFragment extends Fragment {
 
                     if (isOfferEditable){
 
+                        progress = new ProgressDialog(getActivity());
+                        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progress.setIndeterminate(true);
+                        progress.show();
+
+
                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Offers");
                         String objectIdForTuple = (String) editableItemObject.getObjectId();
 
@@ -339,6 +347,8 @@ public class EditImageFragment extends Fragment {
                                         @Override
                                         public void done(ParseException arg0) {
                                             Log.d("my", "after saveinbackground is done");
+                                            progress.dismiss();
+
                                             if (arg0 == null) {
                                                 Toast.makeText(getActivity(), "Offer posted", Toast.LENGTH_SHORT).show();
 
