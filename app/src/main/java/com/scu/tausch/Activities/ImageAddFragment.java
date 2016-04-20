@@ -368,8 +368,6 @@ public class ImageAddFragment extends Fragment {
 
 
 
-                        } else {
-                            // Failure!
                         }
                     }
                 });
@@ -470,18 +468,33 @@ public class ImageAddFragment extends Fragment {
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 cursor.moveToFirst();
                 String selectedImagePath = cursor.getString(column_index);
-                Bitmap bm;
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(selectedImagePath, options);
-                final int REQUIRED_SIZE = 200;
-                int scale = 1;
-                while (options.outWidth / scale / 2 >= REQUIRED_SIZE && options.outHeight / scale / 2 >= REQUIRED_SIZE)
-                    scale *= 2;
-                options.inSampleSize = scale;
-                options.inJustDecodeBounds = false;
-                bm = BitmapFactory.decodeFile(selectedImagePath, options);
-                currentImageView.setImageBitmap(bm);
+
+
+                if (selectedImagePath!=null) {
+
+                    Bitmap bm;
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(selectedImagePath, options);
+                    final int REQUIRED_SIZE = 200;
+                    int scale = 1;
+                    while (options.outWidth / scale / 2 >= REQUIRED_SIZE && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+                        scale *= 2;
+                    options.inSampleSize = scale;
+                    options.inJustDecodeBounds = false;
+                    bm = BitmapFactory.decodeFile(selectedImagePath, options);
+                    currentImageView.setImageBitmap(bm);
+                }
+                else{
+                    Toast.makeText(getActivity(), "Image update failed.",
+                            Toast.LENGTH_LONG).show();
+
+                }
+
+
+
+
+
             }
         }
 

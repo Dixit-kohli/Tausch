@@ -21,22 +21,15 @@
         android:layout_centerHorizontal="true" />
 
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:background="@color/colorAccent" />
-
-
-
     <EditText
         android:id="@+id/first_name"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="205dp"
-        android:background="#00FFFFFF"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#FFFFFF"
         android:hint="First Name"
         android:layout_centerHorizontal="true"
         android:gravity="center"
@@ -46,31 +39,29 @@
 
     <EditText
         android:id="@+id/last_name"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="240dp"
-        android:background="#00FFFFFF"
+        android:background="#FFFFFF"
         android:hint="Last Name"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/first_name"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:singleLine="true"/>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="300dp"
-        android:background="@color/colorAccent" />
-
-
 
     <EditText
         android:id="@+id/phone_number"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="355dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/last_name"
         android:background="#FFFFFF"
         android:hint="Phone Number"
         android:phoneNumber="true"
@@ -93,14 +84,12 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="445dp"
-        android:background="@android:color/transparent"
         android:clickable="true"
         android:onClick="onChangeClicked"
         android:text="Update Information"
-        android:textStyle="italic"
         android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
         android:id="@+id/change_label"/>

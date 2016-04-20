@@ -2,6 +2,7 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -32,6 +33,7 @@ import com.parse.ParseFile;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.scu.tausch.DTO.OfferDTO;
 import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
@@ -68,6 +70,7 @@ public class SettingsFragment extends Fragment {
     private Bitmap userImage;
     private ParseFile myImageFile;
     private String currentPhoneNumber;
+    private ProgressDialog progress;
 
 
     @Override
@@ -206,6 +209,12 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                // Bitmap bitmap = ((BitmapDrawable)currentImageView.getDrawable()).getBitmap();
 
+                progress = new ProgressDialog(getActivity());
+                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progress.setIndeterminate(true);
+                progress.show();
+
+
                 bitmap = ((BitmapDrawable)picture.getDrawable()).getBitmap();
 
 
@@ -241,10 +250,28 @@ public class SettingsFragment extends Fragment {
                 }
                 myCurrentUser.put("picture", file);
 
-                myCurrentUser.saveInBackground();
-                Toast.makeText(getActivity(), "Profile Information Updated",
-                        Toast.LENGTH_LONG).show();
+             //   myCurrentUser.saveInBackground();
 
+                SaveCallback sc = new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e==null){
+                            Toast.makeText(getActivity(), "Profile Information Updated",
+                                    Toast.LENGTH_LONG).show();
+                            progress.dismiss();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "Profile Update failed.",
+                                    Toast.LENGTH_LONG).show();
+                            progress.dismiss();
+                        }
+                    }
+                };
+
+
+//                Toast.makeText(getActivity(), "Profile Information Updated",
+//                        Toast.LENGTH_LONG).show();
+                myCurrentUser.saveInBackground(sc);
 
 
             }
@@ -350,10 +377,18 @@ public class SettingsFragment extends Fragment {
                     scale *= 2;
                 options.inSampleSize = scale;
                 options.inJustDecodeBounds = false;
-                bm = BitmapFactory.decodeFile(selectedImagePath, options);
-                picture.setImageBitmap(bm);
-                if (HomePage.profilePicture != null) {
-                    HomePage.profilePicture.setImageBitmap(bm);
+                if (selectedImagePath!=null) {
+                    bm = BitmapFactory.decodeFile(selectedImagePath, options);
+                    picture.setImageBitmap(bm);
+
+                    if (HomePage.profilePicture != null) {
+                        HomePage.profilePicture.setImageBitmap(bm);
+                    }
+                }
+                else{
+                    Toast.makeText(getActivity(), "Image update failed.",
+                            Toast.LENGTH_LONG).show();
+
                 }
             }
         }

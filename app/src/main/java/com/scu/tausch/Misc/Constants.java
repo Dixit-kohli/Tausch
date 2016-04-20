@@ -24,7 +24,7 @@ public class Constants {
     public static boolean WAS_LAST_SCREEN_ITEM_DESCRIPTION = false;
 
 
-    public static final int LAUNCH_SCREEN_TIMEOUT = 0;
+    public static final int LAUNCH_SCREEN_TIMEOUT = 3000;
     public static final int DELETE_ITEM_TIME_TO_REFRESH = 2000;
     public static final String FIRST_NAME = "firstname";
     public static final String LAST_NAME = "lastname";

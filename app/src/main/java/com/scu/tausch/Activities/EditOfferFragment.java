@@ -76,6 +76,7 @@ public class EditOfferFragment extends Fragment{
     EditText editZip;
     Spinner spinnerCategory;
     Spinner spinnerCondition;
+    private boolean isNextActive;
 
 
 
@@ -224,8 +225,10 @@ public class EditOfferFragment extends Fragment{
 //                //fetching the value of city from server by providing the zip code.
 //                DBAccessor.getInstance().getUpdatedCityForZip(editZip.getText().toString().trim(), context);
 //
-
-
+if (isNextActive){
+    return;
+}
+isNextActive=true;
                 hasNectButtonTapped = true;
 
                 boolean isComplete =  isFormComplete(editTitle.getText().toString().trim(), editDescription.getText().toString().trim(), editPrice.getText().toString(),editZip.getText().toString().trim(),"");
@@ -488,7 +491,7 @@ public class EditOfferFragment extends Fragment{
                 .addToBackStack(null)
                 .commit();
 
-
+              isNextActive=false;
     }
 
 
