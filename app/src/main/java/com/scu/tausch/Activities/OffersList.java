@@ -56,6 +56,7 @@ public class OffersList extends Fragment implements DBListener{
     private DBAccessor dbAccessor;
     private String selectedValue;
     private Button buttonSort, buttonFilter;
+    private List<ParseObject> searchResults;
     static List<List<Bitmap>> listOfImageLists;
 
 
@@ -153,7 +154,7 @@ public class OffersList extends Fragment implements DBListener{
 
         itemObjects = null;
         itemObjects=offers;
-        List<ParseObject> searchResults = new ArrayList<>();
+        searchResults = new ArrayList<>();
        // List<OfferDTO> offers = new ArrayList<OfferDTO>();
 
         // commented as we do not want this function any more
@@ -456,7 +457,7 @@ public class OffersList extends Fragment implements DBListener{
                 DetailedItemFragment nextFrag = new DetailedItemFragment();
 
                 if (arrayItemImages.length > 0 && arrayItemNames.length > 0 && arrayItemCosts.length > 0) {
-                    nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
+                    nextFrag.setArguments(searchResults.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
                 }
 
 
