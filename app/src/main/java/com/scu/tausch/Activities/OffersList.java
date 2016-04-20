@@ -429,7 +429,7 @@ public class OffersList extends Fragment implements DBListener{
         }
 
         if (isSearchActive){
-            fetchedDataFromServer();
+            fetchedSearchListDataFromServer();
             isSearchActive=false;
             progress.dismiss();
         }
@@ -440,6 +440,41 @@ public class OffersList extends Fragment implements DBListener{
 
     //Method is called when data has been fetched from server.
     public void fetchedDataFromServer(){
+
+        CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
+        listViewItems.setAdapter(customListAdapter);
+
+        if (itemObjects.size() == 0) {
+            emptyListTextView.setText("No items found.");
+            listViewItems.setEmptyView(emptyListTextView);
+        }
+
+        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                DetailedItemFragment nextFrag = new DetailedItemFragment();
+
+                if (arrayItemImages.length > 0 && arrayItemNames.length > 0 && arrayItemCosts.length > 0) {
+                    nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
+                }
+
+
+                OffersList.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.myItemsInCategoryWindow, nextFrag, Constants.TAG_Item_Details_Fragment)
+                        .addToBackStack(null)
+                        .commit();
+
+
+            }
+        });
+
+    }
+
+
+    //Method is called when data has been fetched from server.
+    public void fetchedSearchListDataFromServer(){
 
         CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
         listViewItems.setAdapter(customListAdapter);
@@ -471,7 +506,6 @@ public class OffersList extends Fragment implements DBListener{
         });
 
     }
-
 
     public void performSortAsOptionSelected(){
 
