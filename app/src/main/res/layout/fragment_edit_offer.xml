@@ -53,6 +53,7 @@
         android:id="@+id/edit_price"
         android:layout_width="260dp"
         android:layout_height="30dp"
+        android:maxLength="8"
         android:layout_marginTop="10dp"
         android:inputType="numberDecimal"
         android:gravity="center_horizontal"
