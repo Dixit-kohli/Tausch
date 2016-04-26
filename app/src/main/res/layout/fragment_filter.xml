@@ -22,16 +22,6 @@
         />
 
     <EditText
-        android:id="@+id/edit_description"
-        android:layout_width="260dp"
-        android:layout_height="30dp"
-        android:singleLine="true"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:background="#FFFFFF"
-        android:hint="Description" />
-
-    <EditText
         android:id="@+id/edit_city_of_item"
         android:layout_width="260dp"
         android:layout_height="30dp"
@@ -61,12 +51,12 @@
         android:inputType="number"
         android:hint="max $" />
 
-    <EditText
+    <!--EditText
         android:id="@+id/edit_posted_after_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:hint="@string/from_date" />
+        android:hint="@string/from_date" /-->
 
     <Spinner
         android:id="@+id/spinner_condition"

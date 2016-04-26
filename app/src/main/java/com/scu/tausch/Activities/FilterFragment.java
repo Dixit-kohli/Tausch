@@ -75,14 +75,13 @@ public class FilterFragment extends Fragment {
         });
 
         final Spinner spinnerCondition = (Spinner)rootView.findViewById(R.id.spinner_condition);
-        final EditText editDescription = (EditText)rootView.findViewById(R.id.edit_description);
         final EditText editCity = (EditText)rootView.findViewById(R.id.edit_city_of_item);
         final EditText editMin = (EditText)rootView.findViewById(R.id.edit_min_price);
         final EditText editMax = (EditText)rootView.findViewById(R.id.edit_max_price);
-        final EditText editPostedAfterDate = (EditText) rootView.findViewById(R.id.edit_posted_after_date);
+        //final EditText editPostedAfterDate = (EditText) rootView.findViewById(R.id.edit_posted_after_date);
         Button filterButton = (Button)rootView.findViewById(R.id.button_filter);
         Button cancelButton = (Button)rootView.findViewById(R.id.button_cancel);
-        editPostedAfterDate.setInputType(InputType.TYPE_NULL);
+        /*editPostedAfterDate.setInputType(InputType.TYPE_NULL);
         editPostedAfterDate.requestFocus();
 
         editPostedAfterDate.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +89,9 @@ public class FilterFragment extends Fragment {
             public void onClick(View v) {
                 postedAfterDatePickerDialog.show();
             }
-        });
+        });*/
 
-        dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+       /* dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
         Calendar newCalendar = Calendar.getInstance();
 
         postedAfterDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
@@ -102,7 +101,7 @@ public class FilterFragment extends Fragment {
                 newDate.set(year, monthOfYear, dayOfMonth);
                 editPostedAfterDate.setText(dateFormatter.format(newDate.getTime()));
             }
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));*/
 
 
 
@@ -113,7 +112,6 @@ public class FilterFragment extends Fragment {
 
 
                 String condition = spinnerCondition.getSelectedItem().toString().trim();
-                String description = editDescription.getText().toString().trim();
                 String city = editCity.getText().toString().trim();
                 String strMin = editMin.getText().toString().trim();
                 String strMax = editMax.getText().toString().trim();
@@ -125,12 +123,6 @@ public class FilterFragment extends Fragment {
                if (strMax.length()>0) {
                    max = Double.parseDouble(strMax);
                }
-
-                if (description.length()==0){
-
-                    showDialogToEnterDescription();
-                    return;
-                }
 
                 List<ParseObject> filteredObjects = new ArrayList<>();
 
@@ -145,54 +137,21 @@ public class FilterFragment extends Fragment {
                             pricee = ((Number) object.get(Constants.DB_Price)).toString();
                         }
 
-                        String lTitle = (String)object.get(Constants.DB_Offer_Title);
-                        String lDescription = (String) object.get(Constants.DB_OFFER_DESCRIPTION);
                         String lCondition = (String) object.get(Constants.DB_CONDITION);
                         String lCity = (String) object.get(Constants.DB_CITY);
-
-
                         double price = Double.parseDouble(pricee);
 
                         if (lCity.equalsIgnoreCase(city) || city.length() == 0) {
-
                             if (price >= min || price == 0) {
-
                                 if (price <= max || price == 0 || max == 0) {
-
                                     if (lCondition.equalsIgnoreCase(condition)) {
-
-                                        if (lTitle.equalsIgnoreCase(description) || lTitle.contains(description) || lTitle.toLowerCase().contains(description.toLowerCase()) || lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())) {
-
                                             filteredObjects.add(object);
-
-                                        }
-
                                     } else if (condition.equalsIgnoreCase(Constants.ITEM_TYPE_All)) {
-
-                                        if (lTitle.equalsIgnoreCase(description) || lTitle.contains(description) || lTitle.toLowerCase().contains(description.toLowerCase())|| lDescription.equalsIgnoreCase(description) || lDescription.contains(description) || lDescription.toLowerCase().contains(description.toLowerCase())) {
-
                                             filteredObjects.add(object);
-
-                                        }
-
                                     }
-//                                    else {
-//
-//                                        if (lDescription.equalsIgnoreCase(description) || lDescription.contains(description)){
-//
-//                                            filteredObjects.add(object);
-//
-//                                        }
-//
-//                                    }
-
                                 }
-
                             }
-
-
                         }
-
                     }
                 }
                 OffersList fragment = new OffersList();
