@@ -57,6 +57,7 @@ public class OffersList extends Fragment implements DBListener{
     private String selectedValue;
     private Button buttonSort, buttonFilter;
     private List<ParseObject> searchResults;
+    private List<ParseObject> filterResults;
     static List<List<Bitmap>> listOfImageLists;
 
 
@@ -382,9 +383,9 @@ public class OffersList extends Fragment implements DBListener{
                     progress.dismiss();
                     return;
                 }
-                if (itemObjects.size() == 0 || itemObjects == null) {
+             //   if (itemObjects.size() == 0 || itemObjects == null) {
                     itemObjects = retainItemObjects;
-                }
+              //  }
                 fragment.fetchedItemObjects(itemObjects);
 
                 FragmentManager fragmentManager = getFragmentManager();
@@ -423,7 +424,7 @@ public class OffersList extends Fragment implements DBListener{
         //spinnerSort.getSelectedItem().toString()
 
         if (isFilterActive) {
-            fetchedDataFromServer();
+            fetchedFilterData();
             isFilterActive=false;
             progress.dismiss();
         }
@@ -472,6 +473,39 @@ public class OffersList extends Fragment implements DBListener{
 
     }
 
+    //Method is called when data has been fetched from server.
+    public void fetchedFilterData(){
+
+        CustomListAdapter customListAdapter = new CustomListAdapter(getActivity(),arrayItemNames,arrayItemCosts,arrayItemImages);
+        listViewItems.setAdapter(customListAdapter);
+
+        if (itemObjects.size() == 0) {
+            emptyListTextView.setText("No items found.");
+            listViewItems.setEmptyView(emptyListTextView);
+        }
+
+        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                DetailedItemFragment nextFrag = new DetailedItemFragment();
+
+                if (arrayItemImages.length > 0 && arrayItemNames.length > 0 && arrayItemCosts.length > 0) {
+                    nextFrag.setArguments(itemObjects.get(position), arrayItemImages, position, arrayItemNames, arrayItemCosts);
+                }
+
+
+                OffersList.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.myItemsInCategoryWindow, nextFrag, Constants.TAG_Item_Details_Fragment)
+                        .addToBackStack(null)
+                        .commit();
+
+
+            }
+        });
+
+    }
 
     //Method is called when data has been fetched from server.
     public void fetchedSearchListDataFromServer(){

@@ -40,11 +40,17 @@ import java.util.Locale;
 public class FilterFragment extends Fragment {
 
     private List<ParseObject> itemObjects;
+    private List<ParseObject> retainedList;
     private SimpleDateFormat dateFormatter;
     private DatePickerDialog postedAfterDatePickerDialog;
 
     public FilterFragment() {
         // Required empty public constructor
+    }
+
+    public void setRetainArray(List<ParseObject> fullList){
+
+        retainedList = fullList;
     }
 
     @Override
@@ -159,7 +165,7 @@ public class FilterFragment extends Fragment {
                 fragment.setRetainItemObjects(itemObjects);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.container_body, fragment);
+                fragmentTransaction.replace(R.id.container_body, fragment,"tagOfferList");
                 fragmentTransaction.commit();
 
 
