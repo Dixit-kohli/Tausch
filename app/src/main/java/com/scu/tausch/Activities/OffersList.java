@@ -34,6 +34,8 @@ import com.scu.tausch.R;
 import com.parse.ParseException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -49,6 +51,7 @@ public class OffersList extends Fragment implements DBListener{
     private ListView listViewItems;
     private ProgressDialog progress;
     private boolean isFilterActive=false;
+    private boolean isSortActive=false;
     private boolean isSearchActive=false;
     private TextView emptyListTextView;
     static List<ParseObject> retainItemObjects;
@@ -57,7 +60,6 @@ public class OffersList extends Fragment implements DBListener{
     private String selectedValue;
     private Button buttonSort, buttonFilter;
     private List<ParseObject> searchResults;
-    private List<ParseObject> filterResults;
     static List<List<Bitmap>> listOfImageLists;
 
 
@@ -296,6 +298,12 @@ public class OffersList extends Fragment implements DBListener{
      setArraysForNamesImagesCost(filteredObjects);
  }
 
+    public void sortList(List<ParseObject> sortedObjects){
+        isSortActive=true;
+        itemObjects = null;
+        itemObjects=sortedObjects;
+        setArraysForNamesImagesCost(sortedObjects);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -428,7 +436,11 @@ public class OffersList extends Fragment implements DBListener{
             isFilterActive=false;
             progress.dismiss();
         }
-
+        if (isSortActive) {
+            fetchedDataFromServer();
+            isSortActive=false;
+            progress.dismiss();
+        }
         if (isSearchActive){
             fetchedSearchListDataFromServer();
             isSearchActive=false;
@@ -542,20 +554,46 @@ public class OffersList extends Fragment implements DBListener{
     }
 
     public void performSortAsOptionSelected(){
+        List<ParseObject> sortedObjects = itemObjects;
 
-        String categoryId = null;
-        OfferDTO offerDTO;
-        categoryId = currentCategoryId;
-
-        //Put data in OfferDTO object
-        offerDTO = new OfferDTO();
-        offerDTO.setCategoryId(categoryId);
-        offerDTO.setSortCriteriaSelected(selectedValue);
-
-        //getting shared instance
-        dbAccessor = DBAccessor.getInstance();
-        dbAccessor.sortOffersInCategory(offerDTO);
-
+        if(selectedValue.equals(Constants.SORT_PRICE_LOW_TO_HIGH)) {
+            Collections.sort(sortedObjects, new Comparator<ParseObject>() {
+                @Override
+                public int compare(ParseObject o1, ParseObject o2) {
+                    return Double.compare(Double.parseDouble(o1.get(Constants.DB_Price).toString()),
+                            Double.parseDouble(o2.get(Constants.DB_Price).toString()));
+                }
+            });
+        } else if(selectedValue.equals(Constants.SORT_PRICE_HIGH_TO_LOW)) {
+            Collections.sort(sortedObjects, new Comparator<ParseObject>() {
+                @Override
+                public int compare(ParseObject o1, ParseObject o2) {
+                    return Double.compare(Double.parseDouble(o2.get(Constants.DB_Price).toString()),
+                            Double.parseDouble(o1.get(Constants.DB_Price).toString()));
+                }
+            });
+        } else if(selectedValue.equals(Constants.SORT_DATE_OLD_TO_NEW)) {
+            Collections.sort(sortedObjects, new Comparator<ParseObject>() {
+                @Override
+                public int compare(ParseObject o1, ParseObject o2) {
+                    return o2.getCreatedAt().compareTo(o1.getCreatedAt());
+                }
+            });
+        } else if(selectedValue.equals(Constants.SORT_DATE_NEW_TO_OLD)) {
+            Collections.sort(sortedObjects, new Comparator<ParseObject>() {
+                @Override
+                public int compare(ParseObject o1, ParseObject o2) {
+                    return o1.getCreatedAt().compareTo(o2.getCreatedAt());
+                }
+            });
+        }
+        OffersList fragment = new OffersList();
+        fragment.sortList(sortedObjects);
+        fragment.setRetainItemObjects(itemObjects);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.container_body, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
