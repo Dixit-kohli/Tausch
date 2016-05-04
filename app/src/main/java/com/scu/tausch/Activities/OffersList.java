@@ -592,7 +592,7 @@ public class OffersList extends Fragment implements DBListener{
         fragment.setRetainItemObjects(itemObjects);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container_body, fragment);
+        fragmentTransaction.replace(R.id.container_body, fragment, "tagOfferList");
         fragmentTransaction.commit();
     }
 
