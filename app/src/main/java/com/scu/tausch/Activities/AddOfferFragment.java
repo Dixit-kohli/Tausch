@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -25,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -86,7 +88,7 @@ public class AddOfferFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -114,6 +116,16 @@ public class AddOfferFragment extends Fragment{
         editPrice = (EditText)rootView.findViewById(R.id.edit_price);
         editZip = (EditText)rootView.findViewById(R.id.edit_zip);
         textCityName=(TextView)rootView.findViewById(R.id.text_city);
+
+
+        textCityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editZip.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editZip, InputMethodManager.SHOW_IMPLICIT);
+                editZip.setInputType(InputType.TYPE_CLASS_NUMBER);            }
+        });
 
 
         editZip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -152,6 +164,7 @@ public class AddOfferFragment extends Fragment{
         ArrayAdapter<String> adapterCategories = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapterCategories.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCategory.setAdapter(adapterCategories);
+        spinnerCategory.setSelection(Constants.CURRENT_SELECTED_CATEGORY);
 
         //Creating and setting adapter to array of conditions required in spinner.
         ArrayAdapter<String> adapterConditions = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, conditions);

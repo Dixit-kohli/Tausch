@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     public static HomePage context;
 
     private String[] arrayCategoryNames = new String[]{"AUTOMOBILES", "BOOKS", "LAPTOPS","FURNITURE","RENTALS"};
-    private int[] arrayCategoryImages = new int[]{R.mipmap.img_automobiles_new1, R.mipmap.img_books_new1, R.mipmap.img_laptop_new1, R.mipmap.img_furniture_new1, R.mipmap.img_rental_new1};
+    private int[] arrayCategoryImages = new int[]{R.mipmap.car_cat_latest, R.mipmap.img_books_new1, R.mipmap.img_laptop_new1, R.mipmap.img_furniture_new1, R.mipmap.img_rental_new1};
     private ListView listViewCategories;
 
     public HomeFragment() {
@@ -96,6 +96,7 @@ public class HomeFragment extends Fragment {
 
                 if (position == Constants.CATEGORY_AUTOMOBILES) {
 
+                    Constants.CURRENT_SELECTED_CATEGORY = Constants.CATEGORY_AUTOMOBILES;
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_AUTOMOBILES_OBJECT_ID,context);
 
                      DBAccessor.searchCode = Constants.SEARCH_CODE_AUTOMOBILES;
@@ -104,6 +105,7 @@ public class HomeFragment extends Fragment {
 
                 } else if (position == Constants.CATEGORY_BOOKS) {
 
+                    Constants.CURRENT_SELECTED_CATEGORY = Constants.CATEGORY_BOOKS;
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_BOOKS_OBJECT_ID,context);
 
                     DBAccessor.searchCode = Constants.SEARCH_CODE_BOOKS;
@@ -111,6 +113,8 @@ public class HomeFragment extends Fragment {
 
 
                 } else if (position == Constants.CATEGORY_LAPTOPS) {
+
+                    Constants.CURRENT_SELECTED_CATEGORY = Constants.CATEGORY_LAPTOPS;
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_LAPTOPS_OBJECT_ID,context);
 
@@ -121,6 +125,8 @@ public class HomeFragment extends Fragment {
 
                 } else if (position == Constants.CATEGORY_FURNITURE) {
 
+                    Constants.CURRENT_SELECTED_CATEGORY = Constants.CATEGORY_FURNITURE;
+
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_FURNITURE_OBJECT_ID,context);
 
                     DBAccessor.searchCode = Constants.SEARCH_CODE_FURNITURE;
@@ -128,6 +134,8 @@ public class HomeFragment extends Fragment {
 
 
                 } else if (position == Constants.CATEGORY_RENTALS) {
+
+                    Constants.CURRENT_SELECTED_CATEGORY = Constants.CATEGORY_RENTALS;
 
                     DBAccessor.getInstance().getItemsForCategory(Constants.CATEGORY_RENTALS_OBJECT_ID,context);
 

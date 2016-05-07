@@ -214,6 +214,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
+        view.setClickable(true);
         displayView(position);
     }
 

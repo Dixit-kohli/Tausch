@@ -2,6 +2,7 @@ package com.scu.tausch.Misc;
 
 import android.app.Application;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseUser;
@@ -21,7 +22,23 @@ public class ParseApplication extends Application {
 
         Parse.enableLocalDatastore(this);
         Parse.initialize(this);
+
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        if (ParseUser.getCurrentUser() != null) {
+            installation.put("username", ParseUser.getCurrentUser().getEmail());
+        }
+        installation.saveInBackground();
         ParsePush.subscribeInBackground("Tausch");
+
+
+
+//        Parse.enableLocalDatastore(this);
+//        Parse.initialize(this);
+//        ParseInstallation.getCurrentInstallation().saveInBackground();
+//        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+//        installation.put("username", ParseUser.getCurrentUser().getEmail());
+//        installation.saveInBackground();
+//        ParsePush.subscribeInBackground("Tausch");
 
 
         //We need current user many times, so need to make sure its not null.

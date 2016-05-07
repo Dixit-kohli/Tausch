@@ -8,11 +8,13 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -89,6 +91,7 @@ public class EditOfferFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
     }
 
@@ -130,6 +133,15 @@ public class EditOfferFragment extends Fragment{
         editPrice = (EditText)rootView.findViewById(R.id.edit_price);
         editZip = (EditText)rootView.findViewById(R.id.edit_zip);
         textCityName=(TextView)rootView.findViewById(R.id.text_city);
+
+        textCityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editZip.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editZip, InputMethodManager.SHOW_IMPLICIT);
+                editZip.setInputType(InputType.TYPE_CLASS_NUMBER);            }
+        });
 
         editZip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

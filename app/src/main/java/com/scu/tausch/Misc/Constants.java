@@ -91,6 +91,8 @@ public class Constants {
     public static final String Array_Category_Laptops = "Laptops";
     public static final String Array_Category_Furniture = "Furniture";
     public static final String Array_Category_Rentals = "Rentals";
+    public static int CURRENT_SELECTED_CATEGORY = CATEGORY_AUTOMOBILES;
+
     public static final String ITEM_TYPE_NEW = "New";
     public static final String ITEM_TYPE_USED = "Used";
     public static final String ITEM_TYPE_All = "All";

@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +59,14 @@ public class DetailedItemFragment extends Fragment{
     private ImageView leftArrow;
     private ImageView rightArrow;
     private TextView textOfferor;
+    private ImageView imageItemView;
+    private ImageView dotOne, dotTwo, dotThree, dotFour, dotFive;
     private boolean isOfferByOfferor = false;
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private GestureDetector gestureDetector;
+    View.OnTouchListener gestureListener;
 
 private String receiverObjectId;
 
@@ -172,18 +182,24 @@ private String receiverObjectId;
             }
         });
 
+        dotOne = (ImageView)rootView.findViewById(R.id.dot_one);
+        dotTwo = (ImageView)rootView.findViewById(R.id.dot_two);
+        dotThree = (ImageView)rootView.findViewById(R.id.dot_three);
+        dotFour = (ImageView)rootView.findViewById(R.id.dot_four);
+        dotFive = (ImageView)rootView.findViewById(R.id.dot_five);
 
         messageButton = (ImageButton)rootView.findViewById(R.id.icon_message_box);
         TextView textTitle = (TextView)rootView.findViewById(R.id.item_title);
         TextView textDescription=(TextView)rootView.findViewById(R.id.item_description);
         final ImageView imageItem = (ImageView) rootView.findViewById(R.id.item_image);
+        imageItemView = imageItem;
         textOfferor = (TextView) rootView.findViewById(R.id.value_name);
         TextView textPrice = (TextView)rootView.findViewById(R.id.value_price);
         TextView textCondition = (TextView)rootView.findViewById(R.id.value_condition);
         TextView textCity = (TextView)rootView.findViewById(R.id.value_city);
-        leftArrow = (ImageView) rootView.findViewById(R.id.arrow_left);
-        rightArrow = (ImageView) rootView.findViewById(R.id.arrow_right);
-
+        LinearLayout layout = (LinearLayout)rootView.findViewById(R.id.layout_dots);
+     //   leftArrow = (ImageView) rootView.findViewById(R.id.arrow_left);
+     //   rightArrow = (ImageView) rootView.findViewById(R.id.arrow_right);
 
         textTitle.setText(title);
         textDescription.setText(description);
@@ -192,42 +208,18 @@ private String receiverObjectId;
         textPrice.setText("$" + item_price);
         textCondition.setText(condition);
         textCity.setText(city);
-        leftArrow.setVisibility(View.INVISIBLE);
+       // leftArrow.setVisibility(View.INVISIBLE);
 
 
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (imageNumberToDisplay > 0) {
-                    rightArrow.setVisibility(View.VISIBLE);
-                    imageNumberToDisplay--;
-                    imageItem.setImageBitmap(itemFiveImages.get(imageNumberToDisplay));
-                    if (imageNumberToDisplay == 0) {
-                        leftArrow.setVisibility(View.INVISIBLE);
-                    }
-                }
-
-
+        gestureDetector = new GestureDetector(getActivity(), new MyGestureDetector());
+        gestureListener = new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
             }
-        });
+        };
 
-        rightArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (imageNumberToDisplay < 4) {
-                    leftArrow.setVisibility(View.VISIBLE);
-                    imageNumberToDisplay++;
-                    imageItem.setImageBitmap(itemFiveImages.get(imageNumberToDisplay));
-                    if (imageNumberToDisplay == 4) {
-                        rightArrow.setVisibility(View.INVISIBLE);
-                    }
-                }
-
-
-            }
-        });
+//        imageItem.setOnClickListener(getActivity());
+        imageItem.setOnTouchListener(gestureListener);
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,6 +245,64 @@ private String receiverObjectId;
         return rootView;
     }
 
+    public void leftArrowClicked() {
+
+        clearAllDots();
+        if (imageNumberToDisplay > 0) {
+            imageNumberToDisplay--;
+            selectDot(imageNumberToDisplay);
+            imageItemView.setImageBitmap(itemFiveImages.get(imageNumberToDisplay));
+        }
+        if (imageNumberToDisplay==0) {
+            dotOne.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+
+    }
+
+    public void rightArrowClicked() {
+
+        clearAllDots();
+        if (imageNumberToDisplay < 4) {
+            imageNumberToDisplay++;
+           selectDot(imageNumberToDisplay);
+            imageItemView.setImageBitmap(itemFiveImages.get(imageNumberToDisplay));
+        }
+if (imageNumberToDisplay==4){
+    dotFive.setBackgroundColor(Color.parseColor("#ffffff"));
+}
+    }
+
+    public void selectDot(int imageNumberToDisplay){
+        if (imageNumberToDisplay==0){
+            dotOne.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+        else if (imageNumberToDisplay==1){
+            dotTwo.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+        else if (imageNumberToDisplay==2){
+            dotThree.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+        else if (imageNumberToDisplay==3){
+            dotFour.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+        else if (imageNumberToDisplay==4){
+            dotFive.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+
+    }
+
+    public void clearAllDots(){
+
+        dotOne.setBackgroundColor(Color.parseColor("#616161"));
+        dotTwo.setBackgroundColor(Color.parseColor("#616161"));
+        dotThree.setBackgroundColor(Color.parseColor("#616161"));
+        dotFour.setBackgroundColor(Color.parseColor("#616161"));
+        dotFive.setBackgroundColor(Color.parseColor("#616161"));
+
+    }
+
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -262,5 +312,30 @@ private String receiverObjectId;
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+    class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            try {
+                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                    return false;
+                // right to left swipe
+                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                   // Toast.makeText(getActivity(), "Left Swipe", Toast.LENGTH_SHORT).show();
+                    rightArrowClicked();
+                }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                   // Toast.makeText(getActivity(), "Right Swipe", Toast.LENGTH_SHORT).show();
+                    leftArrowClicked();
+                }
+            } catch (Exception e) {
+                // nothing
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
     }
 }

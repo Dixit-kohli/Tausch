@@ -6,6 +6,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
@@ -121,10 +122,14 @@ public class DBAccessor {
 
     public void checkUsernamePasswordValidity(LoginDTO loginDTO, final Login callbackLogin){
 
-        ParseUser.logInInBackground(loginDTO.getEmail(), loginDTO.getPassword(), new LogInCallback() {
+        ParseUser.logInInBackground(loginDTO.getEmail().toLowerCase().trim(), loginDTO.getPassword().trim(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     // Hooray! The user is logged in.
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("username", ParseUser.getCurrentUser().getEmail());
+                    installation.saveInBackground();
+                    ParsePush.subscribeInBackground("Tausch");
                     callbackLogin.loginSuccessful();
                 } else {
                     // Signup failed. Look at the ParseException to see what happened.

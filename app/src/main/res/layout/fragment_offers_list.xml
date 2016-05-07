@@ -32,13 +32,25 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/toolbarBottom"
         android:layout_alignParentLeft="true"
+        android:textColor="@color/colorPrimary"
+        android:layout_margin="10dp"
+        android:textSize="18dp"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:background="@color/grayPatchListColor"
         android:text="Filter" />
 
     <Button
         android:id="@+id/button_sort"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:background="@color/grayPatchListColor"
         android:layout_alignParentRight="true"
+        android:textColor="@color/colorPrimary"
+        android:layout_margin="10dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
         android:layout_alignTop="@+id/toolbarBottom"
         android:text="Sort" />
     </RelativeLayout>

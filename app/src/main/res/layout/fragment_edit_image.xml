@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
     android:id="@+id/myImageAddFragment"
     android:background="@color/dialogBoxBackground"
     android:clickable="true"
@@ -78,9 +79,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         >
 
@@ -89,16 +90,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="10dp"/>
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/textColorPrimary"
+            android:paddingRight="8dp"
+            android:textAllCaps="false"
+            android:paddingLeft="8dp"
+            android:layout_gravity="center" />
 
         <Button
             android:id="@+id/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:background="@android:color/transparent"
-            android:layout_marginTop="10dp"/>
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/textColorPrimary"
+            android:paddingRight="8dp"
+            android:textAllCaps="false"
+            android:paddingLeft="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:text="Cancel" />
     </LinearLayout>
 
 </RelativeLayout>

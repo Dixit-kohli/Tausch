@@ -170,6 +170,11 @@ public class OffersList extends Fragment implements DBListener{
         // searchResults is a list of all searched parse objects ( here we search all offers with the user's input string)
         searchResults =  searchOffersWithASearchStr(offers,searchResults, searchStr);
         setArraysForNamesImagesCost(searchResults);
+
+
+        //REMOVE IF ISSUE IS THERE AS IT RESOLVES THE ISSUE TO FILTER CURRENT SCREEN ITEMS.
+        itemObjects = searchResults;
+
 //        if (progress!=null){
 //            progress.dismiss();
 //        }
@@ -391,9 +396,11 @@ public class OffersList extends Fragment implements DBListener{
                     progress.dismiss();
                     return;
                 }
-             //   if (itemObjects.size() == 0 || itemObjects == null) {
+
+                //COMMENT THIS IF CONDITION IF ISSUE IS THERE.
+                if (itemObjects.size() == 0 || itemObjects == null) {
                     itemObjects = retainItemObjects;
-              //  }
+                }
                 fragment.fetchedItemObjects(itemObjects);
 
                 FragmentManager fragmentManager = getFragmentManager();

@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_drawer_width">260dp</dimen>
     <dimen name="image_upload_w_h">100dp</dimen>
+    <dimen name="setting_image_w_h">120dp</dimen>
 
 </resources>

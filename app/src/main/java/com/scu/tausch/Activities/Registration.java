@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseCloud;
@@ -39,6 +41,7 @@ public class Registration extends Activity {
     private RegistrationDTO regDTO;
     private ProgressDialog progress;
     private CheckBox checkTermsConditions;
+    private TextView terms_conditions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,17 @@ public class Registration extends Activity {
         editConfirmPassword = (EditText) findViewById(R.id.confirm_password);
         checkTermsConditions = (CheckBox) findViewById(R.id.check_box);
         buttonSubmit = (Button) findViewById(R.id.submit_button);
+        terms_conditions = (TextView)findViewById(R.id.terms_and_conditions);
+
+        terms_conditions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.tauschapp.com/tandc.html"));
+                startActivity(browserIntent);
+            }
+        });
+
 
     }
 
