@@ -77,7 +77,7 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-
+       Constants.homePage = this;
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
         ImageAddFragment.context=this;
@@ -130,6 +130,14 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
 
         // display the first navigation drawer view on app launch
         displayView(0);
+
+        if (Constants.PUSH_RECEIVED){
+            pushReceived();
+            Constants.lastReceiverName=null;
+            Constants.lastReceiverObjectId=null;
+            Constants.lastReceiverEmail=null;
+            Constants.PUSH_RECEIVED = false;
+        }
 
     }
 
@@ -476,4 +484,21 @@ public class HomePage extends AppCompatActivity implements FragmentDrawer.Fragme
         // system behavior
         return super.onKeyDown(keyCode, event);
     }
+
+    public void pushReceived(){
+
+        Constants.WAS_LAST_SCREEN_ITEM_DESCRIPTION = true;
+
+        ChatFragment fragment = null;
+        fragment = new ChatFragment();
+
+        fragment.setArgumentsForMessageSending(Constants.lastReceiverEmail,Constants.lastReceiverObjectId, Constants.lastReceiverName);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_body, fragment, Constants.TAG_Chat_Fragment);
+        fragmentTransaction.commit();
+
+    }
+
 }

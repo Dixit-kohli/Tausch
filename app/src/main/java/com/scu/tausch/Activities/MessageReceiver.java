@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.parse.ParsePushBroadcastReceiver;
+import com.scu.tausch.Misc.Constants;
 import com.scu.tausch.R;
 
 import org.json.JSONException;
@@ -26,6 +28,7 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
 
     String message;
     static HomePage context;
+    String receiverEmail,receiverObjectId,receiverName, senderObjectId,senderEmail;
 
     @Override
     protected void onPushReceive(Context context, Intent intent) {
@@ -37,6 +40,25 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
             JSONObject jsonObject;
             jsonObject = new JSONObject(jsonData);
              message = jsonObject.getString("alert");
+            receiverEmail = jsonObject.getString("receiver_email");
+            senderEmail = jsonObject.getString("sender_email");
+            receiverName = jsonObject.getString("receiver_name");
+            receiverObjectId = jsonObject.getString("receiver_object_id");
+            senderObjectId = jsonObject.getString("sender_object_id");
+
+            Constants.lastReceiverName = receiverName;
+            Constants.lastReceiverObjectId = senderObjectId;
+            Constants.lastSenderEmail = senderEmail;
+            Constants.lastReceiverEmail = receiverEmail;
+
+            SharedPreferences sharedpreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("last_sender_email", senderEmail);
+            editor.putString("last_receiver_email", receiverEmail);
+            editor.putBoolean("push_received", true);
+            editor.commit();
+
 
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
             float dpWidth = displayMetrics.widthPixels;
@@ -75,10 +97,16 @@ public class MessageReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected void onPushOpen(Context context, Intent intent) {
         super.onPushOpen(context, intent);
+
+//        Constants.homePage.pushReceived();
+        Constants.PUSH_RECEIVED = true;
     }
 
     @Override
     protected Class<? extends Activity> getActivity(Context context, Intent intent) {
+
+        Constants.PUSH_RECEIVED = true;
+
         return super.getActivity(context, intent);
     }
 }

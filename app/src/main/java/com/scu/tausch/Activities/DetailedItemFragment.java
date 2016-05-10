@@ -2,6 +2,7 @@ package com.scu.tausch.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -224,6 +225,10 @@ private String receiverObjectId;
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+                Constants.PUSH_RECEIVED = sharedpreferences.getBoolean("push_received",false);
 
 
                 Constants.WAS_LAST_SCREEN_ITEM_DESCRIPTION = true;

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.scu.tausch.R;
 
 import android.os.Handler;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -161,7 +163,7 @@ public class ChatFragment extends Fragment implements MessagesListener {
             public void onClick(View v) {
 
 
-                ParseUser currentUser = ParseUser.getCurrentUser();
+                final ParseUser currentUser = ParseUser.getCurrentUser();
                 currentUser.fetchInBackground(new GetCallback<ParseObject>() {
                                                   @Override
                                                   public void done(ParseObject object, ParseException e) {
@@ -252,11 +254,88 @@ public class ChatFragment extends Fragment implements MessagesListener {
                                                                                                              //textViewTS.setLayoutParams(params);
                                                                                                              layout.addView(textViewTS);
 
+                                                                                                             JSONObject jsondata = null;
+
+
+
+                                                                                                             SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+                                                                                                             Constants.PUSH_RECEIVED = sharedpreferences.getBoolean("push_received", false);
+                                                                                                             Constants.lastSenderEmail = sharedpreferences.getString("last_sender_email", "");
+                                                                                                             Constants.lastReceiverEmail = sharedpreferences.getString("last_receiver_email", "");
+                                                                                                             String currentReceiver="";
+
+
+                                                                                                             if(Constants.PUSH_RECEIVED){
+
+                                                                                                                 if(currentUser.getEmail().equals(Constants.lastReceiverEmail)){
+
+                                                                                                                     currentReceiver = Constants.lastSenderEmail;
+
+                                                                                                                     try {
+                                                                                                                         jsondata = new JSONObject("{\"title\" : \"Tausch\"," +
+                                                                                                                                 "\"receiver_email\" : \"" + Constants.lastSenderEmail + "\"," +
+                                                                                                                                 "\"sender_email\" : \"" + currentUser.getEmail() + "\"," +
+                                                                                                                                 "\"alert\" : \"" + data + "\"," +
+                                                                                                                                 "\"receiver_object_id\" : \"" + receiverObjectId + "\"," +
+                                                                                                                                 "\"sender_object_id\" : \"" + currentUser.getObjectId() + "\"," +
+                                                                                                                                 "\"receiver_name\" :\"" + receiverName + "\"}");
+                                                                                                                     } catch (JSONException he) {
+                                                                                                                         he.printStackTrace();
+                                                                                                                     }
+
+                                                                                                                 }
+                                                                                                                 else{
+                                                                                                                     currentReceiver = Constants.lastReceiverEmail;
+
+                                                                                                                     try {
+                                                                                                                         jsondata = new JSONObject("{\"title\" : \"Tausch\"," +
+                                                                                                                                 "\"receiver_email\" : \"" + Constants.lastReceiverEmail + "\"," +
+                                                                                                                                 "\"sender_email\" : \"" + currentUser.getEmail() + "\"," +
+                                                                                                                                 "\"alert\" : \"" + data + "\"," +
+                                                                                                                                 "\"receiver_object_id\" : \"" + receiverObjectId + "\"," +
+                                                                                                                                 "\"sender_object_id\" : \"" + currentUser.getObjectId() + "\"," +
+                                                                                                                                 "\"receiver_name\" :\"" + receiverName + "\"}");
+                                                                                                                     } catch (JSONException he) {
+                                                                                                                         he.printStackTrace();
+                                                                                                                     }
+
+                                                                                                                 }
+
+
+                                                                                                             }
+
+                                                                                                            else {
+
+                                                                                                                 try {
+                                                                                                                     jsondata = new JSONObject("{\"title\" : \"Tausch\"," +
+                                                                                                                             "\"receiver_email\" : \"" + receiverEmail + "\"," +
+                                                                                                                             "\"sender_email\" : \"" + currentUser.getEmail() + "\"," +
+                                                                                                                             "\"alert\" : \"" + data + "\"," +
+                                                                                                                             "\"receiver_object_id\" : \"" + receiverObjectId + "\"," +
+                                                                                                                             "\"sender_object_id\" : \"" + currentUser.getObjectId() + "\"," +
+                                                                                                                             "\"receiver_name\" :\"" + receiverName + "\"}");
+                                                                                                                 } catch (JSONException he) {
+                                                                                                                     he.printStackTrace();
+                                                                                                                 }
+                                                                                                             }
+
 
                                                                                                              ParsePush parsePush = new ParsePush();
                                                                                                              ParseQuery pQuery = ParseInstallation.getQuery(); // <-- Installation query
-                                                                                                             pQuery.whereEqualTo("username", receiverEmail); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
-                                                                                                             parsePush.sendMessageInBackground(data, pQuery);
+
+                                                                                                          if (Constants.PUSH_RECEIVED){
+                                                                                                              pQuery.whereEqualTo("username", currentReceiver); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
+
+                                                                                                          }
+                                                                                                          else {
+
+                                                                                                              pQuery.whereEqualTo("username", receiverEmail); // <-- you'll probably want to target someone that's not the current user, so modify accordingly
+                                                                                                              //  parsePush.sendMessageInBackground(data, pQuery);
+                                                                                                          }
+                                                                                                             parsePush.setData(jsondata);
+                                                                                                             parsePush.setQuery(pQuery);
+                                                                                                             parsePush.sendInBackground();
 
                                                                                                              //  refreshMessages();
                                                                                                          }

@@ -1,5 +1,7 @@
 package com.scu.tausch.Misc;
 
+import com.scu.tausch.Activities.HomePage;
+
 /**
  * Created by Praneet on 1/20/16.
  */
@@ -19,6 +21,12 @@ public class Constants {
     public static final int SCREEN_SETTINGS = 12;
     public static final int SCREEN_ABOUT = 13;
     public static final int SCREEN_HELP = 14;
+    public static HomePage homePage;
+    public static String lastReceiverName;
+    public static String lastReceiverObjectId;
+    public static String lastReceiverEmail;
+    public static String lastSenderEmail;
+    public static boolean PUSH_RECEIVED;
 
     public static int CURRENT_SCREEN = SCREEN_HOME_PAGE;
     public static boolean WAS_LAST_SCREEN_ITEM_DESCRIPTION = false;

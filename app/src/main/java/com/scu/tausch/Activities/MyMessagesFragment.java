@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -72,6 +73,8 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Constants.PUSH_RECEIVED = false;
 
         DBAccessor.searchCode = Constants.SEARCH_CODE_HOME_PAGE;
 
@@ -156,6 +159,14 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
         listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
+                SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+                Constants.PUSH_RECEIVED = sharedpreferences.getBoolean("push_received",false);
+
+
+
                 final ChatFragment nextFrag = new ChatFragment();
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
@@ -190,6 +201,10 @@ public class MyMessagesFragment extends Fragment implements MessageThreadListene
 
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long rowid) {
+
+                SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+                Constants.PUSH_RECEIVED = sharedpreferences.getBoolean("push_received",false);
 
                 // Store selected item in global variable
                 final String selectedItem = parent.getItemAtPosition(position).toString();

@@ -394,6 +394,8 @@ public void updateEmailForVerificationAgain(final HomePage homePage){
         query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
         query.whereEqualTo("receiverId", receiverId);
 
+        String te = ParseUser.getCurrentUser().getObjectId();
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
